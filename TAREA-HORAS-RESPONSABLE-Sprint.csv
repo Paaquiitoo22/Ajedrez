@@ -1,0 +1,11 @@
+TAREA,HORAS,RESPONSABLE,Sprint
+Configurar proyecto + Git,4h,Iván,1
+Lógica básica piezas,16h,Francisco,1
+Tablero y movimientos,20h,Francisco,2
+Reglas especiales,24h,Francisco,2
+Interfaz JavaFX,24h,Diego,3
+Cronómetro + puntuación,12h,Iván,3
+Validaciones + estados,16h,Todos,4
+Testing + bugs,16h,Todos,4
+Documentación,12h,Todos,4
+TOTAL,124h,Equipo,8 semanas
