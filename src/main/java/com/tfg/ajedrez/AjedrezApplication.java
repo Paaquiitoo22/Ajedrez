@@ -12,9 +12,6 @@ public class AjedrezApplication extends Application {
 
         FXMLLoader loader=new FXMLLoader(AjedrezApplication.class.getResource("/com/tfg/ajedrez/vista/bienvenida.fxml"));
         Scene escena=new Scene(loader.load(),800,800);
-        escena.getStylesheets().add(
-                getClass().getResource("/com/tfg/ajedrez/css/styles.css").toExternalForm()
-        );
         stage.setScene(escena);
         stage.show();
 
