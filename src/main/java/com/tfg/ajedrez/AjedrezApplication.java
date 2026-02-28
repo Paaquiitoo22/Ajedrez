@@ -13,6 +13,7 @@ public class AjedrezApplication extends Application {
         FXMLLoader loader=new FXMLLoader(AjedrezApplication.class.getResource("/com/tfg/ajedrez/vista/bienvenida.fxml"));
         Scene escena=new Scene(loader.load(),800,800);
         stage.setScene(escena);
+        stage.setTitle("¡Bienvenido!");
         stage.show();
 
     }
