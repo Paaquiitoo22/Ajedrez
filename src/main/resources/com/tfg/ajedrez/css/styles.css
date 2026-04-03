@@ -1,7 +1,40 @@
+@font-face {
+    font-family: "DM Sans Medium";
+    src: url("../fonts/DMSans_18pt-Medium.ttf");
+}
+
+@font-face {
+    font-family: "DM Sans Bold";
+    src: url("../fonts/DMSans_18pt-Bold.ttf");
+}
+
+.root {
+    -fx-font-family: "DM Sans Medium";
+}
 
 .button {
-    -fx-background-color: #1e88e5;
+    -fx-background-color: #247aca;
+    -fx-text-fill: white;
+    -fx-font-family: "DM Sans Medium";
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+}
+
+.boton-google {
+    -fx-font-family: "DM Sans Medium";
+    -fx-background-color: #343434;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-background-radius: 8;
+}
+
+.or-line .line {
+    -fx-border-color: #444444;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.or-label {
+    -fx-text-fill: #888888;
+    -fx-font-size: 13px;
+    -fx-font-family: "DM Sans Bold";
 }
