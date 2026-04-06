@@ -28,6 +28,16 @@
     -fx-background-radius: 8;
 }
 
+.boton-volver {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-radius: 15;
+    -fx-text-fill: grey;
+    -fx-font-size: 20px;
+    -fx-cursor: hand;
+
+}
+
 .or-line .line {
     -fx-border-color: #444444;
     -fx-border-width: 1px 0 0 0;

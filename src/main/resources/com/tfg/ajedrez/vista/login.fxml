@@ -55,7 +55,7 @@
                         <Glow />
                      </effect>
                   </HBox>
-                  <Button maxWidth="300.0" minHeight="50.0" mnemonicParsing="false" prefWidth="250.0" text="Entrar como invitado" />
+                  <Button maxWidth="300.0" minHeight="50.0" mnemonicParsing="false" onAction="#onEntrar" prefWidth="250.0" text="Entrar como invitado" />
                </children>
             </VBox>
          </content>

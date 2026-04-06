@@ -1,21 +1,35 @@
 package com.tfg.ajedrez;
 
+import com.tfg.ajedrez.util.SceneManager;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class AjedrezApplication extends Application {
+
+    /**
+     * Escenario principal de la aplicación, sobre el que se mostrarán las escenas
+     * JavaFX.
+     */
+    private Stage primaryStage;
+
+    /**
+     * Devuelve el escenario (ventana) principal de la aplicación.
+     *
+     * @return {@link Stage} principal de la aplicación
+     */
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
 
-        FXMLLoader loader=new FXMLLoader(AjedrezApplication.class.getResource("/com/tfg/ajedrez/vista/login.fxml"));
-        Scene escena=new Scene(loader.load(),300,700);
-        stage.setScene(escena);
-        //stage.initStyle(StageStyle.UNDECORATED);
-        stage.show();
+        this.primaryStage = stage;
+        SceneManager.init(stage);
+        SceneManager.navegarA("/com/tfg/ajedrez/vista/login.fxml");
+
+        primaryStage.show();
 
     }
+
 }
