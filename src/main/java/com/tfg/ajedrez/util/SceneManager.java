@@ -12,7 +12,7 @@ import java.io.IOException;
 public class SceneManager {
     private static Stage primaryStage;
    public static void init(Stage stage){
-
+       primaryStage=stage;
    }
     public static void navegarA(String ventana)  {
         try {
