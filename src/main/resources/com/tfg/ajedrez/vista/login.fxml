@@ -37,7 +37,7 @@
                   <Insets bottom="30.0" left="20.0" right="20.0" top="400.0" />
                </padding>
                <children>
-                  <Button maxWidth="300.0" minHeight="50.0" mnemonicParsing="false" prefWidth="250.0" styleClass="boton-google" text="Continuar con Google">
+                  <Button maxWidth="300.0" minHeight="50.0" mnemonicParsing="false" onAction="#onAutenticar" prefWidth="250.0" styleClass="boton-google" text="Continuar con Google">
                      <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
