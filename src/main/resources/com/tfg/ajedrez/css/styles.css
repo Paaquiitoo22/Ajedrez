@@ -1,12 +1,11 @@
 .root {
-    /* Inter viene incluida por defecto en JavaFX 21 */
-    -fx-font-family: "DM Sans";
+    -fx-font-family: "Inter";
 }
 
 .button {
     -fx-background-color: #247aca;
     -fx-text-fill: white;
-    -fx-font-family: "DM Sans";
+    -fx-font-family: "Inter";
     -fx-font-size: 14px;
     -fx-background-radius: 8;
 }
@@ -22,11 +21,33 @@
 }
 
 .boton-google {
-    -fx-font-family: "DM Sans";
+    -fx-font-family: "Inter";
     -fx-background-color: #343434;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 0.5;
+}
+
+.boton-invitado {
+    -fx-background-color: #272323;
+    -fx-text-fill: #D4AF37;
+    -fx-border-radius: 10;
+    -fx-border-color: rgba(212, 174, 48, 0.575);
+    -fx-border-width: 0.5;
+    -fx-opacity: 0.8;
+    -fx-graphic-text-gap: 12px;
+}
+
+.icon-user {
+    -fx-background-color: #D4AF37;
+    -fx-shape: "M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z";
+    -fx-min-width: 16px;
+    -fx-max-width: 16px;
+    -fx-min-height: 16px;
+    -fx-max-height: 16px;
 }
 
 .boton-volver {
@@ -98,7 +119,7 @@
 .boton-menu-lateral {
     -fx-background-color: transparent;
     -fx-text-fill: white;
-    -fx-font-family: "DM Sans";
+    -fx-font-family: "Inter";
     -fx-font-size: 13px;
     -fx-cursor: hand;
     -fx-alignment: CENTER_LEFT;
@@ -131,5 +152,5 @@
 .or-label {
     -fx-text-fill: #888888;
     -fx-font-size: 13px;
-    -fx-font-family: "DM Sans";
+    -fx-font-family: "Inter";
 }

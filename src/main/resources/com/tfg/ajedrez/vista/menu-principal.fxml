@@ -19,7 +19,7 @@
                 <VBox />
             </content>
         </ScrollPane>
-      <HBox alignment="CENTER" maxHeight="100.0" maxWidth="330.0" prefHeight="100.0" prefWidth="100.0" StackPane.alignment="TOP_CENTER">
+      <HBox alignment="CENTER" maxHeight="100.0" maxWidth="330.0" prefHeight="100.0" prefWidth="330.0" StackPane.alignment="TOP_CENTER">
          <children>
             <VBox alignment="BOTTOM_CENTER" maxWidth="139.0" prefHeight="100.0" prefWidth="100.0" styleClass="caja-menu">
                <children>
@@ -105,7 +105,7 @@
             <Insets left="20.0" top="20.0" />
          </StackPane.margin>
       </Button>
-      <VBox fx:id="menuDesplegable" alignment="TOP_RIGHT" maxHeight="150.0" maxWidth="150.0" prefHeight="200.0" prefWidth="100.0" styleClass="menu-desplegable" visible="false" StackPane.alignment="TOP_RIGHT">
+      <VBox fx:id="menuDesplegable" alignment="TOP_RIGHT" maxHeight="150.0" maxWidth="150.0" prefHeight="200.0" prefWidth="100.0" styleClass="menu-desplegable" StackPane.alignment="TOP_RIGHT" visible="false">
          <StackPane.margin>
             <Insets right="20.0" top="80.0" />
          </StackPane.margin>
@@ -114,6 +114,7 @@
                <children>
                   <Button mnemonicParsing="false" styleClass="boton-menu-lateral" text="Ajustes">
                      <graphic>
+                     
                         <Region styleClass="icon-settings" />
                      </graphic>
                      <HBox.margin>
