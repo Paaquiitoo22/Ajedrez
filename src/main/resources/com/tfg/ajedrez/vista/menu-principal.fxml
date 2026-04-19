@@ -82,7 +82,7 @@
             <Insets top="215.0" />
          </StackPane.margin>
       </Button>
-      <HBox alignment="CENTER" maxHeight="150.0" maxWidth="330.0" prefHeight="624.0" prefWidth="300.0">
+      <HBox alignment="CENTER" maxHeight="150.0" maxWidth="330.0" prefHeight="150.0" prefWidth="300.0" StackPane.alignment="CENTER">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" styleClass="caja-menu">
                <HBox.margin>
@@ -103,19 +103,19 @@
             <Insets top="200.0" />
          </StackPane.margin>
       </Separator>
-      <HBox maxHeight="25.0" maxWidth="330.0" prefHeight="100.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
-         <StackPane.margin>
-            <Insets bottom="210.0" />
-         </StackPane.margin>
+      <VBox alignment="BOTTOM_CENTER" maxWidth="330.0" prefHeight="350.0" spacing="10.0" StackPane.alignment="BOTTOM_CENTER">
          <children>
-            <Label opacity="0.68" styleClass="or-label" text="PARTIDAS RECIENTES" textFill="WHITE" />
+            <HBox alignment="CENTER_LEFT" maxWidth="330.0">
+               <children>
+                  <Label opacity="0.68" styleClass="or-label" text="PARTIDAS RECIENTES" textFill="WHITE" />
+               </children>
+            </HBox>
+            <HBox maxHeight="180.0" maxWidth="330.0" prefHeight="300.0" prefWidth="330.0" styleClass="caja-menu" />
          </children>
-      </HBox>
-      <HBox maxHeight="300.0" maxWidth="330.0" prefHeight="100.0" prefWidth="200.0" StackPane.alignment="BOTTOM_CENTER">
          <StackPane.margin>
-            <Insets />
+            <Insets bottom="30.0" />
          </StackPane.margin>
-      </HBox>
+      </VBox>
         <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#onDesplegable" styleClass="menu-hamburguesa" StackPane.alignment="TOP_RIGHT">
             <graphic>
                 <Region opacity="0.57" styleClass="icon" />
