@@ -154,3 +154,85 @@
     -fx-font-size: 13px;
     -fx-font-family: "Inter";
 }
+
+/* ══════════════════════════════════════════════════════════════
+   Pantalla de Partida
+   ══════════════════════════════════════════════════════════════ */
+
+.titulo-partida {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 15px;
+    -fx-font-family: "Inter";
+}
+
+/* ── Paneles de jugador ─────────────────────────────────────── */
+
+.panel-jugador {
+    -fx-background-color: #252525;
+    -fx-background-radius: 10;
+    -fx-border-color: #383838;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+.avatar-jugador {
+    -fx-background-color: #D4AF37;
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER;
+}
+
+.nombre-jugador {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter";
+}
+
+.color-jugador-tag {
+    -fx-text-fill: #777777;
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter";
+}
+
+.timer-jugador-activo {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #D4AF37;
+    -fx-font-family: "Courier New";
+}
+
+.timer-jugador-inactivo {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+    -fx-font-family: "Courier New";
+}
+
+/* ── Etiquetas de coordenadas del tablero ───────────────────── */
+
+.etiqueta-tablero {
+    -fx-text-fill: #666666;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+}
+
+/* ── Panel de historial de movimientos ──────────────────────── */
+
+.panel-historial {
+    -fx-background-color: #212121;
+    -fx-background-radius: 10;
+    -fx-border-color: #383838;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+.titulo-historial {
+    -fx-text-fill: #777777;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}

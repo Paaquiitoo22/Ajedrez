@@ -21,5 +21,6 @@
          </content>
       </ScrollPane>
       <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" onAction="#onVolver" text="Atrás" StackPane.alignment="TOP_LEFT" />
+      <Button mnemonicParsing="false" onAction="#onPartida" text="Partida" />
    </children>
 </StackPane>

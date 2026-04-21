@@ -47,7 +47,9 @@ public class SceneManager {
             // La escena se crea sin dimensiones fijas para respetar el tamaño definido en el FXML.
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            
+            // Redimensiona el Stage para ajustarse al tamaño preferido del nuevo FXML
+            primaryStage.sizeToScene();
+
         } catch (IOException e) {
             System.err.println("[SCENE-ERROR] No se pudo cargar la vista: " + ventana);
             e.printStackTrace();

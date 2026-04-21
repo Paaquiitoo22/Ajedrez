@@ -9,4 +9,9 @@ public class NuevaPartidaController {
     public void onVolver(){
         SceneManager.navegarA("/com/tfg/ajedrez/vista/menu-principal.fxml");
     }
+
+    @FXML
+    public void onPartida(){
+        SceneManager.navegarA("/com/tfg/ajedrez/vista/partida.fxml");
+    }
 }
