@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="680.0" prefWidth="820.0"
+    style="-fx-background-color: #1B1B1B;"
+    stylesheets="@../css/styles.css"
+    xmlns="http://javafx.com/javafx/23.0.1"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.tfg.ajedrez.controller.PartidaController">
+
+    <!-- ── Barra de navegación ─────────────────────────────────────────── -->
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="14.0"
+              style="-fx-background-color: #1B1B1B; -fx-border-color: #2a2a2a; -fx-border-width: 0 0 1 0;">
+            <padding><Insets left="20.0" right="20.0" /></padding>
+            <Button onAction="#onVolver" styleClass="boton-volver" text="←" />
+            <Label styleClass="titulo-partida" text="Partida" />
+        </HBox>
+    </top>
+
+    <!-- ── Contenido principal ────────────────────────────────────────── -->
+    <center>
+        <HBox alignment="TOP_LEFT" spacing="16.0">
+            <padding><Insets bottom="16.0" left="20.0" right="20.0" top="14.0" /></padding>
+
+            <!-- ══ ÁREA DEL TABLERO ══════════════════════════════════════ -->
+            <VBox spacing="6.0">
+
+                <!-- Panel jugador negras (arriba) -->
+                <HBox alignment="CENTER_LEFT" prefHeight="62.0" prefWidth="466.0"
+                      spacing="12.0" styleClass="panel-jugador">
+                    <padding><Insets bottom="8.0" left="10.0" right="10.0" top="8.0" /></padding>
+                    <Label fx:id="avatarNegras" alignment="CENTER"
+                           minHeight="42.0" minWidth="42.0"
+                           prefHeight="42.0" prefWidth="42.0"
+                           styleClass="avatar-jugador" />
+                    <VBox alignment="CENTER_LEFT" spacing="2.0">
+                        <Label fx:id="nombreNegras" styleClass="nombre-jugador" />
+                        <Label styleClass="color-jugador-tag" text="Negras" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="timerNegras" styleClass="timer-jugador-inactivo" />
+                </HBox>
+
+                <!-- Tablero + etiquetas de fila -->
+                <HBox>
+                    <!-- Etiquetas de fila (8 → 1) -->
+                    <VBox>
+                        <Label alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="18.0" styleClass="etiqueta-tablero" text="8" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="18.0" styleClass="etiqueta-tablero" text="7" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="18.0" styleClass="etiqueta-tablero" text="6" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="18.0" styleClass="etiqueta-tablero" text="5" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="18.0" styleClass="etiqueta-tablero" text="4" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="18.0" styleClass="etiqueta-tablero" text="3" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="18.0" styleClass="etiqueta-tablero" text="2" />
+                        <Label alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="18.0" styleClass="etiqueta-tablero" text="1" />
+                    </VBox>
+                    <!-- Tablero 8×8 — poblado desde PartidaController -->
+                    <GridPane fx:id="tablero" />
+                </HBox>
+
+                <!-- Etiquetas de columna (a → h) -->
+                <HBox prefHeight="18.0">
+                    <Region prefWidth="18.0" /> <!-- offset rank labels -->
+                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="56.0" styleClass="etiqueta-tablero" text="a" />
+                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="56.0" styleClass="etiqueta-tablero" text="b" />
+                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="56.0" styleClass="etiqueta-tablero" text="c" />
+                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="56.0" styleClass="etiqueta-tablero" text="d" />
+                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="56.0" styleClass="etiqueta-tablero" text="e" />
+                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="56.0" styleClass="etiqueta-tablero" text="f" />
+                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="56.0" styleClass="etiqueta-tablero" text="g" />
+                    <Label alignment="CENTER" prefHeight="18.0" prefWidth="56.0" styleClass="etiqueta-tablero" text="h" />
+                </HBox>
+
+                <!-- Panel jugador blancas (abajo) -->
+                <HBox alignment="CENTER_LEFT" prefHeight="62.0" prefWidth="466.0"
+                      spacing="12.0" styleClass="panel-jugador">
+                    <padding><Insets bottom="8.0" left="10.0" right="10.0" top="8.0" /></padding>
+                    <Label fx:id="avatarBlancas" alignment="CENTER"
+                           minHeight="42.0" minWidth="42.0"
+                           prefHeight="42.0" prefWidth="42.0"
+                           styleClass="avatar-jugador" />
+                    <VBox alignment="CENTER_LEFT" spacing="2.0">
+                        <Label fx:id="nombreBlancas" styleClass="nombre-jugador" />
+                        <Label styleClass="color-jugador-tag" text="Blancas" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label fx:id="timerBlancas" styleClass="timer-jugador-activo" />
+                </HBox>
+
+            </VBox>
+
+            <!-- ══ PANEL DE HISTORIAL ════════════════════════════════════ -->
+            <VBox prefWidth="238.0" styleClass="panel-historial" VBox.vgrow="ALWAYS">
+
+                <!-- Cabecera -->
+                <HBox alignment="CENTER" prefHeight="42.0"
+                      style="-fx-border-color: #383838; -fx-border-width: 0 0 1 0;">
+                    <Label styleClass="titulo-historial" text="MOVIMIENTOS" />
+                </HBox>
+
+                <!-- Lista scrollable de movimientos -->
+                <ScrollPane fx:id="scrollHistorial" fitToWidth="true" VBox.vgrow="ALWAYS"
+                            style="-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: transparent;">
+                    <GridPane fx:id="historialMovimientos" hgap="4.0" vgap="2.0">
+                        <padding><Insets bottom="8.0" left="10.0" right="10.0" top="8.0" /></padding>
+                    </GridPane>
+                </ScrollPane>
+
+                <!-- Placeholder visible mientras no hay movimientos -->
+                <Label alignment="CENTER" opacity="0.35" prefWidth="238.0"
+                       text="Las jugadas aparecer&#225;n&#10;aqu&#237; durante la partida."
+                       textFill="WHITE" wrapText="true">
+                    <padding><Insets bottom="20.0" left="14.0" right="14.0" top="8.0" /></padding>
+                </Label>
+
+            </VBox>
+
+        </HBox>
+    </center>
+
+</BorderPane>
