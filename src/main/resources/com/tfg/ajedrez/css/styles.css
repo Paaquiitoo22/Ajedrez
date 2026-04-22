@@ -1,7 +1,238 @@
+.root {
+    -fx-font-family: "Inter";
+}
 
 .button {
-    -fx-background-color: #1e88e5;
+    -fx-background-color: #247aca;
+    -fx-text-fill: white;
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+}
+
+.boton-perfil {
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-background-color: #D4AF37;
+    -fx-text-fill: black;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.boton-google {
+    -fx-font-family: "Inter";
+    -fx-background-color: #343434;
     -fx-text-fill: white;
     -fx-font-size: 14px;
     -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 0.5;
+}
+
+.boton-invitado {
+    -fx-background-color: #272323;
+    -fx-text-fill: #D4AF37;
+    -fx-border-radius: 10;
+    -fx-border-color: rgba(212, 174, 48, 0.575);
+    -fx-border-width: 0.5;
+    -fx-opacity: 0.8;
+    -fx-graphic-text-gap: 12px;
+}
+
+.icon-user {
+    -fx-background-color: #D4AF37;
+    -fx-shape: "M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z";
+    -fx-min-width: 16px;
+    -fx-max-width: 16px;
+    -fx-min-height: 16px;
+    -fx-max-height: 16px;
+}
+
+.boton-volver {
+    -fx-background-color: transparent;
+    -fx-border-color: grey;
+    -fx-border-radius: 15;
+    -fx-text-fill: grey;
+    -fx-font-size: 20px;
+    -fx-cursor: hand;
+}
+
+.menu-hamburguesa {
+    -fx-background-color: #333333;
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-border-color: #494646;
+    -fx-cursor: hand;
+}
+
+.menu-hamburguesa .icon {
+    -fx-background-color: white;
+    -fx-shape: "M2 5h16v1.2h-16v-1.2zM2 9h16v1.2h-16v-1.2zM2 13h16v1.2h-16v-1.2z";
+    -fx-scale-x: 0.6;
+    -fx-scale-y: 0.4;
+}
+
+.menu-desplegable {
+    -fx-background-color: #333333;
+    -fx-border-color: #494646;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.boton-nueva-partida {
+    -fx-background-color: #D4AF37;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+}
+
+.icon-settings {
+    -fx-background-color: white;
+    -fx-shape: "M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.35 19.43,11.03L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,6.05C16.04,5.66 15.47,5.34 14.86,5.12L14.47,2.5C14.43,2.25 14.22,2.07 13.97,2.07H9.97C9.72,2.07 9.51,2.25 9.47,2.5L9.08,5.12C8.47,5.34 7.9,5.66 7.38,6.05L4.89,5.05C4.67,4.97 4.4,5.05 4.28,5.27L2.28,8.73C2.16,8.95 2.21,9.22 2.4,9.37L4.51,11.03C4.47,11.35 4.44,11.67 4.44,12C4.44,12.33 4.47,12.65 4.51,12.97L2.4,14.63C2.21,14.78 2.16,15.05 2.28,15.27L4.28,18.73C4.4,18.95 4.67,19.03 4.89,18.95L7.38,17.95C7.9,18.34 8.47,18.66 9.08,18.88L9.47,21.5C9.51,21.75 9.72,21.93 9.97,21.93H13.97C14.22,21.93 14.43,21.75 14.47,21.5L14.86,18.88C15.47,18.66 16.04,18.34 16.56,17.95L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z";
+    -fx-min-width: 15px;
+    -fx-max-width: 15px;
+    -fx-min-height: 15px;
+    -fx-max-height: 15px;
+}
+
+.icon-info {
+    -fx-background-color: white;
+    -fx-shape: "M11,9H13V7H11V9M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z";
+    -fx-min-width: 15px;
+    -fx-max-width: 15px;
+    -fx-min-height: 15px;
+    -fx-max-height: 15px;
+}
+
+.icon-exit {
+    -fx-background-color: #c61515;
+    -fx-shape: "M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z";
+    -fx-min-width: 15px;
+    -fx-max-width: 15px;
+    -fx-min-height: 15px;
+    -fx-max-height: 15px;
+}
+
+.boton-menu-lateral {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-family: "Inter";
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.boton-menu-lateral.salir {
+    -fx-text-fill: #c61515;
+}
+
+.caja-menu {
+    -fx-background-color: #333333;
+    -fx-border-color: #494646;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.caja-stat-label {
+    -fx-font-size: 23px;
+}
+
+.caja-stat-resultado {
+    -fx-font-size: 13px;
+}
+
+.or-line .line {
+    -fx-border-color: #444444;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.or-label {
+    -fx-text-fill: #888888;
+    -fx-font-size: 13px;
+    -fx-font-family: "Inter";
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Pantalla de Partida
+   ══════════════════════════════════════════════════════════════ */
+
+.titulo-partida {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 15px;
+    -fx-font-family: "Inter";
+}
+
+/* ── Paneles de jugador ─────────────────────────────────────── */
+
+.panel-jugador {
+    -fx-background-color: #252525;
+    -fx-background-radius: 10;
+    -fx-border-color: #383838;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+.avatar-jugador {
+    -fx-background-color: #D4AF37;
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER;
+}
+
+.nombre-jugador {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter";
+}
+
+.color-jugador-tag {
+    -fx-text-fill: #777777;
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter";
+}
+
+.timer-jugador-activo {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #D4AF37;
+    -fx-font-family: "Courier New";
+}
+
+.timer-jugador-inactivo {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+    -fx-font-family: "Courier New";
+}
+
+/* ── Etiquetas de coordenadas del tablero ───────────────────── */
+
+.etiqueta-tablero {
+    -fx-text-fill: #666666;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+}
+
+/* ── Panel de historial de movimientos ──────────────────────── */
+
+.panel-historial {
+    -fx-background-color: #212121;
+    -fx-background-radius: 10;
+    -fx-border-color: #383838;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+.titulo-historial {
+    -fx-text-fill: #777777;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
 }
