@@ -156,6 +156,75 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
+   Menú Principal — Botones Historial / Perfil
+   ══════════════════════════════════════════════════════════════ */
+
+.boton-acceso {
+    -fx-cursor: hand;
+}
+
+.label-nav {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-family: "Inter";
+}
+
+.icon-nav-historial {
+    -fx-background-color: white;
+    -fx-shape: "M13.5,8H12V13L16.28,15.54L17,14.33L13.5,12.25V8M13,3A9,9 0 0,0 4,12H1L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3";
+    -fx-min-width: 28px;
+    -fx-max-width: 28px;
+    -fx-min-height: 28px;
+    -fx-max-height: 28px;
+}
+
+.icon-nav-perfil {
+    -fx-background-color: white;
+    -fx-shape: "M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z";
+    -fx-min-width: 28px;
+    -fx-max-width: 28px;
+    -fx-min-height: 28px;
+    -fx-max-height: 28px;
+}
+
+/* ── Tarjetas de partidas recientes ─────────────────────────── */
+
+.card-partida {
+    -fx-padding: 6 0 6 0;
+}
+
+.badge-resultado {
+    -fx-background-radius: 6;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.resultado-victoria {
+    -fx-background-color: #2ac31c;
+}
+
+.resultado-derrota {
+    -fx-background-color: #e41616;
+}
+
+.resultado-tablas {
+    -fx-background-color: #888888;
+}
+
+.oponente-partida {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 13px;
+    -fx-font-family: "Inter";
+}
+
+.fecha-partida {
+    -fx-text-fill: #777777;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+}
+
+/* ══════════════════════════════════════════════════════════════
    Pantalla de Partida
    ══════════════════════════════════════════════════════════════ */
 
@@ -235,4 +304,359 @@
     -fx-font-size: 11px;
     -fx-font-family: "Inter";
     -fx-font-weight: bold;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Pantalla Nueva Partida
+   ══════════════════════════════════════════════════════════════ */
+
+.titulo-pantalla {
+    -fx-text-fill: white;
+    -fx-font-family: "Inter";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* ── Botón de opción genérico (segmentado / píldora) ─────────── */
+
+.boton-opcion {
+    -fx-background-color: #2a2a2a;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #3a3a3a;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-padding: 10 12 10 12;
+    -fx-content-display: graphic-only;
+}
+
+.boton-opcion .titulo-opcion {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter";
+}
+
+.boton-opcion .sub-opcion {
+    -fx-text-fill: #888888;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+}
+
+.boton-opcion:pressed {
+    -fx-background-color: #1f1f1f;
+}
+
+.boton-opcion.seleccionado {
+    -fx-background-color: rgba(212, 175, 55, 0.10);
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1.2;
+}
+
+.boton-opcion.seleccionado .titulo-opcion {
+    -fx-text-fill: #D4AF37;
+}
+
+.boton-opcion.seleccionado .sub-opcion {
+    -fx-text-fill: #b8902a;
+}
+
+/* ── Cards grandes para "Tipo de partida" ───────────────────── */
+
+.boton-card {
+    -fx-background-color: #2a2a2a;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #3a3a3a;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-content-display: graphic-only;
+    -fx-padding: 16 12 16 12;
+}
+
+.boton-card:pressed {
+    -fx-background-color: #1f1f1f;
+}
+
+.boton-card.seleccionado {
+    -fx-background-color: rgba(212, 175, 55, 0.10);
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1.5;
+}
+
+.boton-card.seleccionado .titulo-opcion {
+    -fx-text-fill: #D4AF37;
+}
+
+.boton-card.seleccionado .icon-card {
+    -fx-background-color: #D4AF37;
+}
+
+/* ── Botón grande de tiempo de partida ──────────────────────── */
+
+.boton-tiempo {
+    -fx-background-color: #2a2a2a;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #3a3a3a;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 14 18 14 18;
+    -fx-content-display: graphic-only;
+}
+
+.boton-tiempo:pressed {
+    -fx-background-color: #1f1f1f;
+}
+
+.boton-tiempo .titulo-opcion {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.boton-tiempo .sub-opcion {
+    -fx-text-fill: #888888;
+    -fx-font-size: 12px;
+}
+
+/* ── Iconos para Nueva Partida ──────────────────────────────── */
+
+.icon-card {
+    -fx-background-color: white;
+    -fx-min-width: 28px;
+    -fx-max-width: 28px;
+    -fx-min-height: 28px;
+    -fx-max-height: 28px;
+}
+
+.icon-bot {
+    -fx-shape: "M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z";
+}
+
+.icon-multiplayer {
+    -fx-shape: "M16,17V19H2V17S2,13 9,13 16,17 16,17M12.5,7.5A3.5,3.5 0 0,0 9,4A3.5,3.5 0 0,0 5.5,7.5A3.5,3.5 0 0,0 9,11A3.5,3.5 0 0,0 12.5,7.5M15.94,13A5.32,5.32 0 0,1 18,17V19H22V17S22,13.37 15.94,13M15,4A3.39,3.39 0 0,0 13.07,4.59A5,5 0 0,1 13.07,10.41A3.39,3.39 0 0,0 15,11A3.5,3.5 0 0,0 18.5,7.5A3.5,3.5 0 0,0 15,4Z";
+}
+
+.icon-rey {
+    -fx-shape: "M19,22H5V20H19V22M17,10C15.58,10 14.26,10.77 13.55,12H13V7H16V5H13V2H11V5H8V7H11V12H10.45C9.74,10.77 8.42,10 7,10A4,4 0 0,0 3,14A4,4 0 0,0 7,18H17A4,4 0 0,0 21,14A4,4 0 0,0 17,10Z";
+    -fx-min-width: 26px;
+    -fx-max-width: 26px;
+    -fx-min-height: 26px;
+    -fx-max-height: 26px;
+}
+
+.icon-rey-blanco {
+    -fx-background-color: #f0f0f0;
+}
+
+.icon-rey-negro {
+    -fx-background-color: #888888;
+}
+
+.icon-aleatorio {
+    -fx-background-color: #888888;
+    -fx-shape: "M14.83,13.41L13.42,14.82L16.55,17.95L14.5,20H20V14.5L17.96,16.54L14.83,13.41M14.5,4L16.54,6.04L4,18.59L5.41,20L17.96,7.46L20,9.5V4M10.59,9.17L5.41,4L4,5.41L9.17,10.58L10.59,9.17Z";
+    -fx-min-width: 26px;
+    -fx-max-width: 26px;
+    -fx-min-height: 26px;
+    -fx-max-height: 26px;
+}
+
+.icon-flecha-derecha {
+    -fx-background-color: #888888;
+    -fx-shape: "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z";
+    -fx-min-width: 14px;
+    -fx-max-width: 14px;
+    -fx-min-height: 14px;
+    -fx-max-height: 14px;
+}
+
+.icon-flecha-atras {
+    -fx-background-color: #cccccc;
+    -fx-shape: "M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z";
+    -fx-min-width: 16px;
+    -fx-max-width: 16px;
+    -fx-min-height: 16px;
+    -fx-max-height: 16px;
+}
+
+.boton-volver-circular {
+    -fx-background-color: transparent;
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-cursor: hand;
+    -fx-padding: 6 6 6 6;
+}
+
+.boton-volver-circular:pressed {
+    -fx-background-color: #2a2a2a;
+}
+
+/* ── Etiqueta de sección (MODO DE JUEGO, TIPO DE PARTIDA…) ─── */
+
+.label-seccion {
+    -fx-text-fill: #888888;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}
+
+/* ── Card de Opciones ───────────────────────────────────────── */
+
+.card-opciones {
+    -fx-background-color: #232323;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: #353535;
+    -fx-border-width: 1;
+}
+
+.card-opciones-header {
+    -fx-text-fill: #888888;
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter";
+}
+
+.opcion-titulo {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 13px;
+    -fx-font-family: "Inter";
+}
+
+.opcion-sub {
+    -fx-text-fill: #777777;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+}
+
+.opcion-valor {
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}
+
+.separador-opcion {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.separador-opcion .line {
+    -fx-border-color: #2c2c2c;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* ── Toggle switch (basado en ToggleButton) ─────────────────── */
+
+.toggle-switch {
+    -fx-min-width: 42px;
+    -fx-pref-width: 42px;
+    -fx-max-width: 42px;
+    -fx-min-height: 24px;
+    -fx-pref-height: 24px;
+    -fx-max-height: 24px;
+    -fx-background-color: #3a3a3a;
+    -fx-background-radius: 12;
+    -fx-background-insets: 0;
+    -fx-padding: 3;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+    -fx-content-display: graphic-only;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.toggle-switch:selected {
+    -fx-background-color: #D4AF37;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.toggle-thumb {
+    -fx-min-width: 18px;
+    -fx-pref-width: 18px;
+    -fx-max-width: 18px;
+    -fx-min-height: 18px;
+    -fx-pref-height: 18px;
+    -fx-max-height: 18px;
+    -fx-background-color: white;
+    -fx-background-radius: 100;
+}
+
+/* ── Slider de sonido ───────────────────────────────────────── */
+
+.slider-sonido .track {
+    -fx-background-color: #3a3a3a;
+    -fx-background-radius: 3;
+    -fx-pref-height: 5;
+}
+
+.slider-sonido .thumb {
+    -fx-background-color: #D4AF37;
+    -fx-background-radius: 100;
+    -fx-pref-width: 16;
+    -fx-pref-height: 16;
+    -fx-effect: dropshadow(gaussian, rgba(212,175,55,0.45), 6, 0.0, 0, 0);
+}
+
+.slider-sonido:focused .thumb {
+    -fx-background-color: #D4AF37;
+}
+
+/* ── Chips resumen ──────────────────────────────────────────── */
+
+.chip-resumen {
+    -fx-background-color: rgba(212, 175, 55, 0.12);
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: rgba(212, 175, 55, 0.45);
+    -fx-border-width: 1;
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+    -fx-padding: 5 12 5 12;
+}
+
+/* ── Botón Iniciar partida (outlined dorado) ────────────────── */
+
+.boton-iniciar {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1.5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-font-family: "Inter";
+    -fx-cursor: hand;
+}
+
+.boton-iniciar:pressed {
+    -fx-background-color: rgba(212, 175, 55, 0.18);
+}
+
+/* ── Badge circular para icono de reloj en Tiempo de partida ─ */
+
+.icon-badge-tiempo {
+    -fx-background-color: rgba(212, 175, 55, 0.15);
+    -fx-background-radius: 100;
+    -fx-min-width: 36;
+    -fx-pref-width: 36;
+    -fx-max-width: 36;
+    -fx-min-height: 36;
+    -fx-pref-height: 36;
+    -fx-max-height: 36;
+    -fx-alignment: CENTER;
+}
+
+.icon-reloj {
+    -fx-background-color: #D4AF37;
+    -fx-shape: "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z";
+    -fx-min-width: 18;
+    -fx-max-width: 18;
+    -fx-min-height: 18;
+    -fx-max-height: 18;
 }

@@ -1,26 +1,325 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="700.0" prefWidth="380.0" style="-fx-background-color: #1B1B1B;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tfg.ajedrez.controller.NuevaPartidaController">
-   <children>
-      <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="AS_NEEDED">
-         <content>
-            <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-background-color: transparent;">
-               <padding>
-                  <Insets bottom="30.0" left="20.0" right="20.0" top="30.0" />
-               </padding>
-               <children>
-                 
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
-      <Button alignment="TOP_LEFT" contentDisplay="TOP" mnemonicParsing="false" onAction="#onVolver" text="Atrás" StackPane.alignment="TOP_LEFT" />
-      <Button mnemonicParsing="false" onAction="#onPartida" text="Partida" />
-   </children>
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="380.0" style="-fx-background-color: #1B1B1B;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tfg.ajedrez.controller.NuevaPartidaController">
+    <children>
+
+        <!-- ══════════════ CONTENIDO SCROLLABLE ══════════════ -->
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="AS_NEEDED">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="22.0" style="-fx-background-color: transparent;">
+                    <padding>
+                        <Insets bottom="30.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                    <children>
+
+                        <!-- ─── Cabecera ─── -->
+                        <HBox alignment="CENTER_LEFT" maxWidth="340.0" prefWidth="340.0" spacing="10.0">
+                            <children>
+                                <Button mnemonicParsing="false" onAction="#onVolver" styleClass="boton-volver-circular">
+                                    <graphic>
+                                        <Region styleClass="icon-flecha-atras" />
+                                    </graphic>
+                                </Button>
+                                <Label styleClass="titulo-pantalla" text="Nueva partida" />
+                            </children>
+                        </HBox>
+
+                        <!-- ═══════════ MODO DE JUEGO ═══════════ -->
+                        <VBox maxWidth="340.0" prefWidth="340.0" spacing="10.0">
+                            <children>
+                                <Label styleClass="label-seccion" text="MODO DE JUEGO" />
+
+                                <HBox spacing="8.0">
+                                    <children>
+                                        <Button fx:id="btnClasica" maxWidth="Infinity" mnemonicParsing="false" onAction="#onModoJuego" prefHeight="62.0" HBox.hgrow="ALWAYS">
+                                            <graphic>
+                                                <VBox alignment="CENTER" spacing="2.0">
+                                                    <children>
+                                                        <Label styleClass="titulo-opcion" text="Clásica" />
+                                                        <Label styleClass="sub-opcion" text="30 min" />
+                                                    </children>
+                                                </VBox>
+                                            </graphic>
+                                 <styleClass>
+                                    <String fx:value="boton-opcion" />
+                                    <String fx:value="seleccionado" />
+                                 </styleClass>
+                                        </Button>
+                                        <Button fx:id="btnBlitz" maxWidth="Infinity" mnemonicParsing="false" onAction="#onModoJuego" prefHeight="62.0" styleClass="boton-opcion" HBox.hgrow="ALWAYS">
+                                            <graphic>
+                                                <VBox alignment="CENTER" spacing="2.0">
+                                                    <children>
+                                                        <Label styleClass="titulo-opcion" text="Blitz" />
+                                                        <Label styleClass="sub-opcion" text="5 min" />
+                                                    </children>
+                                                </VBox>
+                                            </graphic>
+                                        </Button>
+                                        <Button fx:id="btnRapida" maxWidth="Infinity" mnemonicParsing="false" onAction="#onModoJuego" prefHeight="62.0" styleClass="boton-opcion" HBox.hgrow="ALWAYS">
+                                            <graphic>
+                                                <VBox alignment="CENTER" spacing="2.0">
+                                                    <children>
+                                                        <Label styleClass="titulo-opcion" text="Rápida" />
+                                                        <Label styleClass="sub-opcion" text="10 min" />
+                                                    </children>
+                                                </VBox>
+                                            </graphic>
+                                        </Button>
+                                    </children>
+                                </HBox>
+
+                                <HBox>
+                                    <children>
+                                        <Button fx:id="btnPersonalizada" mnemonicParsing="false" onAction="#onModoJuego" prefHeight="62.0" prefWidth="160.0" styleClass="boton-opcion">
+                                            <graphic>
+                                                <VBox alignment="CENTER" spacing="2.0">
+                                                    <children>
+                                                        <Label styleClass="titulo-opcion" text="Personalizada" />
+                                                        <Label styleClass="sub-opcion" text="Configura" />
+                                                    </children>
+                                                </VBox>
+                                            </graphic>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- ═══════════ TIPO DE PARTIDA ═══════════ -->
+                        <VBox maxWidth="340.0" prefWidth="340.0" spacing="10.0">
+                            <children>
+                                <Label styleClass="label-seccion" text="TIPO DE PARTIDA" />
+
+                                <HBox spacing="10.0">
+                                    <children>
+                                        <Button fx:id="btnContraIA" maxWidth="Infinity" mnemonicParsing="false" onAction="#onTipoPartida" prefHeight="120.0" styleClass="boton-card,seleccionado" HBox.hgrow="ALWAYS">
+                                            <graphic>
+                                                <VBox alignment="CENTER" spacing="8.0">
+                                                    <children>
+                                                        <Region styleClass="icon-card,icon-bot" />
+                                                        <Label styleClass="titulo-opcion" text="Contra la IA" />
+                                                        <Label styleClass="sub-opcion" text="Sin conexión" />
+                                                    </children>
+                                                </VBox>
+                                            </graphic>
+                                        </Button>
+                                        <Button fx:id="btnDosJugadores" maxWidth="Infinity" mnemonicParsing="false" onAction="#onTipoPartida" prefHeight="120.0" styleClass="boton-card" HBox.hgrow="ALWAYS">
+                                            <graphic>
+                                                <VBox alignment="CENTER" spacing="8.0">
+                                                    <children>
+                                                        <Region styleClass="icon-card,icon-multiplayer" />
+                                                        <Label styleClass="titulo-opcion" text="Dos jugadores" />
+                                                        <Label styleClass="sub-opcion" text="Online" />
+                                                    </children>
+                                                </VBox>
+                                            </graphic>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- ═══════════ JUGAR CON ═══════════ -->
+                        <VBox maxWidth="340.0" prefWidth="340.0" spacing="10.0">
+                            <children>
+                                <Label styleClass="label-seccion" text="JUGAR CON" />
+
+                                <HBox spacing="8.0">
+                                    <children>
+                                        <Button fx:id="btnBlancas" maxWidth="Infinity" mnemonicParsing="false" onAction="#onJugarCon" prefHeight="78.0" styleClass="boton-opcion,seleccionado" HBox.hgrow="ALWAYS">
+                                            <graphic>
+                                                <VBox alignment="CENTER" spacing="6.0">
+                                                    <children>
+                                                        <Region styleClass="icon-rey,icon-rey-blanco" />
+                                                        <Label styleClass="titulo-opcion" text="Blancas" />
+                                                    </children>
+                                                </VBox>
+                                            </graphic>
+                                        </Button>
+                                        <Button fx:id="btnNegras" maxWidth="Infinity" mnemonicParsing="false" onAction="#onJugarCon" prefHeight="78.0" styleClass="boton-opcion" HBox.hgrow="ALWAYS">
+                                            <graphic>
+                                                <VBox alignment="CENTER" spacing="6.0">
+                                                    <children>
+                                                        <Region styleClass="icon-rey,icon-rey-negro" />
+                                                        <Label styleClass="titulo-opcion" text="Negras" />
+                                                    </children>
+                                                </VBox>
+                                            </graphic>
+                                        </Button>
+                                        <Button fx:id="btnAleatorio" maxWidth="Infinity" mnemonicParsing="false" onAction="#onJugarCon" prefHeight="78.0" styleClass="boton-opcion" HBox.hgrow="ALWAYS">
+                                            <graphic>
+                                                <VBox alignment="CENTER" spacing="6.0">
+                                                    <children>
+                                                        <Region styleClass="icon-aleatorio" />
+                                                        <Label styleClass="titulo-opcion" text="Aleatorio" />
+                                                    </children>
+                                                </VBox>
+                                            </graphic>
+                                        </Button>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- ═══════════ TIEMPO DE PARTIDA ═══════════ -->
+                        <VBox maxWidth="340.0" prefWidth="340.0" spacing="10.0">
+                            <children>
+                                <Label styleClass="label-seccion" text="TIEMPO DE PARTIDA" />
+
+                                <Button fx:id="btnTiempoPartida" maxWidth="Infinity" mnemonicParsing="false" onAction="#onTiempoPartida" prefHeight="68.0" styleClass="boton-tiempo">
+                                    <graphic>
+                                        <HBox alignment="CENTER_LEFT" prefWidth="304.0" spacing="12.0">
+                                            <children>
+                                                <StackPane styleClass="icon-badge-tiempo">
+                                                    <children>
+                                                        <Region styleClass="icon-reloj" />
+                                                    </children>
+                                                </StackPane>
+                                                <VBox alignment="CENTER_LEFT" spacing="3.0" HBox.hgrow="ALWAYS">
+                                                    <children>
+                                                        <Label fx:id="lblTiempoPrincipal" styleClass="titulo-opcion" text="30 min por jugador" />
+                                                        <Label fx:id="lblTiempoSub" styleClass="sub-opcion" text="Sin incremento · Clásica" />
+                                                    </children>
+                                                </VBox>
+                                                <Region HBox.hgrow="ALWAYS" />
+                                                <Region styleClass="icon-flecha-derecha" />
+                                            </children>
+                                        </HBox>
+                                    </graphic>
+                                </Button>
+                            </children>
+                        </VBox>
+
+                        <!-- ═══════════ OPCIONES ═══════════ -->
+                        <VBox maxWidth="340.0" prefWidth="340.0" spacing="14.0" styleClass="card-opciones">
+                            <padding>
+                                <Insets bottom="16.0" left="16.0" right="16.0" top="14.0" />
+                            </padding>
+                            <children>
+                                <Label styleClass="card-opciones-header" text="Opciones" />
+
+                                <!-- Sonido -->
+                                <HBox alignment="CENTER_LEFT" spacing="12.0">
+                                    <children>
+                                        <Label styleClass="opcion-titulo" text="Sonido" />
+                                        <Region HBox.hgrow="ALWAYS" />
+                                        <Slider fx:id="sliderSonido" max="100.0" min="0.0" prefWidth="120.0" styleClass="slider-sonido" value="70.0" />
+                                        <Label fx:id="lblSonidoValor" minWidth="36.0" styleClass="opcion-valor" text="70%" />
+                                    </children>
+                                </HBox>
+
+                                <Separator styleClass="separador-opcion" />
+
+                                <!-- Mostrar coordenadas -->
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <Label maxWidth="Infinity" styleClass="opcion-titulo" text="Mostrar coordenadas" HBox.hgrow="ALWAYS" />
+                                        <ToggleButton fx:id="toggleCoordenadas" selected="true" styleClass="toggle-switch">
+                                            <graphic>
+                                                <Region styleClass="toggle-thumb" />
+                                            </graphic>
+                                        </ToggleButton>
+                                    </children>
+                                </HBox>
+
+                                <Separator styleClass="separador-opcion" />
+
+                                <!-- Resaltar último movimiento -->
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <Label maxWidth="Infinity" styleClass="opcion-titulo" text="Resaltar último movimiento" HBox.hgrow="ALWAYS" />
+                                        <ToggleButton fx:id="toggleResaltar" selected="true" styleClass="toggle-switch">
+                                            <graphic>
+                                                <Region styleClass="toggle-thumb" />
+                                            </graphic>
+                                        </ToggleButton>
+                                    </children>
+                                </HBox>
+
+                                <Separator styleClass="separador-opcion" />
+
+                                <!-- Animaciones de piezas -->
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <Label maxWidth="Infinity" styleClass="opcion-titulo" text="Animaciones de piezas" HBox.hgrow="ALWAYS" />
+                                        <ToggleButton fx:id="toggleAnimaciones" selected="true" styleClass="toggle-switch">
+                                            <graphic>
+                                                <Region styleClass="toggle-thumb" />
+                                            </graphic>
+                                        </ToggleButton>
+                                    </children>
+                                </HBox>
+
+                                <Separator styleClass="separador-opcion" />
+
+                                <!-- Permitir deshacer (con sub) -->
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <VBox maxWidth="Infinity" spacing="2.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label styleClass="opcion-titulo" text="Permitir deshacer" />
+                                                <Label styleClass="opcion-sub" text="Solo disponible vs IA" />
+                                            </children>
+                                        </VBox>
+                                        <ToggleButton fx:id="toggleDeshacer" styleClass="toggle-switch">
+                                            <graphic>
+                                                <Region styleClass="toggle-thumb" />
+                                            </graphic>
+                                        </ToggleButton>
+                                    </children>
+                                </HBox>
+
+                                <Separator styleClass="separador-opcion" />
+
+                                <!-- Guardar partida automáticamente (con sub) -->
+                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <children>
+                                        <VBox maxWidth="Infinity" spacing="2.0" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Label styleClass="opcion-titulo" text="Guardar partida automáticamente" />
+                                                <Label styleClass="opcion-sub" text="Historial y estadísticas" />
+                                            </children>
+                                        </VBox>
+                                        <ToggleButton fx:id="toggleGuardar" selected="true" styleClass="toggle-switch">
+                                            <graphic>
+                                                <Region styleClass="toggle-thumb" />
+                                            </graphic>
+                                        </ToggleButton>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+
+                        <!-- ═══════════ CHIPS DE RESUMEN ═══════════ -->
+                        <HBox alignment="CENTER_LEFT" maxWidth="340.0" prefWidth="340.0" spacing="8.0">
+                            <children>
+                                <Label fx:id="chipModo" styleClass="chip-resumen" text="Clásica" />
+                                <Label fx:id="chipTipo" styleClass="chip-resumen" text="vs IA" />
+                                <Label fx:id="chipColor" styleClass="chip-resumen" text="Blancas" />
+                                <Label fx:id="chipTiempo" styleClass="chip-resumen" text="30 min" />
+                            </children>
+                        </HBox>
+
+                        <!-- ═══════════ INICIAR PARTIDA ═══════════ -->
+                        <Button mnemonicParsing="false" onAction="#onPartida" prefHeight="30.0" prefWidth="330.0" styleClass="boton-nueva-partida" text="Iniciar partida" />
+
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+    </children>
 </StackPane>
