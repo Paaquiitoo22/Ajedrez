@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.tfg.ajedrez.controller.NuevaPartidaController"
+           stylesheets="@../css/estilo.css">
+
+    <VBox alignment="CENTER" spacing="18" styleClass="login-container">
+        <padding>
+            <Insets top="25" right="25" bottom="25" left="25"/>
+        </padding>
+
+        <Label text="♞" styleClass="app-icon"/>
+        <Label text="MiChess" styleClass="app-title"/>
+        <Label text="Configura tu nueva partida" styleClass="app-subtitle"/>
+
+        <Label text="Modo de juego" styleClass="side-label"/>
+        <ComboBox fx:id="cmbModo" prefWidth="270"/>
+
+        <Label text="Minutos por jugador" styleClass="side-label"/>
+        <Spinner fx:id="spMinutos" prefWidth="270"/>
+
+        <Button text="Empezar partida" onAction="#empezarPartida" styleClass="primary-button"/>
+        <Button text="Volver al menú" onAction="#volverMenu" styleClass="ghost-button"/>
+    </VBox>
+</StackPane>
