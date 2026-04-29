@@ -28,7 +28,7 @@
                         <Insets bottom="10.0" />
                      </padding>
                      <font>
-                        <Font size="24.0" />
+                        <Font name="Inter" size="24.0" />
                      </font>
                   </Label>
                   <Label alignment="CENTER" styleClass="caja-stat-resultado" text="Victorias" textFill="#2ac31c">
@@ -36,7 +36,7 @@
                         <Insets bottom="15.0" />
                      </padding>
                      <font>
-                        <Font size="18.0" />
+                        <Font name="Inter" size="18.0" />
                      </font></Label>
                </children>
                <HBox.margin>
@@ -89,7 +89,56 @@
                   <Label opacity="0.68" styleClass="or-label" text="PARTIDAS RECIENTES" textFill="WHITE" />
                </children>
             </HBox>
-            <HBox maxHeight="180.0" maxWidth="330.0" prefHeight="300.0" prefWidth="330.0" styleClass="caja-menu" />
+            <!-- Contenedor de partidas recientes.
+                 fx:id expuestos para poblarlos desde MenuPrincipalController
+                 cuando se integre el backend SQL. -->
+            <VBox fx:id="contenedorPartidas" maxWidth="330.0" prefWidth="330.0" styleClass="caja-menu">
+               <padding><Insets bottom="8.0" left="12.0" right="12.0" top="8.0" /></padding>
+
+               <!-- Mensaje sin partidas (visible por defecto hasta que lleguen datos) -->
+               <Label fx:id="sinPartidas" alignment="CENTER" opacity="0.4" prefWidth="306.0"
+                      text="No hay partidas recientes" textFill="WHITE">
+                  <padding><Insets bottom="16.0" top="16.0" /></padding>
+               </Label>
+
+               <!-- Tarjeta partida 1 -->
+               <HBox fx:id="cardPartida1" alignment="CENTER_LEFT" managed="false"
+                     prefHeight="52.0" spacing="12.0" styleClass="card-partida" visible="false">
+                  <Label fx:id="resultado1" alignment="CENTER" minHeight="28.0" minWidth="28.0"
+                         styleClass="badge-resultado resultado-victoria" text="V" />
+                  <VBox alignment="CENTER_LEFT" spacing="2.0" HBox.hgrow="ALWAYS">
+                     <Label fx:id="oponente1" styleClass="oponente-partida" text="—" textFill="WHITE" />
+                     <Label fx:id="fecha1" styleClass="fecha-partida" text="—" />
+                  </VBox>
+               </HBox>
+
+               <Separator fx:id="sep1" managed="false" opacity="0.1" visible="false" />
+
+               <!-- Tarjeta partida 2 -->
+               <HBox fx:id="cardPartida2" alignment="CENTER_LEFT" managed="false"
+                     prefHeight="52.0" spacing="12.0" styleClass="card-partida" visible="false">
+                  <Label fx:id="resultado2" alignment="CENTER" minHeight="28.0" minWidth="28.0"
+                         styleClass="badge-resultado resultado-victoria" text="V" />
+                  <VBox alignment="CENTER_LEFT" spacing="2.0" HBox.hgrow="ALWAYS">
+                     <Label fx:id="oponente2" styleClass="oponente-partida" text="—" textFill="WHITE" />
+                     <Label fx:id="fecha2" styleClass="fecha-partida" text="—" />
+                  </VBox>
+               </HBox>
+
+               <Separator fx:id="sep2" managed="false" opacity="0.1" visible="false" />
+
+               <!-- Tarjeta partida 3 -->
+               <HBox fx:id="cardPartida3" alignment="CENTER_LEFT" managed="false"
+                     prefHeight="52.0" spacing="12.0" styleClass="card-partida" visible="false">
+                  <Label fx:id="resultado3" alignment="CENTER" minHeight="28.0" minWidth="28.0"
+                         styleClass="badge-resultado resultado-victoria" text="V" />
+                  <VBox alignment="CENTER_LEFT" spacing="2.0" HBox.hgrow="ALWAYS">
+                     <Label fx:id="oponente3" styleClass="oponente-partida" text="—" textFill="WHITE" />
+                     <Label fx:id="fecha3" styleClass="fecha-partida" text="—" />
+                  </VBox>
+               </HBox>
+
+            </VBox>
          </children>
          <StackPane.margin>
             <Insets bottom="30.0" />
@@ -103,17 +152,27 @@
       </Button>
       <HBox alignment="CENTER" maxHeight="150.0" maxWidth="330.0" prefHeight="150.0" prefWidth="300.0" StackPane.alignment="CENTER">
          <children>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" styleClass="caja-menu">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="10.0"
+                  style="-fx-cursor: hand;" styleClass="caja-menu">
                <HBox.margin>
                   <Insets right="29.0" />
                </HBox.margin>
+               <padding>
+                  <Insets bottom="16.0" top="16.0" />
+               </padding>
                <children>
-                  <Label text="Historial" textFill="WHITE" />
+                  <Region styleClass="icon-nav-historial" />
+                  <Label styleClass="label-nav" text="Historial" textFill="WHITE" />
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" styleClass="caja-menu">
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="10.0"
+                  style="-fx-cursor: hand;" styleClass="caja-menu">
+               <padding>
+                  <Insets bottom="16.0" top="16.0" />
+               </padding>
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="Perfil" textFill="WHITE" />
+                  <Region styleClass="icon-nav-perfil" />
+                  <Label alignment="CENTER" styleClass="label-nav" text="Perfil" textFill="WHITE" />
                </children>
             </VBox>
          </children>
