@@ -1,5 +1,6 @@
 package com.tfg.ajedrez.controller;
 
+import com.tfg.ajedrez.service.ConfiguracionPartidaService;
 import com.tfg.ajedrez.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -52,6 +53,10 @@ public class NuevaPartidaController {
 
     @FXML
     public void onPartida(){
+        // Guarda la elección del usuario para que PartidaController la lea
+        ConfiguracionPartidaService.modoIA =
+                btnContraIA.getStyleClass().contains("seleccionado");
+
         SceneManager.navegarA("/com/tfg/ajedrez/vista/partida.fxml");
     }
 

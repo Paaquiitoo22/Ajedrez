@@ -1,14 +1,12 @@
 package com.tfg.ajedrez.controller;
 
 import com.tfg.ajedrez.clock.ChessClock;
-import com.tfg.ajedrez.model.ColorPieza;
-import com.tfg.ajedrez.model.MovimientoInfo;
-import com.tfg.ajedrez.model.Pieza;
-import com.tfg.ajedrez.model.Posicion;
-import com.tfg.ajedrez.model.Tablero;
-import com.tfg.ajedrez.model.TipoPieza;
+import com.tfg.ajedrez.model.*;
+import com.tfg.ajedrez.service.ConfiguracionPartidaService;
+import com.tfg.ajedrez.service.IAService;
 import com.tfg.ajedrez.util.SceneManager;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -76,10 +74,18 @@ public class PartidaController implements Initializable {
     private int contadorMovimientos = 0;
     private boolean partidaTerminada = false;
 
+    // ── Modo de IA ─────────────────────────────────────────────────
+
+    private final IAService iaService = new IAService();
+    private boolean modoIA = false;
+
     // ── Ciclo de vida ─────────────────────────────────────────────────────────
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Lee la configuración elegida en NuevaPartidaController
+        modoIA = ConfiguracionPartidaService.modoIA;
+
         modelo = new Tablero();
 
         configurarJugadores();
@@ -205,6 +211,9 @@ public class PartidaController implements Initializable {
     // ── Interacción ───────────────────────────────────────────────────────────
 
     private void manejarClick(int fila, int col) {
+
+        if (modoIA && turnoActual == ColorPieza.NEGRA) return;
+        
         if (partidaTerminada) return;
 
         Pieza piezaClicada = modelo.getPieza(fila, col);
@@ -235,6 +244,9 @@ public class PartidaController implements Initializable {
             registrarMovimientoEnHistorial(mov);
             cambiarTurno();
             comprobarFinDePartida();
+            if (!partidaTerminada && modoIA && turnoActual == ColorPieza.NEGRA) {
+                ejecutarMovimientoIA();
+            }
         }
         limpiarSeleccion();
     }
@@ -400,6 +412,31 @@ public class PartidaController implements Initializable {
         avatarBlancas.setText("JB");
     }
 
+    // ── Movimiento de la IA ─────────────────────────────────────────────────────────────
+
+    private void ejecutarMovimientoIA() {
+        // Pausa de 500-700ms para que se vea "humano"
+        PauseTransition pausa = new PauseTransition(Duration.millis(600));
+        pausa.setOnFinished(e -> {
+            if (partidaTerminada) return;
+
+            MovimientoIA mov = iaService.calcularMovimiento(modelo, ColorPieza.NEGRA);
+            if (mov == null) return; // sin movimientos legales (lo detectará comprobarFinDePartida)
+
+            MovimientoInfo info = modelo.moverPieza(
+                    mov.getFilaOrigen(), mov.getColOrigen(),
+                    mov.getFilaDestino(), mov.getColDestino()
+            );
+
+            if (info != null) {
+                registrarMovimientoEnHistorial(info);
+                cambiarTurno();
+                dibujarTablero();
+                comprobarFinDePartida();
+            }
+        });
+        pausa.play();
+    }
     // ── Navegación ────────────────────────────────────────────────────────────
 
     @FXML
