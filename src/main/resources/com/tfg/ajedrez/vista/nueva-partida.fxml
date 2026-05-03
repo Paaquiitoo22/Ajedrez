@@ -13,50 +13,45 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="380.0" style="-fx-background-color: #1B1B1B;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tfg.ajedrez.controller.NuevaPartidaController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="700.0" prefWidth="380.0" styleClass="screen-root"
+           stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.tfg.ajedrez.controller.NuevaPartidaController">
     <children>
-
-        <!-- ══════════════ CONTENIDO SCROLLABLE ══════════════ -->
-        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="AS_NEEDED">
+        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER"
+                    style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="AS_NEEDED">
             <content>
                 <VBox alignment="TOP_CENTER" spacing="22.0" style="-fx-background-color: transparent;">
-                    <padding>
-                        <Insets bottom="30.0" left="20.0" right="20.0" top="20.0" />
-                    </padding>
+                    <padding><Insets bottom="30.0" left="20.0" right="20.0" top="20.0" /></padding>
                     <children>
-
-                        <!-- ─── Cabecera ─── -->
                         <HBox alignment="CENTER_LEFT" maxWidth="340.0" prefWidth="340.0" spacing="10.0">
                             <children>
                                 <Button mnemonicParsing="false" onAction="#onVolver" styleClass="boton-volver-circular">
-                                    <graphic>
-                                        <Region styleClass="icon-flecha-atras" />
-                                    </graphic>
+                                    <graphic><Region styleClass="icon-flecha-atras" /></graphic>
                                 </Button>
                                 <Label styleClass="titulo-pantalla" text="Nueva partida" />
                             </children>
                         </HBox>
 
-                        <!-- ═══════════ MODO DE JUEGO ═══════════ -->
                         <VBox maxWidth="340.0" prefWidth="340.0" spacing="10.0">
                             <children>
                                 <Label styleClass="label-seccion" text="MODO DE JUEGO" />
-
                                 <HBox spacing="8.0">
                                     <children>
                                         <Button fx:id="btnClasica" maxWidth="Infinity" mnemonicParsing="false" onAction="#onModoJuego" prefHeight="62.0" HBox.hgrow="ALWAYS">
                                             <graphic>
                                                 <VBox alignment="CENTER" spacing="2.0">
                                                     <children>
-                                                        <Label styleClass="titulo-opcion" text="Clásica" />
+                                                        <Label styleClass="titulo-opcion" text="Clasica" />
                                                         <Label styleClass="sub-opcion" text="30 min" />
                                                     </children>
                                                 </VBox>
                                             </graphic>
-                                 <styleClass>
-                                    <String fx:value="boton-opcion" />
-                                    <String fx:value="seleccionado" />
-                                 </styleClass>
+                                            <styleClass>
+                                                <String fx:value="boton-opcion" />
+                                                <String fx:value="seleccionado" />
+                                            </styleClass>
                                         </Button>
                                         <Button fx:id="btnBlitz" maxWidth="Infinity" mnemonicParsing="false" onAction="#onModoJuego" prefHeight="62.0" styleClass="boton-opcion" HBox.hgrow="ALWAYS">
                                             <graphic>
@@ -72,7 +67,7 @@
                                             <graphic>
                                                 <VBox alignment="CENTER" spacing="2.0">
                                                     <children>
-                                                        <Label styleClass="titulo-opcion" text="Rápida" />
+                                                        <Label styleClass="titulo-opcion" text="Rapida" />
                                                         <Label styleClass="sub-opcion" text="10 min" />
                                                     </children>
                                                 </VBox>
@@ -80,49 +75,46 @@
                                         </Button>
                                     </children>
                                 </HBox>
-
-                                <HBox>
-                                    <children>
-                                        <Button fx:id="btnPersonalizada" mnemonicParsing="false" onAction="#onModoJuego" prefHeight="62.0" prefWidth="160.0" styleClass="boton-opcion">
-                                            <graphic>
-                                                <VBox alignment="CENTER" spacing="2.0">
-                                                    <children>
-                                                        <Label styleClass="titulo-opcion" text="Personalizada" />
-                                                        <Label styleClass="sub-opcion" text="Configura" />
-                                                    </children>
-                                                </VBox>
-                                            </graphic>
-                                        </Button>
-                                    </children>
-                                </HBox>
                             </children>
                         </VBox>
 
-                        <!-- ═══════════ TIPO DE PARTIDA ═══════════ -->
                         <VBox maxWidth="340.0" prefWidth="340.0" spacing="10.0">
                             <children>
                                 <Label styleClass="label-seccion" text="TIPO DE PARTIDA" />
-
                                 <HBox spacing="10.0">
                                     <children>
-                                        <Button fx:id="btnContraIA" maxWidth="Infinity" mnemonicParsing="false" onAction="#onTipoPartida" prefHeight="120.0" styleClass="boton-card,seleccionado" HBox.hgrow="ALWAYS">
+                                        <Button fx:id="btnContraIA" maxWidth="Infinity" mnemonicParsing="false" onAction="#onTipoPartida" prefHeight="120.0" HBox.hgrow="ALWAYS">
                                             <graphic>
                                                 <VBox alignment="CENTER" spacing="8.0">
                                                     <children>
-                                                        <Region styleClass="icon-card,icon-bot" />
+                                                        <Region>
+                                                            <styleClass>
+                                                                <String fx:value="icon-card" />
+                                                                <String fx:value="icon-bot" />
+                                                            </styleClass>
+                                                        </Region>
                                                         <Label styleClass="titulo-opcion" text="Contra la IA" />
-                                                        <Label styleClass="sub-opcion" text="Sin conexión" />
+                                                        <Label styleClass="sub-opcion" text="Sin conexion" />
                                                     </children>
                                                 </VBox>
                                             </graphic>
+                                            <styleClass>
+                                                <String fx:value="boton-card" />
+                                                <String fx:value="seleccionado" />
+                                            </styleClass>
                                         </Button>
                                         <Button fx:id="btnDosJugadores" maxWidth="Infinity" mnemonicParsing="false" onAction="#onTipoPartida" prefHeight="120.0" styleClass="boton-card" HBox.hgrow="ALWAYS">
                                             <graphic>
                                                 <VBox alignment="CENTER" spacing="8.0">
                                                     <children>
-                                                        <Region styleClass="icon-card,icon-multiplayer" />
-                                                        <Label styleClass="titulo-opcion" text="Dos jugadores" />
-                                                        <Label styleClass="sub-opcion" text="Online" />
+                                                        <Region>
+                                                            <styleClass>
+                                                                <String fx:value="icon-card" />
+                                                                <String fx:value="icon-multiplayer" />
+                                                            </styleClass>
+                                                        </Region>
+                                                        <Label styleClass="titulo-opcion" text="Local" />
+                                                        <Label styleClass="sub-opcion" text="En este dispositivo" />
                                                     </children>
                                                 </VBox>
                                             </graphic>
@@ -132,28 +124,40 @@
                             </children>
                         </VBox>
 
-                        <!-- ═══════════ JUGAR CON ═══════════ -->
                         <VBox maxWidth="340.0" prefWidth="340.0" spacing="10.0">
                             <children>
                                 <Label styleClass="label-seccion" text="JUGAR CON" />
-
                                 <HBox spacing="8.0">
                                     <children>
-                                        <Button fx:id="btnBlancas" maxWidth="Infinity" mnemonicParsing="false" onAction="#onJugarCon" prefHeight="78.0" styleClass="boton-opcion,seleccionado" HBox.hgrow="ALWAYS">
+                                        <Button fx:id="btnBlancas" maxWidth="Infinity" mnemonicParsing="false" onAction="#onJugarCon" prefHeight="78.0" HBox.hgrow="ALWAYS">
                                             <graphic>
                                                 <VBox alignment="CENTER" spacing="6.0">
                                                     <children>
-                                                        <Region styleClass="icon-rey,icon-rey-blanco" />
+                                                        <Region>
+                                                            <styleClass>
+                                                                <String fx:value="icon-rey" />
+                                                                <String fx:value="icon-rey-blanco" />
+                                                            </styleClass>
+                                                        </Region>
                                                         <Label styleClass="titulo-opcion" text="Blancas" />
                                                     </children>
                                                 </VBox>
                                             </graphic>
+                                            <styleClass>
+                                                <String fx:value="boton-opcion" />
+                                                <String fx:value="seleccionado" />
+                                            </styleClass>
                                         </Button>
                                         <Button fx:id="btnNegras" maxWidth="Infinity" mnemonicParsing="false" onAction="#onJugarCon" prefHeight="78.0" styleClass="boton-opcion" HBox.hgrow="ALWAYS">
                                             <graphic>
                                                 <VBox alignment="CENTER" spacing="6.0">
                                                     <children>
-                                                        <Region styleClass="icon-rey,icon-rey-negro" />
+                                                        <Region>
+                                                            <styleClass>
+                                                                <String fx:value="icon-rey" />
+                                                                <String fx:value="icon-rey-negro" />
+                                                            </styleClass>
+                                                        </Region>
                                                         <Label styleClass="titulo-opcion" text="Negras" />
                                                     </children>
                                                 </VBox>
@@ -174,28 +178,22 @@
                             </children>
                         </VBox>
 
-                        <!-- ═══════════ TIEMPO DE PARTIDA ═══════════ -->
                         <VBox maxWidth="340.0" prefWidth="340.0" spacing="10.0">
                             <children>
                                 <Label styleClass="label-seccion" text="TIEMPO DE PARTIDA" />
-
                                 <Button fx:id="btnTiempoPartida" maxWidth="Infinity" mnemonicParsing="false" onAction="#onTiempoPartida" prefHeight="68.0" styleClass="boton-tiempo">
                                     <graphic>
                                         <HBox alignment="CENTER_LEFT" prefWidth="304.0" spacing="12.0">
                                             <children>
                                                 <StackPane styleClass="icon-badge-tiempo">
-                                                    <children>
-                                                        <Region styleClass="icon-reloj" />
-                                                    </children>
+                                                    <children><Region styleClass="icon-reloj" /></children>
                                                 </StackPane>
                                                 <VBox alignment="CENTER_LEFT" spacing="3.0" HBox.hgrow="ALWAYS">
                                                     <children>
                                                         <Label fx:id="lblTiempoPrincipal" styleClass="titulo-opcion" text="30 min por jugador" />
-                                                        <Label fx:id="lblTiempoSub" styleClass="sub-opcion" text="Sin incremento · Clásica" />
+                                                        <Label fx:id="lblTiempoSub" styleClass="sub-opcion" text="Sin incremento - Clasica" />
                                                     </children>
                                                 </VBox>
-                                                <Region HBox.hgrow="ALWAYS" />
-                                                <Region styleClass="icon-flecha-derecha" />
                                             </children>
                                         </HBox>
                                     </graphic>
@@ -203,15 +201,11 @@
                             </children>
                         </VBox>
 
-                        <!-- ═══════════ OPCIONES ═══════════ -->
                         <VBox maxWidth="340.0" prefWidth="340.0" spacing="14.0" styleClass="card-opciones">
-                            <padding>
-                                <Insets bottom="16.0" left="16.0" right="16.0" top="14.0" />
-                            </padding>
+                            <padding><Insets bottom="16.0" left="16.0" right="16.0" top="14.0" /></padding>
                             <children>
                                 <Label styleClass="card-opciones-header" text="Opciones" />
 
-                                <!-- Sonido -->
                                 <HBox alignment="CENTER_LEFT" spacing="12.0">
                                     <children>
                                         <Label styleClass="opcion-titulo" text="Sonido" />
@@ -223,49 +217,39 @@
 
                                 <Separator styleClass="separador-opcion" />
 
-                                <!-- Mostrar coordenadas -->
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
                                         <Label maxWidth="Infinity" styleClass="opcion-titulo" text="Mostrar coordenadas" HBox.hgrow="ALWAYS" />
                                         <ToggleButton fx:id="toggleCoordenadas" selected="true" styleClass="toggle-switch">
-                                            <graphic>
-                                                <Region styleClass="toggle-thumb" />
-                                            </graphic>
+                                            <graphic><Region styleClass="toggle-thumb" /></graphic>
                                         </ToggleButton>
                                     </children>
                                 </HBox>
 
                                 <Separator styleClass="separador-opcion" />
 
-                                <!-- Resaltar último movimiento -->
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
-                                        <Label maxWidth="Infinity" styleClass="opcion-titulo" text="Resaltar último movimiento" HBox.hgrow="ALWAYS" />
+                                        <Label maxWidth="Infinity" styleClass="opcion-titulo" text="Resaltar ultimo movimiento" HBox.hgrow="ALWAYS" />
                                         <ToggleButton fx:id="toggleResaltar" selected="true" styleClass="toggle-switch">
-                                            <graphic>
-                                                <Region styleClass="toggle-thumb" />
-                                            </graphic>
+                                            <graphic><Region styleClass="toggle-thumb" /></graphic>
                                         </ToggleButton>
                                     </children>
                                 </HBox>
 
                                 <Separator styleClass="separador-opcion" />
 
-                                <!-- Animaciones de piezas -->
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
                                         <Label maxWidth="Infinity" styleClass="opcion-titulo" text="Animaciones de piezas" HBox.hgrow="ALWAYS" />
                                         <ToggleButton fx:id="toggleAnimaciones" selected="true" styleClass="toggle-switch">
-                                            <graphic>
-                                                <Region styleClass="toggle-thumb" />
-                                            </graphic>
+                                            <graphic><Region styleClass="toggle-thumb" /></graphic>
                                         </ToggleButton>
                                     </children>
                                 </HBox>
 
                                 <Separator styleClass="separador-opcion" />
 
-                                <!-- Permitir deshacer (con sub) -->
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
                                         <VBox maxWidth="Infinity" spacing="2.0" HBox.hgrow="ALWAYS">
@@ -275,51 +259,84 @@
                                             </children>
                                         </VBox>
                                         <ToggleButton fx:id="toggleDeshacer" styleClass="toggle-switch">
-                                            <graphic>
-                                                <Region styleClass="toggle-thumb" />
-                                            </graphic>
+                                            <graphic><Region styleClass="toggle-thumb" /></graphic>
                                         </ToggleButton>
                                     </children>
                                 </HBox>
 
                                 <Separator styleClass="separador-opcion" />
 
-                                <!-- Guardar partida automáticamente (con sub) -->
                                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                                     <children>
                                         <VBox maxWidth="Infinity" spacing="2.0" HBox.hgrow="ALWAYS">
                                             <children>
-                                                <Label styleClass="opcion-titulo" text="Guardar partida automáticamente" />
-                                                <Label styleClass="opcion-sub" text="Historial y estadísticas" />
+                                                <Label styleClass="opcion-titulo" text="Guardar partida automaticamente" />
+                                                <Label styleClass="opcion-sub" text="Historial y estadisticas" />
                                             </children>
                                         </VBox>
                                         <ToggleButton fx:id="toggleGuardar" selected="true" styleClass="toggle-switch">
-                                            <graphic>
-                                                <Region styleClass="toggle-thumb" />
-                                            </graphic>
+                                            <graphic><Region styleClass="toggle-thumb" /></graphic>
                                         </ToggleButton>
                                     </children>
                                 </HBox>
                             </children>
                         </VBox>
 
-                        <!-- ═══════════ CHIPS DE RESUMEN ═══════════ -->
                         <HBox alignment="CENTER_LEFT" maxWidth="340.0" prefWidth="340.0" spacing="8.0">
                             <children>
-                                <Label fx:id="chipModo" styleClass="chip-resumen" text="Clásica" />
+                                <Label fx:id="chipModo" styleClass="chip-resumen" text="Clasica" />
                                 <Label fx:id="chipTipo" styleClass="chip-resumen" text="vs IA" />
                                 <Label fx:id="chipColor" styleClass="chip-resumen" text="Blancas" />
                                 <Label fx:id="chipTiempo" styleClass="chip-resumen" text="30 min" />
                             </children>
                         </HBox>
 
-                        <!-- ═══════════ INICIAR PARTIDA ═══════════ -->
-                        <Button mnemonicParsing="false" onAction="#onPartida" prefHeight="30.0" prefWidth="330.0" styleClass="boton-nueva-partida" text="Iniciar partida" />
-
+                        <Button mnemonicParsing="false" onAction="#onPartida" prefHeight="30.0" prefWidth="330.0"
+                                styleClass="boton-nueva-partida" text="Iniciar partida" />
                     </children>
                 </VBox>
             </content>
         </ScrollPane>
 
+        <Region fx:id="RegionMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                onMouseClicked="#onCerrarMenu" style="-fx-background-color: transparent;" visible="false" />
+
+        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="40.0" maxWidth="40.0"
+                minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#onDesplegable"
+                styleClass="menu-hamburguesa" StackPane.alignment="TOP_RIGHT">
+            <graphic><Region opacity="0.57" styleClass="icon" /></graphic>
+            <StackPane.margin><Insets right="20.0" top="20.0" /></StackPane.margin>
+        </Button>
+
+        <VBox fx:id="menuDesplegable" alignment="TOP_RIGHT" maxHeight="140.0" maxWidth="150.0"
+              prefHeight="134.0" prefWidth="100.0" styleClass="menu-desplegable" visible="false"
+              StackPane.alignment="TOP_RIGHT">
+            <StackPane.margin><Insets right="20.0" top="80.0" /></StackPane.margin>
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="148.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="btnAjustes" mnemonicParsing="false" onAction="#onCambiarTema"
+                                styleClass="boton-menu-lateral" text="Tema claro">
+                            <graphic><Region styleClass="icon-settings" /></graphic>
+                        </Button>
+                    </children>
+                    <padding><Insets left="10.0" /></padding>
+                </HBox>
+                <Separator opacity="0.08" prefHeight="0.0" prefWidth="148.0" />
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="148.0" spacing="10.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#onCerrarSesion" prefHeight="40.0" prefWidth="132.0"
+                                text="Cerrar sesi&#243;n">
+                            <graphic><Region styleClass="icon-exit" /></graphic>
+                            <styleClass>
+                                <String fx:value="boton-menu-lateral" />
+                                <String fx:value="salir" />
+                            </styleClass>
+                        </Button>
+                    </children>
+                    <padding><Insets left="10.0" /></padding>
+                </HBox>
+            </children>
+        </VBox>
     </children>
 </StackPane>

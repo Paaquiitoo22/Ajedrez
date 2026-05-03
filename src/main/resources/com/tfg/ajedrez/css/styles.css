@@ -2,6 +2,22 @@
     -fx-font-family: "Inter";
 }
 
+.screen-root.theme-dark {
+    -fx-background-color: #1B1B1B;
+}
+
+.theme-dark {
+    -fx-background-color: #1B1B1B;
+}
+
+.screen-root.theme-light {
+    -fx-background-color: #f4f1ea;
+}
+
+.theme-light {
+    -fx-background-color: #f4f1ea;
+}
+
 .button {
     -fx-background-color: #247aca;
     -fx-text-fill: white;
@@ -89,6 +105,15 @@
     -fx-cursor: hand;
 }
 
+.boton-secundario {
+    -fx-background-color: transparent;
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1;
+    -fx-text-fill: #D4AF37;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
 .icon-settings {
     -fx-background-color: white;
     -fx-shape: "M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.35 19.43,11.03L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,6.05C16.04,5.66 15.47,5.34 14.86,5.12L14.47,2.5C14.43,2.25 14.22,2.07 13.97,2.07H9.97C9.72,2.07 9.51,2.25 9.47,2.5L9.08,5.12C8.47,5.34 7.9,5.66 7.38,6.05L4.89,5.05C4.67,4.97 4.4,5.05 4.28,5.27L2.28,8.73C2.16,8.95 2.21,9.22 2.4,9.37L4.51,11.03C4.47,11.35 4.44,11.67 4.44,12C4.44,12.33 4.47,12.65 4.51,12.97L2.4,14.63C2.21,14.78 2.16,15.05 2.28,15.27L4.28,18.73C4.4,18.95 4.67,19.03 4.89,18.95L7.38,17.95C7.9,18.34 8.47,18.66 9.08,18.88L9.47,21.5C9.51,21.75 9.72,21.93 9.97,21.93H13.97C14.22,21.93 14.43,21.75 14.47,21.5L14.86,18.88C15.47,18.66 16.04,18.34 16.56,17.95L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z";
@@ -138,10 +163,20 @@
 
 .caja-stat-label {
     -fx-font-size: 23px;
+    -fx-text-fill: #f0f0f0;
 }
 
 .caja-stat-resultado {
     -fx-font-size: 13px;
+    -fx-text-fill: #f0f0f0;
+}
+
+.resultado-texto-victoria {
+    -fx-text-fill: #2ac31c;
+}
+
+.resultado-texto-derrota {
+    -fx-text-fill: #e41616;
 }
 
 .or-line .line {
@@ -185,6 +220,48 @@
     -fx-max-width: 28px;
     -fx-min-height: 28px;
     -fx-max-height: 28px;
+}
+
+.icon-nav-cargar {
+    -fx-background-color: white;
+    -fx-shape: "M19,20H5A2,2 0 0,1 3,18V6A2,2 0 0,1 5,4H11L13,6H19A2,2 0 0,1 21,8V18A2,2 0 0,1 19,20M12,18L17,13H14V9H10V13H7L12,18Z";
+    -fx-min-width: 28px;
+    -fx-max-width: 28px;
+    -fx-min-height: 28px;
+    -fx-max-height: 28px;
+}
+
+.caja-menu.deshabilitado {
+    -fx-opacity: 0.42;
+}
+
+.profile-card {
+    -fx-background-color: #232323;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: #353535;
+    -fx-border-width: 1;
+}
+
+.avatar-perfil {
+    -fx-background-color: #D4AF37;
+    -fx-background-radius: 100;
+    -fx-border-radius: 100;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;
+    -fx-alignment: CENTER;
+}
+
+.profile-name {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.profile-email {
+    -fx-text-fill: #888888;
+    -fx-font-size: 13px;
 }
 
 /* ── Tarjetas de partidas recientes ─────────────────────────── */
@@ -232,6 +309,12 @@
     -fx-text-fill: #aaaaaa;
     -fx-font-size: 15px;
     -fx-font-family: "Inter";
+}
+
+.barra-partida {
+    -fx-background-color: #1B1B1B;
+    -fx-border-color: #2a2a2a;
+    -fx-border-width: 0 0 1 0;
 }
 
 /* ── Paneles de jugador ─────────────────────────────────────── */
@@ -659,4 +742,189 @@
     -fx-max-width: 18;
     -fx-min-height: 18;
     -fx-max-height: 18;
+}
+
+.cabecera-historial {
+    -fx-border-color: #383838;
+    -fx-border-width: 0 0 1 0;
+}
+
+.boton-pausa,
+.boton-revision {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1;
+    -fx-text-fill: #D4AF37;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 7 12 7 12;
+}
+
+.boton-pausa:pressed,
+.boton-revision:pressed {
+    -fx-background-color: rgba(212, 175, 55, 0.16);
+}
+
+.panel-revision {
+    -fx-background-color: #232323;
+    -fx-border-color: #383838;
+    -fx-border-width: 1 0 0 0;
+}
+
+.titulo-revision {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.estado-revision {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-family: "Inter";
+    -fx-font-size: 12px;
+}
+
+/* Light theme overrides */
+
+.theme-light .caja-menu,
+.theme-light .menu-desplegable,
+.theme-light .boton-opcion,
+.theme-light .boton-card,
+.theme-light .boton-tiempo,
+.theme-light .card-opciones,
+.theme-light .profile-card,
+.theme-light .panel-revision {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ded6c8;
+}
+
+.theme-light .menu-hamburguesa {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ded6c8;
+}
+
+.theme-light .barra-partida {
+    -fx-background-color: #f4f1ea;
+    -fx-border-color: #ded6c8;
+}
+
+.theme-light .panel-jugador,
+.theme-light .panel-historial {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ded6c8;
+}
+
+.theme-light .cabecera-historial {
+    -fx-border-color: #ded6c8;
+}
+
+.theme-light .menu-hamburguesa .icon,
+.theme-light .icon-settings,
+.theme-light .icon-info,
+.theme-light .icon-nav-historial,
+.theme-light .icon-nav-cargar,
+.theme-light .icon-card {
+    -fx-background-color: #2f3640;
+}
+
+.theme-light .boton-menu-lateral,
+.theme-light .label-nav,
+.theme-light .caja-stat-label,
+.theme-light .caja-stat-resultado,
+.theme-light .oponente-partida,
+.theme-light .titulo-pantalla,
+.theme-light .titulo-partida,
+.theme-light .nombre-jugador,
+.theme-light .titulo-historial,
+.theme-light .titulo-opcion,
+.theme-light .boton-opcion .titulo-opcion,
+.theme-light .boton-card .titulo-opcion,
+.theme-light .boton-tiempo .titulo-opcion,
+.theme-light .opcion-titulo,
+.theme-light .profile-name,
+.theme-light .titulo-revision {
+    -fx-text-fill: #1f2933;
+}
+
+.theme-light .or-label,
+.theme-light .fecha-partida,
+.theme-light .label-seccion,
+.theme-light .color-jugador-tag,
+.theme-light .etiqueta-tablero,
+.theme-light .sub-opcion,
+.theme-light .boton-opcion .sub-opcion,
+.theme-light .boton-tiempo .sub-opcion,
+.theme-light .card-opciones-header,
+.theme-light .opcion-sub,
+.theme-light .profile-email,
+.theme-light .estado-revision {
+    -fx-text-fill: #6b7280;
+}
+
+.theme-light .or-line .line,
+.theme-light .separador-opcion .line {
+    -fx-border-color: #ded6c8;
+}
+
+.theme-light .boton-opcion:pressed,
+.theme-light .boton-card:pressed,
+.theme-light .boton-tiempo:pressed,
+.theme-light .boton-volver-circular:pressed {
+    -fx-background-color: #f0eadf;
+}
+
+.theme-light .boton-opcion.seleccionado,
+.theme-light .boton-card.seleccionado {
+    -fx-background-color: rgba(212, 175, 55, 0.14);
+    -fx-border-color: #D4AF37;
+}
+
+.theme-light .boton-opcion.seleccionado .titulo-opcion,
+.theme-light .boton-card.seleccionado .titulo-opcion {
+    -fx-text-fill: #9f7a13;
+}
+
+.theme-light .boton-card.seleccionado .icon-card,
+.theme-light .icon-reloj {
+    -fx-background-color: #D4AF37;
+}
+
+.theme-light .slider-sonido .track,
+.theme-light .toggle-switch {
+    -fx-background-color: #ded6c8;
+}
+
+.theme-light .toggle-switch:selected {
+    -fx-background-color: #D4AF37;
+}
+
+.theme-light .chip-resumen {
+    -fx-background-color: rgba(159, 122, 19, 0.10);
+    -fx-border-color: rgba(159, 122, 19, 0.35);
+    -fx-text-fill: #9f7a13;
+}
+
+.theme-dark .resultado-texto-victoria {
+    -fx-text-fill: #35df28;
+}
+
+.theme-dark .resultado-texto-derrota {
+    -fx-text-fill: #ff4a4a;
+}
+
+.theme-dark .caja-stat-label,
+.theme-dark .caja-stat-resultado,
+.theme-dark .label-nav {
+    -fx-text-fill: #f7f7f7;
+}
+
+.theme-dark .resultado-texto-victoria {
+    -fx-text-fill: #35df28;
+}
+
+.theme-dark .resultado-texto-derrota {
+    -fx-text-fill: #ff4a4a;
 }

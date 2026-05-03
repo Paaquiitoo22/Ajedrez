@@ -208,9 +208,14 @@ public class Tablero {
                 }
             }
 
-            if (fila < 7) {
-                sb.append("\n");
-            }
+            sb.append("\n");
+        }
+
+        sb.append("EP ");
+        if (peonVulnerableAlPaso == null) {
+            sb.append("-");
+        } else {
+            sb.append(peonVulnerableAlPaso.getFila()).append(" ").append(peonVulnerableAlPaso.getColumna());
         }
 
         return sb.toString();
@@ -218,6 +223,7 @@ public class Tablero {
 
     public void importarEstado(String estado) {
         limpiarTablero();
+        peonVulnerableAlPaso = null;
 
         String[] filas = estado.split("\\n");
 
@@ -229,6 +235,17 @@ public class Tablero {
 
                 if (!codigo.equals("..")) {
                     casillas[fila][col] = crearPiezaDesdeCodigo(codigo, fila, col);
+                }
+            }
+        }
+
+        if (filas.length > 8) {
+            String[] ep = filas[8].trim().split("\\s+");
+            if (ep.length == 3 && "EP".equals(ep[0])) {
+                try {
+                    peonVulnerableAlPaso = new Posicion(Integer.parseInt(ep[1]), Integer.parseInt(ep[2]));
+                } catch (NumberFormatException ignored) {
+                    peonVulnerableAlPaso = null;
                 }
             }
         }
@@ -535,7 +552,11 @@ public class Tablero {
             return null;
         }
 
-        return new Pieza(tipo, color, new Posicion(fila, col));
+        Pieza pieza = new Pieza(tipo, color, new Posicion(fila, col));
+        if (codigo.length() >= 3) {
+            pieza.setMovida(codigo.charAt(2) == '1');
+        }
+        return pieza;
     }
 
     private String codigoPieza(Pieza pieza) {
@@ -550,7 +571,7 @@ public class Tablero {
             case PEON -> "P";
         };
 
-        return color + tipo;
+        return color + tipo + (pieza.isMovida() ? "1" : "0");
     }
 
     private boolean dentroTablero(int fila, int col) {

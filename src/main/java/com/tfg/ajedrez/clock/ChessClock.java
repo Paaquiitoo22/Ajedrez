@@ -60,7 +60,7 @@ public class ChessClock {
     }
 
     public void switchTurn() {
-        if (!paused && !finished) {
+        if (!finished) {
             whiteTurn = !whiteTurn;
         }
     }
