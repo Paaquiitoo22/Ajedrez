@@ -1097,3 +1097,68 @@
 .theme-light .label-volumen-partida {
     -fx-text-fill: #6b7280;
 }
+
+.panel-historial-bonito {
+    -fx-background-color: #232323;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1.2;
+}
+
+.historial-bonito-titulo {
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.historial-bonito-subtitulo {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 13px;
+}
+
+.historial-card {
+    -fx-background-color: #2d2d2d;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: #3d3d3d;
+}
+
+.historial-card-titulo {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.historial-card-subtitulo {
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 12px;
+}
+
+.historial-card-resumen {
+    -fx-text-fill: #888888;
+    -fx-font-size: 11px;
+}
+
+.theme-light .panel-historial-bonito {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #D4AF37;
+}
+
+.theme-light .historial-bonito-subtitulo,
+.theme-light .historial-card-resumen {
+    -fx-text-fill: #6b7280;
+}
+
+.theme-light .historial-card {
+    -fx-background-color: #f4f1ea;
+    -fx-border-color: #ded6c8;
+}
+
+.theme-light .historial-card-titulo {
+    -fx-text-fill: #1f2933;
+}
+
+.theme-light .historial-card-subtitulo {
+    -fx-text-fill: #9f7a13;
+}
