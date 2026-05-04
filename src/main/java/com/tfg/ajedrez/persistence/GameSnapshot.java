@@ -11,6 +11,8 @@ public class GameSnapshot {
     public int blackSeconds;
     public int contadorMovimientos;
     public boolean relojIniciado;
+    public int puntosBlancas;
+    public int puntosNegras;
     public List<String> historialMovimientos = new ArrayList<>();
 
     public GameSnapshot() {

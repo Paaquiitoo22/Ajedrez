@@ -11,6 +11,9 @@ public class MovimientoInfo {
     private final boolean captura;
     private final boolean enroque;
     private final boolean promocion;
+    private final TipoPieza tipoPiezaCapturada;
+    private final ColorPieza colorPiezaCapturada;
+    private final TipoPieza tipoPromocion;
 
     public MovimientoInfo(TipoPieza tipoPieza, ColorPieza colorPieza,
                           int filaOrigen, int colOrigen,
@@ -18,6 +21,19 @@ public class MovimientoInfo {
                           boolean captura,
                           boolean enroque,
                           boolean promocion) {
+        this(tipoPieza, colorPieza, filaOrigen, colOrigen, filaDestino, colDestino,
+                captura, enroque, promocion, null, null, null);
+    }
+
+    public MovimientoInfo(TipoPieza tipoPieza, ColorPieza colorPieza,
+                          int filaOrigen, int colOrigen,
+                          int filaDestino, int colDestino,
+                          boolean captura,
+                          boolean enroque,
+                          boolean promocion,
+                          TipoPieza tipoPiezaCapturada,
+                          ColorPieza colorPiezaCapturada,
+                          TipoPieza tipoPromocion) {
         this.tipoPieza = tipoPieza;
         this.colorPieza = colorPieza;
         this.filaOrigen = filaOrigen;
@@ -27,6 +43,9 @@ public class MovimientoInfo {
         this.captura = captura;
         this.enroque = enroque;
         this.promocion = promocion;
+        this.tipoPiezaCapturada = tipoPiezaCapturada;
+        this.colorPiezaCapturada = colorPiezaCapturada;
+        this.tipoPromocion = tipoPromocion;
     }
 
     public TipoPieza getTipoPieza() {
@@ -63,5 +82,17 @@ public class MovimientoInfo {
 
     public boolean isPromocion() {
         return promocion;
+    }
+
+    public TipoPieza getTipoPiezaCapturada() {
+        return tipoPiezaCapturada;
+    }
+
+    public ColorPieza getColorPiezaCapturada() {
+        return colorPiezaCapturada;
+    }
+
+    public TipoPieza getTipoPromocion() {
+        return tipoPromocion;
     }
 }

@@ -46,6 +46,7 @@
                             <VBox alignment="CENTER_LEFT" spacing="2.0">
                                 <Label fx:id="nombreNegras" styleClass="nombre-jugador" />
                                 <Label styleClass="color-jugador-tag" text="Negras" />
+                                <Label fx:id="puntosNegras" styleClass="puntos-jugador" text="0 pts" />
                             </VBox>
                             <Region HBox.hgrow="ALWAYS" />
                             <Label fx:id="timerNegras" styleClass="timer-jugador-inactivo" />
@@ -87,6 +88,7 @@
                             <VBox alignment="CENTER_LEFT" spacing="2.0">
                                 <Label fx:id="nombreBlancas" styleClass="nombre-jugador" />
                                 <Label styleClass="color-jugador-tag" text="Blancas" />
+                                <Label fx:id="puntosBlancas" styleClass="puntos-jugador" text="0 pts" />
                             </VBox>
                             <Region HBox.hgrow="ALWAYS" />
                             <Label fx:id="timerBlancas" styleClass="timer-jugador-activo" />
@@ -133,6 +135,9 @@
 
         <Region fx:id="RegionMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                 onMouseClicked="#onCerrarMenu" style="-fx-background-color: transparent;" visible="false" />
+
+        <Label fx:id="lblCuentaAtras" alignment="CENTER" managed="false" styleClass="cuenta-atras-carga"
+               text="3" visible="false" StackPane.alignment="CENTER" />
 
         <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="40.0" maxWidth="40.0"
                 minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#onDesplegable"

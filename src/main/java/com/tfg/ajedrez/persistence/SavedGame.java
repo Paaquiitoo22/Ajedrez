@@ -15,6 +15,8 @@ public class SavedGame {
     public boolean finished;
     public boolean relojIniciado;
     public int contadorMovimientos;
+    public int puntosBlancas;
+    public int puntosNegras;
     public String tipoPartida;
     public String modoJuego;
     public String colorJugador;

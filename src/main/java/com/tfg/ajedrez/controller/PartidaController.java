@@ -28,6 +28,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -64,10 +65,12 @@ public class PartidaController implements Initializable {
 
     @FXML private Label avatarNegras;
     @FXML private Label nombreNegras;
+    @FXML private Label puntosNegras;
     @FXML private Label timerNegras;
 
     @FXML private Label avatarBlancas;
     @FXML private Label nombreBlancas;
+    @FXML private Label puntosBlancas;
     @FXML private Label timerBlancas;
     @FXML private Label lblCuentaAtras;
 
@@ -105,6 +108,8 @@ public class PartidaController implements Initializable {
     private Timeline relojTick;
 
     private int contadorMovimientos = 0;
+    private int puntosCapturasBlancas = 0;
+    private int puntosCapturasNegras = 0;
     private boolean partidaTerminada = false;
     private String userId;
     private NuevaPartidaSettings settings;
@@ -157,6 +162,7 @@ public class PartidaController implements Initializable {
         inicializarSnapshotsRevision();
         restaurarHistorialMovimientos();
         actualizarEstilosTimer();
+        actualizarPuntos();
         actualizarTextoTema();
         actualizarEstadoPausa();
         guardarPartidaEnCurso();
@@ -183,6 +189,8 @@ public class PartidaController implements Initializable {
 
         turnoActual = partidaCargada.whiteTurn ? ColorPieza.BLANCA : ColorPieza.NEGRA;
         contadorMovimientos = partidaCargada.contadorMovimientos;
+        puntosCapturasBlancas = partidaCargada.puntosBlancas;
+        puntosCapturasNegras = partidaCargada.puntosNegras;
         colorUsuario = resolverColorUsuario(settings.getColorJugador());
         historialTexto = partidaCargada.historialMovimientos == null
                 ? new ArrayList<>()
@@ -214,6 +222,8 @@ public class PartidaController implements Initializable {
             snapshot.blackSeconds = settings.getTiempoSegundos();
             snapshot.contadorMovimientos = historialTexto.size();
             snapshot.historialMovimientos = new ArrayList<>(historialTexto);
+            snapshot.puntosBlancas = partidaRevision.puntosBlancas;
+            snapshot.puntosNegras = partidaRevision.puntosNegras;
             snapshotsRevision.add(snapshot);
         }
 
@@ -223,6 +233,8 @@ public class PartidaController implements Initializable {
         modelo.importarEstado(snapshotFinal.boardState);
         turnoActual = snapshotFinal.whiteTurn ? ColorPieza.BLANCA : ColorPieza.NEGRA;
         contadorMovimientos = snapshotFinal.contadorMovimientos;
+        puntosCapturasBlancas = snapshotFinal.puntosBlancas;
+        puntosCapturasNegras = snapshotFinal.puntosNegras;
         if (historialTexto.isEmpty() && snapshotFinal.historialMovimientos != null) {
             historialTexto = new ArrayList<>(snapshotFinal.historialMovimientos);
         }
@@ -232,6 +244,7 @@ public class PartidaController implements Initializable {
         prepararReloj();
         restaurarHistorialMovimientos();
         actualizarEstilosTimer();
+        actualizarPuntos();
         actualizarTextoTema();
         partidaTerminada = true;
         activarRevision();
@@ -407,10 +420,16 @@ public class PartidaController implements Initializable {
         }
 
         // Caso D: intento de movimiento al destino
+        TipoPieza tipoPromocion = resolverPromocionUsuario(filaSeleccionada, colSeleccionada, fila, col);
+        if (tipoPromocion == null) {
+            limpiarSeleccion();
+            return;
+        }
         GameSnapshot snapshotAntesMovimiento = puedePrepararDeshacer() ? crearSnapshot() : null;
-        MovimientoInfo mov = modelo.moverPieza(filaSeleccionada, colSeleccionada, fila, col);
+        MovimientoInfo mov = modelo.moverPieza(filaSeleccionada, colSeleccionada, fila, col, tipoPromocion);
         if (mov != null) {
             registrarMovimientoEnHistorial(mov);
+            sumarPuntosCaptura(mov);
             cambiarTurno();
             agregarSnapshotRevision();
             comprobarFinDePartida();
@@ -431,6 +450,40 @@ public class PartidaController implements Initializable {
         limpiarSeleccion();
     }
 
+    private TipoPieza resolverPromocionUsuario(int filaOrigen, int colOrigen, int filaDestino, int colDestino) {
+        Pieza pieza = modelo.getPieza(filaOrigen, colOrigen);
+        if (pieza == null || pieza.getTipo() != TipoPieza.PEON) {
+            return TipoPieza.DAMA;
+        }
+
+        boolean coronaBlanca = pieza.getColor() == ColorPieza.BLANCA && filaDestino == 0;
+        boolean coronaNegra = pieza.getColor() == ColorPieza.NEGRA && filaDestino == 7;
+        if (!coronaBlanca && !coronaNegra) {
+            return TipoPieza.DAMA;
+        }
+        if (!esMovimientoPosible(filaDestino, colDestino)) {
+            return TipoPieza.DAMA;
+        }
+
+        List<String> opciones = List.of("Dama", "Torre", "Alfil", "Caballo");
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("Dama", opciones);
+        dialog.setTitle("Coronacion");
+        dialog.setHeaderText("Elige la pieza para coronar");
+        dialog.setContentText("Convertir peon en:");
+
+        Optional<String> seleccion = dialog.showAndWait();
+        return seleccion.map(this::tipoPromocionDesdeTexto).orElse(null);
+    }
+
+    private TipoPieza tipoPromocionDesdeTexto(String texto) {
+        return switch (texto) {
+            case "Torre" -> TipoPieza.TORRE;
+            case "Alfil" -> TipoPieza.ALFIL;
+            case "Caballo" -> TipoPieza.CABALLO;
+            default -> TipoPieza.DAMA;
+        };
+    }
+
     private void seleccionar(int fila, int col) {
         filaSeleccionada = fila;
         colSeleccionada  = col;
@@ -449,8 +502,16 @@ public class PartidaController implements Initializable {
         turnoActual = (turnoActual == ColorPieza.BLANCA) ? ColorPieza.NEGRA : ColorPieza.BLANCA;
         if (reloj != null) {
             reloj.switchTurn();
+            iniciarRelojTrasPrimerMovimiento();
         }
         actualizarEstilosTimer();
+    }
+
+    private void iniciarRelojTrasPrimerMovimiento() {
+        if (!relojIniciado && !partidaTerminada && !modoRevision && !cuentaAtrasActiva) {
+            relojIniciado = true;
+            reloj.start();
+        }
     }
 
     private boolean esTurnoIA() {
@@ -473,7 +534,7 @@ public class PartidaController implements Initializable {
     }
 
     private void programarTurnoIA() {
-        if (!esTurnoIA() || pausaActiva || modoRevision) {
+        if (!esTurnoIA() || pausaActiva || modoRevision || cuentaAtrasActiva) {
             return;
         }
 
@@ -482,7 +543,7 @@ public class PartidaController implements Initializable {
         turnoIAPendiente = new PauseTransition(Duration.seconds(segundos));
         turnoIAPendiente.setOnFinished(event -> {
             turnoIAPendiente = null;
-            if (esTurnoIA() && !pausaActiva && !modoRevision) {
+            if (esTurnoIA() && !pausaActiva && !modoRevision && !cuentaAtrasActiva) {
                 jugarTurnoIA();
             }
         });
@@ -497,7 +558,7 @@ public class PartidaController implements Initializable {
     }
 
     private void jugarTurnoIA() {
-        if (!esTurnoIA() || pausaActiva || modoRevision) {
+        if (!esTurnoIA() || pausaActiva || modoRevision || cuentaAtrasActiva) {
             return;
         }
 
@@ -528,6 +589,7 @@ public class PartidaController implements Initializable {
         }
 
         registrarMovimientoEnHistorial(mov);
+        sumarPuntosCaptura(mov);
         cambiarTurno();
         agregarSnapshotRevision();
         comprobarFinDePartida();
@@ -550,6 +612,8 @@ public class PartidaController implements Initializable {
         modelo.importarEstado(snapshot.boardState);
         turnoActual = snapshot.whiteTurn ? ColorPieza.BLANCA : ColorPieza.NEGRA;
         contadorMovimientos = snapshot.contadorMovimientos;
+        puntosCapturasBlancas = snapshot.puntosBlancas;
+        puntosCapturasNegras = snapshot.puntosNegras;
         historialTexto = snapshot.historialMovimientos == null
                 ? new ArrayList<>()
                 : new ArrayList<>(snapshot.historialMovimientos);
@@ -564,6 +628,7 @@ public class PartidaController implements Initializable {
         restaurarHistorialMovimientos();
         limpiarSeleccion();
         actualizarEstilosTimer();
+        actualizarPuntos();
         actualizarEstadoPausa();
         guardarPartidaEnCurso();
     }
@@ -602,6 +667,9 @@ public class PartidaController implements Initializable {
         snapshot.whiteSeconds = state == null ? tiempoInicialConfigurado() : state.whiteSeconds;
         snapshot.blackSeconds = state == null ? tiempoInicialConfigurado() : state.blackSeconds;
         snapshot.contadorMovimientos = contadorMovimientos;
+        snapshot.relojIniciado = relojIniciado;
+        snapshot.puntosBlancas = puntosCapturasBlancas;
+        snapshot.puntosNegras = puntosCapturasNegras;
         snapshot.historialMovimientos = new ArrayList<>(historialTexto);
         return snapshot;
     }
@@ -618,6 +686,7 @@ public class PartidaController implements Initializable {
         state.paused = pausado;
         state.finished = false;
         reloj.loadGameState(state);
+        relojIniciado = snapshot.relojIniciado;
         timerBlancas.setText(reloj.getWhiteTime());
         timerNegras.setText(reloj.getBlackTime());
     }
@@ -648,19 +717,50 @@ public class PartidaController implements Initializable {
             state.whiteSeconds = partidaCargada.whiteSeconds;
             state.blackSeconds = partidaCargada.blackSeconds;
             state.whiteTurn = partidaCargada.whiteTurn;
-            state.paused = partidaCargada.paused;
+            state.paused = true;
             state.finished = partidaCargada.finished;
             reloj.loadGameState(state);
         }
 
         timerBlancas.setText(reloj.getWhiteTime());
         timerNegras.setText(reloj.getBlackTime());
+    }
 
-        if (partidaCargada == null) {
-            // Arranca inmediatamente: las blancas empiezan a descontar tiempo
-            // desde que se abre la pantalla (whiteTurn = true por defecto).
-            reloj.start();
+    private void iniciarCuentaAtrasCarga() {
+        cuentaAtrasActiva = true;
+        actualizarEstadoPausa();
+        if (lblCuentaAtras != null) {
+            lblCuentaAtras.setManaged(true);
+            lblCuentaAtras.setVisible(true);
+            lblCuentaAtras.setText("3");
         }
+
+        final int[] segundos = {3};
+        cuentaAtrasTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            segundos[0]--;
+            if (segundos[0] > 0) {
+                if (lblCuentaAtras != null) {
+                    lblCuentaAtras.setText(String.valueOf(segundos[0]));
+                }
+                return;
+            }
+
+            cuentaAtrasTimeline.stop();
+            cuentaAtrasActiva = false;
+            actualizarEstadoPausa();
+            if (lblCuentaAtras != null) {
+                lblCuentaAtras.setVisible(false);
+                lblCuentaAtras.setManaged(false);
+            }
+            if (relojIniciado && !partidaTerminada && !modoRevision && reloj != null) {
+                reloj.start();
+            }
+            if (esTurnoIA()) {
+                programarTurnoIA();
+            }
+        }));
+        cuentaAtrasTimeline.setCycleCount(Timeline.INDEFINITE);
+        cuentaAtrasTimeline.play();
     }
 
     /** Resalta el reloj del jugador en turno cambiando las clases CSS. */
@@ -674,6 +774,39 @@ public class PartidaController implements Initializable {
         } else {
             timerBlancas.getStyleClass().add("timer-jugador-inactivo");
             timerNegras.getStyleClass().add("timer-jugador-activo");
+        }
+    }
+
+    private void sumarPuntosCaptura(MovimientoInfo mov) {
+        if (mov == null || !mov.isCaptura() || mov.getTipoPiezaCapturada() == null) {
+            return;
+        }
+
+        int puntos = valorPieza(mov.getTipoPiezaCapturada());
+        if (mov.getColorPieza() == ColorPieza.BLANCA) {
+            puntosCapturasBlancas += puntos;
+        } else {
+            puntosCapturasNegras += puntos;
+        }
+        actualizarPuntos();
+    }
+
+    private int valorPieza(TipoPieza tipo) {
+        return switch (tipo) {
+            case PEON -> 1;
+            case CABALLO, ALFIL -> 3;
+            case TORRE -> 5;
+            case DAMA -> 9;
+            case REY -> 0;
+        };
+    }
+
+    private void actualizarPuntos() {
+        if (puntosBlancas != null) {
+            puntosBlancas.setText(puntosCapturasBlancas + " pts");
+        }
+        if (puntosNegras != null) {
+            puntosNegras.setText(puntosCapturasNegras + " pts");
         }
     }
 
@@ -698,13 +831,13 @@ public class PartidaController implements Initializable {
 
     private void agregarMovimientoAlPanel(String texto, int numeroMovimiento) {
         Label label = new Label(texto);
-        label.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
+        label.getStyleClass().add("historial-movimiento-texto");
 
         if (numeroMovimiento % 2 == 1) {
             int numeroJugada = (numeroMovimiento + 1) / 2;
 
             Label numero = new Label(numeroJugada + ".");
-            numero.setStyle("-fx-text-fill: #aaaaaa; -fx-font-size: 12px;");
+            numero.getStyleClass().add("historial-numero-jugada");
 
             historialMovimientos.add(numero, 0, numeroJugada - 1);
             historialMovimientos.add(label,  1, numeroJugada - 1);
@@ -723,7 +856,10 @@ public class PartidaController implements Initializable {
         String destino = casillaTexto(mov.getFilaDestino(), mov.getColDestino());
         String sep = mov.isCaptura() ? "x" : "-";
         String texto = pieza + origen + sep + destino;
-        if (mov.isPromocion()) texto += "=D";
+        if (mov.isPromocion()) {
+            TipoPieza promocion = mov.getTipoPromocion() == null ? TipoPieza.DAMA : mov.getTipoPromocion();
+            texto += "=" + abreviaturaPieza(promocion);
+        }
         return texto;
     }
 
@@ -887,11 +1023,14 @@ public class PartidaController implements Initializable {
         savedGame.blackSeconds = state.blackSeconds;
         savedGame.paused = pausedOverride == null ? state.paused : pausedOverride;
         savedGame.finished = state.finished;
+        savedGame.relojIniciado = relojIniciado;
         savedGame.contadorMovimientos = contadorMovimientos;
         savedGame.tipoPartida = settings.getTipoPartida();
         savedGame.modoJuego = settings.getModoJuego();
         savedGame.colorJugador = colorUsuarioSetting();
         savedGame.tiempoInicialSegundos = settings.getTiempoSegundos();
+        savedGame.puntosBlancas = puntosCapturasBlancas;
+        savedGame.puntosNegras = puntosCapturasNegras;
         savedGame.historialMovimientos = new ArrayList<>(historialTexto);
         savedGame.deshacerUsado = deshacerUsado;
         savedGame.snapshotDeshacer = snapshotDeshacer;
@@ -915,6 +1054,15 @@ public class PartidaController implements Initializable {
         record.modoJuego = settings.getModoLabel();
         record.colorJugador = colorUsuario == ColorPieza.NEGRA ? "Negras" : "Blancas";
         record.resumen = mensaje;
+        record.boardState = modelo.exportarEstado();
+        record.tipoPartidaCodigo = settings.getTipoPartida();
+        record.modoJuegoCodigo = settings.getModoJuego();
+        record.colorJugadorCodigo = colorUsuarioSetting();
+        record.tiempoInicialSegundos = settings.getTiempoSegundos();
+        record.puntosBlancas = puntosCapturasBlancas;
+        record.puntosNegras = puntosCapturasNegras;
+        record.historialMovimientos = new ArrayList<>(historialTexto);
+        record.snapshotsRevision = new ArrayList<>(snapshotsRevision);
 
         GamePersistenceService.registrarPartidaFinalizada(userId, record);
         resultadoRegistrado = true;
@@ -945,7 +1093,7 @@ public class PartidaController implements Initializable {
 
     @FXML
     private void onPausa() {
-        if (partidaTerminada || modoRevision) {
+        if (partidaTerminada || modoRevision || cuentaAtrasActiva) {
             return;
         }
 
@@ -971,7 +1119,7 @@ public class PartidaController implements Initializable {
         }
 
         pausaActiva = false;
-        if (reloj != null) {
+        if (reloj != null && relojIniciado) {
             reloj.start();
         }
         if (turnoIAPendiente != null) {
@@ -1048,6 +1196,7 @@ public class PartidaController implements Initializable {
         if (reloj != null) {
             reloj.pause();
         }
+        setCronometrosVisibles(false);
         if (panelRevision != null) {
             panelRevision.setManaged(true);
             panelRevision.setVisible(true);
@@ -1057,6 +1206,13 @@ public class PartidaController implements Initializable {
         }
         inicializarSnapshotsRevision();
         mostrarSnapshotRevision(snapshotsRevision.size() - 1);
+    }
+
+    private void setCronometrosVisibles(boolean visible) {
+        timerBlancas.setVisible(visible);
+        timerBlancas.setManaged(visible);
+        timerNegras.setVisible(visible);
+        timerNegras.setManaged(visible);
     }
 
     @FXML
@@ -1083,8 +1239,11 @@ public class PartidaController implements Initializable {
         GameSnapshot snapshot = snapshotsRevision.get(indiceRevision);
         modelo.importarEstado(snapshot.boardState);
         turnoActual = snapshot.whiteTurn ? ColorPieza.BLANCA : ColorPieza.NEGRA;
+        puntosCapturasBlancas = snapshot.puntosBlancas;
+        puntosCapturasNegras = snapshot.puntosNegras;
         dibujarTablero();
         actualizarEstilosTimer();
+        actualizarPuntos();
         actualizarControlesRevision();
     }
 
@@ -1115,6 +1274,11 @@ public class PartidaController implements Initializable {
 
     private void detenerPartidaActual() {
         cancelarTurnoIAPendiente();
+        if (cuentaAtrasTimeline != null) {
+            cuentaAtrasTimeline.stop();
+            cuentaAtrasTimeline = null;
+        }
+        cuentaAtrasActiva = false;
         if (relojTick != null) {
             relojTick.stop();
         }
@@ -1129,7 +1293,7 @@ public class PartidaController implements Initializable {
 
     private void actualizarEstadoPausa() {
         if (btnPausa != null) {
-            btnPausa.setDisable(partidaTerminada || modoRevision);
+            btnPausa.setDisable(partidaTerminada || modoRevision || cuentaAtrasActiva);
         }
     }
 

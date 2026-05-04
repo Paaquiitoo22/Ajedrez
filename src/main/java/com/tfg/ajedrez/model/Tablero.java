@@ -30,6 +30,10 @@ public class Tablero {
     }
 
     public MovimientoInfo moverPieza(int filaOrigen, int colOrigen, int filaDestino, int colDestino) {
+        return moverPieza(filaOrigen, colOrigen, filaDestino, colDestino, TipoPieza.DAMA);
+    }
+
+    public MovimientoInfo moverPieza(int filaOrigen, int colOrigen, int filaDestino, int colDestino, TipoPieza tipoPromocion) {
         if (!dentroTablero(filaOrigen, colOrigen) || !dentroTablero(filaDestino, colDestino)) {
             return null;
         }
@@ -58,6 +62,13 @@ public class Tablero {
         boolean captura = piezaDestino != null || capturaAlPaso;
         boolean enroque = piezaOrigen.getTipo() == TipoPieza.REY && Math.abs(colDestino - colOrigen) == 2;
         boolean promocion = false;
+        TipoPieza tipoPiezaCapturada = null;
+        ColorPieza colorPiezaCapturada = null;
+        Pieza piezaCapturada = capturaAlPaso ? casillas[filaOrigen][colDestino] : piezaDestino;
+        if (piezaCapturada != null) {
+            tipoPiezaCapturada = piezaCapturada.getTipo();
+            colorPiezaCapturada = piezaCapturada.getColor();
+        }
 
         TipoPieza tipoAntesDeMover = piezaOrigen.getTipo();
 
@@ -78,7 +89,7 @@ public class Tablero {
         if (piezaOrigen.getTipo() == TipoPieza.PEON) {
             if ((piezaOrigen.getColor() == ColorPieza.BLANCA && filaDestino == 0)
                     || (piezaOrigen.getColor() == ColorPieza.NEGRA && filaDestino == 7)) {
-                piezaOrigen.setTipo(TipoPieza.DAMA);
+                piezaOrigen.setTipo(tipoPromocionValido(tipoPromocion));
                 promocion = true;
             }
         }
@@ -94,8 +105,21 @@ public class Tablero {
                 colDestino,
                 captura,
                 enroque,
-                promocion
+                promocion,
+                tipoPiezaCapturada,
+                colorPiezaCapturada,
+                promocion ? piezaOrigen.getTipo() : null
         );
+    }
+
+    private TipoPieza tipoPromocionValido(TipoPieza tipoPromocion) {
+        if (tipoPromocion == TipoPieza.TORRE
+                || tipoPromocion == TipoPieza.CABALLO
+                || tipoPromocion == TipoPieza.ALFIL
+                || tipoPromocion == TipoPieza.DAMA) {
+            return tipoPromocion;
+        }
+        return TipoPieza.DAMA;
     }
 
     private void moverTorreEnEnroque(int filaOrigen, int colOrigen, int filaDestino, int colDestino) {

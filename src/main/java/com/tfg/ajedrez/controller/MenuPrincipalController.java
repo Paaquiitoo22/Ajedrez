@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
@@ -19,8 +20,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class MenuPrincipalController {
 
@@ -96,13 +98,47 @@ public class MenuPrincipalController {
     public void onHistorial(MouseEvent event) {
         List<GameRecord> historial = GamePersistenceService.cargarHistorial(AppSession.getCurrentUserId());
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Historial");
-        alert.setHeaderText(historial.isEmpty() ? "Sin partidas anteriores" : "Partidas anteriores");
-        alert.setContentText(historial.isEmpty()
-                ? "Aun no hay partidas guardadas para este usuario."
-                : historial.stream().map(this::formatearPartida).collect(Collectors.joining("\n")));
-        alert.showAndWait();
+        if (historial.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Historial");
+            alert.setHeaderText("Sin partidas anteriores");
+            alert.setContentText("Aun no hay partidas guardadas para este usuario.");
+            alert.showAndWait();
+            return;
+        }
+
+        List<String> opciones = new ArrayList<>();
+        for (int i = 0; i < historial.size(); i++) {
+            opciones.add((i + 1) + ". " + formatearPartida(historial.get(i)));
+        }
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(opciones.get(0), opciones);
+        dialog.setTitle("Historial");
+        dialog.setHeaderText("Elige una partida para revisar");
+        dialog.setContentText("Partida:");
+
+        Optional<String> seleccion = dialog.showAndWait();
+        if (seleccion.isEmpty()) {
+            return;
+        }
+
+        int indice = opciones.indexOf(seleccion.get());
+        if (indice < 0) {
+            return;
+        }
+
+        GameRecord record = historial.get(indice);
+        if (!tieneDatosRevision(record)) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Historial");
+            alert.setHeaderText("Revision no disponible");
+            alert.setContentText("Esta partida no tiene posiciones guardadas para revision.");
+            alert.showAndWait();
+            return;
+        }
+
+        AppSession.requestReviewGame(record);
+        SceneManager.navegarA("/com/tfg/ajedrez/vista/partida.fxml");
     }
 
     @FXML
@@ -207,6 +243,16 @@ public class MenuPrincipalController {
 
     private void actualizarTextoTema() {
         btnAjustes.setText(ThemeManager.getMenuLabel());
+    }
+
+    private boolean tieneDatosRevision(GameRecord record) {
+        if (record == null) {
+            return false;
+        }
+        if (record.snapshotsRevision != null && !record.snapshotsRevision.isEmpty()) {
+            return true;
+        }
+        return record.boardState != null && !record.boardState.isBlank();
     }
 
     private String formatearPartida(GameRecord record) {

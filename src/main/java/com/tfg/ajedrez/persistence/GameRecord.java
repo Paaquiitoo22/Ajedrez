@@ -22,6 +22,8 @@ public class GameRecord {
     public String modoJuegoCodigo;
     public String colorJugadorCodigo;
     public int tiempoInicialSegundos;
+    public int puntosBlancas;
+    public int puntosNegras;
     public List<String> historialMovimientos = new ArrayList<>();
     public List<GameSnapshot> snapshotsRevision = new ArrayList<>();
 

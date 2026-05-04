@@ -32,7 +32,11 @@
                             <padding><Insets bottom="10.0" /></padding>
                             <font><Font name="Inter" size="24.0" /></font>
                         </Label>
-                        <Label alignment="CENTER" styleClass="caja-stat-resultado resultado-texto-victoria" text="Victorias">
+                        <Label alignment="CENTER" text="Victorias">
+                            <styleClass>
+                                <String fx:value="caja-stat-resultado" />
+                                <String fx:value="resultado-texto-victoria" />
+                            </styleClass>
                             <padding><Insets bottom="15.0" /></padding>
                             <font><Font name="Inter" size="18.0" /></font>
                         </Label>
@@ -44,7 +48,11 @@
                         <Label fx:id="lblDerrotas" styleClass="caja-stat-label" text="0">
                             <padding><Insets bottom="10.0" /></padding>
                         </Label>
-                        <Label styleClass="caja-stat-resultado resultado-texto-derrota" text="Derrotas">
+                        <Label text="Derrotas">
+                            <styleClass>
+                                <String fx:value="caja-stat-resultado" />
+                                <String fx:value="resultado-texto-derrota" />
+                            </styleClass>
                             <padding><Insets bottom="15.0" /></padding>
                         </Label>
                     </children>

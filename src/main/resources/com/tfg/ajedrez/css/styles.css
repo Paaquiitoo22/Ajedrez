@@ -350,6 +350,13 @@
     -fx-font-family: "Inter";
 }
 
+.puntos-jugador {
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}
+
 .timer-jugador-activo {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
@@ -787,6 +794,20 @@
     -fx-font-size: 12px;
 }
 
+.cuenta-atras-carga {
+    -fx-background-color: rgba(27, 27, 27, 0.78);
+    -fx-background-radius: 24;
+    -fx-border-color: rgba(212, 175, 55, 0.55);
+    -fx-border-radius: 24;
+    -fx-border-width: 1;
+    -fx-text-fill: #D4AF37;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+    -fx-font-size: 58px;
+    -fx-min-width: 150;
+    -fx-min-height: 120;
+}
+
 /* Light theme overrides */
 
 .theme-light .caja-menu,
@@ -907,6 +928,15 @@
     -fx-text-fill: #9f7a13;
 }
 
+.theme-light .puntos-jugador {
+    -fx-text-fill: #9f7a13;
+}
+
+.theme-light .cuenta-atras-carga {
+    -fx-background-color: rgba(255, 255, 255, 0.88);
+    -fx-text-fill: #9f7a13;
+}
+
 .theme-dark .resultado-texto-victoria {
     -fx-text-fill: #35df28;
 }
@@ -921,10 +951,53 @@
     -fx-text-fill: #f7f7f7;
 }
 
+/* Historial movimientos: texto visible según tema */
+.theme-light .historial-movimiento-texto {
+    -fx-text-fill: #1f2933;
+}
+
+.theme-dark .historial-movimiento-texto {
+    -fx-text-fill: #f0f0f0;
+}
+
+.theme-light .historial-numero-jugada {
+    -fx-text-fill: #6b7280;
+}
+
+.theme-dark .historial-numero-jugada {
+    -fx-text-fill: #aaaaaa;
+}
+
+/* Stats en tema oscuro: garantizar visibilidad */
 .theme-dark .resultado-texto-victoria {
     -fx-text-fill: #35df28;
 }
 
 .theme-dark .resultado-texto-derrota {
     -fx-text-fill: #ff4a4a;
+}
+
+.theme-dark .caja-stat-label {
+    -fx-text-fill: #f0f0f0;
+}
+
+.theme-dark .caja-stat-resultado {
+    -fx-text-fill: #f0f0f0;
+}
+
+/* Stats en tema claro: visibilidad garantizada */
+.theme-light .caja-stat-label {
+    -fx-text-fill: #1f2933;
+}
+
+.theme-light .caja-stat-resultado {
+    -fx-text-fill: #1f2933;
+}
+
+.theme-light .resultado-texto-victoria {
+    -fx-text-fill: #16a34a;
+}
+
+.theme-light .resultado-texto-derrota {
+    -fx-text-fill: #dc2626;
 }
