@@ -17,6 +17,7 @@ public class NuevaPartidaSettings {
     private int tiempoSegundos;
     private String tipoPartida;
     private String colorJugador;
+    private DificultadIA dificultadIA;
     private int sonido;
     private boolean mostrarCoordenadas;
     private boolean resaltarUltimoMovimiento;
@@ -30,6 +31,7 @@ public class NuevaPartidaSettings {
         settings.tiempoSegundos = 30 * 60;
         settings.tipoPartida = TIPO_CONTRA_IA;
         settings.colorJugador = COLOR_BLANCAS;
+        settings.dificultadIA = DificultadIA.NORMAL;
         settings.sonido = 70;
         settings.mostrarCoordenadas = true;
         settings.resaltarUltimoMovimiento = true;
@@ -45,6 +47,7 @@ public class NuevaPartidaSettings {
         copy.tiempoSegundos = tiempoSegundos;
         copy.tipoPartida = tipoPartida;
         copy.colorJugador = colorJugador;
+        copy.dificultadIA = dificultadIA;
         copy.sonido = sonido;
         copy.mostrarCoordenadas = mostrarCoordenadas;
         copy.resaltarUltimoMovimiento = resaltarUltimoMovimiento;
@@ -71,6 +74,14 @@ public class NuevaPartidaSettings {
             case COLOR_NEGRAS -> "Negras";
             case COLOR_ALEATORIO -> "Aleatorio";
             default -> "Blancas";
+        };
+    }
+
+    public String getDificultadLabel() {
+        return switch (dificultadIA) {
+            case FACIL -> "Fácil";
+            case DIFICIL -> "Difícil";
+            default -> "Normal";
         };
     }
 
@@ -117,6 +128,14 @@ public class NuevaPartidaSettings {
 
     public void setColorJugador(String colorJugador) {
         this.colorJugador = colorJugador;
+    }
+
+    public DificultadIA getDificultadIA() {
+        return dificultadIA;
+    }
+
+    public void setDificultadIA(DificultadIA dificultadIA) {
+        this.dificultadIA = dificultadIA == null ? DificultadIA.NORMAL : dificultadIA;
     }
 
     public int getSonido() {

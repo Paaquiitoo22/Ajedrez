@@ -1001,3 +1001,99 @@
 .theme-light .resultado-texto-derrota {
     -fx-text-fill: #dc2626;
 }
+/* ══════════════════════════════════════════════════════════════
+   Panel final de partida
+   ══════════════════════════════════════════════════════════════ */
+
+.overlay-fin-partida {
+    -fx-background-color: rgba(0, 0, 0, 0.72);
+}
+
+.panel-fin-partida {
+    -fx-background-color: #232323;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1.4;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.55), 22, 0.25, 0, 8);
+}
+
+.titulo-fin-partida {
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Inter";
+}
+
+.subtitulo-fin-partida {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 15px;
+    -fx-font-family: "Inter";
+}
+
+.estadistica-fin {
+    -fx-background-color: #2d2d2d;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #3d3d3d;
+    -fx-padding: 10 14 10 14;
+}
+
+.estadistica-fin-titulo {
+    -fx-text-fill: #888888;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.estadistica-fin-valor {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.boton-fin-principal {
+    -fx-background-color: #D4AF37;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+
+.boton-fin-secundario {
+    -fx-background-color: transparent;
+    -fx-border-color: #D4AF37;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-text-fill: #D4AF37;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.theme-light .panel-fin-partida {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #D4AF37;
+}
+
+.theme-light .subtitulo-fin-partida {
+    -fx-text-fill: #1f2933;
+}
+
+.theme-light .estadistica-fin {
+    -fx-background-color: #f4f1ea;
+    -fx-border-color: #ded6c8;
+}
+
+.theme-light .estadistica-fin-valor {
+    -fx-text-fill: #1f2933;
+}
+
+.label-volumen-partida {
+    -fx-text-fill: #888888;
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}
+
+.theme-light .label-volumen-partida {
+    -fx-text-fill: #6b7280;
+}

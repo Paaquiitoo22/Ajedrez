@@ -327,6 +327,9 @@ public class Tablero {
 
         return null;
     }
+    public Posicion getPosicionRey(ColorPieza color) {
+        return buscarRey(color);
+    }
 
     private boolean movimientoAtaqueValido(Pieza pieza, int fo, int co, int fd, int cd) {
         return switch (pieza.getTipo()) {
