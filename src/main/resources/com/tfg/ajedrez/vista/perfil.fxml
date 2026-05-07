@@ -65,7 +65,7 @@
                     <children>
                         <Button fx:id="btnAjustes" mnemonicParsing="false" onAction="#onCambiarTema"
                                 styleClass="boton-menu-lateral" text="Tema claro">
-                            <graphic><Region styleClass="icon-settings" /></graphic>
+                            <graphic><Region styleClass="icon-tema" /></graphic>
                         </Button>
                     </children>
                     <padding><Insets left="10.0" /></padding>

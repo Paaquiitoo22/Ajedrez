@@ -19,10 +19,7 @@ public class NuevaPartidaSettings {
     private String colorJugador;
     private DificultadIA dificultadIA;
     private int sonido;
-    private boolean mostrarCoordenadas;
     private boolean resaltarUltimoMovimiento;
-    private boolean animaciones;
-    private boolean permitirDeshacer;
     private boolean guardarAutomaticamente;
 
     public static NuevaPartidaSettings defaults() {
@@ -33,10 +30,7 @@ public class NuevaPartidaSettings {
         settings.colorJugador = COLOR_BLANCAS;
         settings.dificultadIA = DificultadIA.NORMAL;
         settings.sonido = 70;
-        settings.mostrarCoordenadas = true;
         settings.resaltarUltimoMovimiento = true;
-        settings.animaciones = true;
-        settings.permitirDeshacer = false;
         settings.guardarAutomaticamente = true;
         return settings;
     }
@@ -49,10 +43,7 @@ public class NuevaPartidaSettings {
         copy.colorJugador = colorJugador;
         copy.dificultadIA = dificultadIA;
         copy.sonido = sonido;
-        copy.mostrarCoordenadas = mostrarCoordenadas;
         copy.resaltarUltimoMovimiento = resaltarUltimoMovimiento;
-        copy.animaciones = animaciones;
-        copy.permitirDeshacer = permitirDeshacer;
         copy.guardarAutomaticamente = guardarAutomaticamente;
         return copy;
     }
@@ -88,14 +79,6 @@ public class NuevaPartidaSettings {
     public String getTiempoLabel() {
         int minutos = tiempoSegundos / 60;
         return minutos + " min";
-    }
-
-    public String getTiempoPrincipalLabel() {
-        return getTiempoLabel() + " por jugador";
-    }
-
-    public String getTiempoSubLabel() {
-        return "Sin incremento - " + getModoLabel();
     }
 
     public String getModoJuego() {
@@ -146,36 +129,12 @@ public class NuevaPartidaSettings {
         this.sonido = Math.max(0, Math.min(100, sonido));
     }
 
-    public boolean isMostrarCoordenadas() {
-        return mostrarCoordenadas;
-    }
-
-    public void setMostrarCoordenadas(boolean mostrarCoordenadas) {
-        this.mostrarCoordenadas = mostrarCoordenadas;
-    }
-
     public boolean isResaltarUltimoMovimiento() {
         return resaltarUltimoMovimiento;
     }
 
     public void setResaltarUltimoMovimiento(boolean resaltarUltimoMovimiento) {
         this.resaltarUltimoMovimiento = resaltarUltimoMovimiento;
-    }
-
-    public boolean isAnimaciones() {
-        return animaciones;
-    }
-
-    public void setAnimaciones(boolean animaciones) {
-        this.animaciones = animaciones;
-    }
-
-    public boolean isPermitirDeshacer() {
-        return permitirDeshacer;
-    }
-
-    public void setPermitirDeshacer(boolean permitirDeshacer) {
-        this.permitirDeshacer = permitirDeshacer;
     }
 
     public boolean isGuardarAutomaticamente() {

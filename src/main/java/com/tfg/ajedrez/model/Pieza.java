@@ -40,16 +40,5 @@ public class Pieza {
     public void setMovida(boolean movida) {
         this.movida = movida;
     }
-
-    public String getSimbolo() {
-        return switch (tipo) {
-            case REY -> color == ColorPieza.BLANCA ? "\u2654" : "\u265A";
-            case DAMA -> color == ColorPieza.BLANCA ? "\u2655" : "\u265B";
-            case TORRE -> color == ColorPieza.BLANCA ? "\u2656" : "\u265C";
-            case ALFIL -> color == ColorPieza.BLANCA ? "\u2657" : "\u265D";
-            case CABALLO -> color == ColorPieza.BLANCA ? "\u2658" : "\u265E";
-            case PEON -> color == ColorPieza.BLANCA ? "\u2659" : "\u265F";
-        };
-    }
 }
 

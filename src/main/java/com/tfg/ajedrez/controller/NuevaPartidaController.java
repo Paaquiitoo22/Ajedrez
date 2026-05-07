@@ -21,11 +21,10 @@ public class NuevaPartidaController {
     @FXML private Button btnFacil, btnNormal, btnDificil;
     @FXML private Button btnBlancas, btnNegras, btnAleatorio;
 
-    @FXML private Label lblTiempoPrincipal, lblTiempoSub;
     @FXML private Slider sliderSonido;
     @FXML private Label lblSonidoValor;
 
-    @FXML private ToggleButton toggleCoordenadas, toggleResaltar, toggleAnimaciones, toggleDeshacer, toggleGuardar;
+    @FXML private ToggleButton toggleResaltar, toggleGuardar;
 
     @FXML private Label chipModo, chipTipo, chipColor, chipDificultad, chipTiempo;
 
@@ -51,28 +50,15 @@ public class NuevaPartidaController {
             lblSonidoValor.setText(settings.getSonido() + "%");
         });
 
-        toggleCoordenadas.setSelected(settings.isMostrarCoordenadas());
         toggleResaltar.setSelected(settings.isResaltarUltimoMovimiento());
-        toggleAnimaciones.setSelected(settings.isAnimaciones());
-        toggleDeshacer.setSelected(settings.isPermitirDeshacer());
         toggleGuardar.setSelected(settings.isGuardarAutomaticamente());
-
-        toggleCoordenadas.selectedProperty().addListener((obs, oldValue, selected) ->
-                settings.setMostrarCoordenadas(selected));
 
         toggleResaltar.selectedProperty().addListener((obs, oldValue, selected) ->
                 settings.setResaltarUltimoMovimiento(selected));
 
-        toggleAnimaciones.selectedProperty().addListener((obs, oldValue, selected) ->
-                settings.setAnimaciones(selected));
-
-        toggleDeshacer.selectedProperty().addListener((obs, oldValue, selected) ->
-                settings.setPermitirDeshacer(selected));
-
         toggleGuardar.selectedProperty().addListener((obs, oldValue, selected) ->
                 settings.setGuardarAutomaticamente(selected));
 
-        actualizarDisponibilidadDeshacer();
         actualizarVisibilidadDificultadIA();
         actualizarResumen();
         actualizarTextoTema();
@@ -108,7 +94,6 @@ public class NuevaPartidaController {
             settings.setTipoPartida(NuevaPartidaSettings.TIPO_CONTRA_IA);
         }
 
-        actualizarDisponibilidadDeshacer();
         actualizarVisibilidadDificultadIA();
         actualizarResumen();
     }
@@ -157,11 +142,6 @@ public class NuevaPartidaController {
     }
 
     @FXML
-    public void onTiempoPartida() {
-        actualizarResumen();
-    }
-
-    @FXML
     public void onDesplegable(ActionEvent event) {
         boolean visible = !menuDesplegable.isVisible();
         menuDesplegable.setVisible(visible);
@@ -203,17 +183,6 @@ public class NuevaPartidaController {
         }
     }
 
-    private void actualizarDisponibilidadDeshacer() {
-        boolean contraIa = NuevaPartidaSettings.TIPO_CONTRA_IA.equals(settings.getTipoPartida());
-
-        toggleDeshacer.setDisable(!contraIa);
-
-        if (!contraIa) {
-            toggleDeshacer.setSelected(false);
-            settings.setPermitirDeshacer(false);
-        }
-    }
-
     private void actualizarVisibilidadDificultadIA() {
         boolean contraIa = NuevaPartidaSettings.TIPO_CONTRA_IA.equals(settings.getTipoPartida());
 
@@ -229,9 +198,6 @@ public class NuevaPartidaController {
     }
 
     private void actualizarResumen() {
-        lblTiempoPrincipal.setText(settings.getTiempoPrincipalLabel());
-        lblTiempoSub.setText(settings.getTiempoSubLabel());
-
         chipModo.setText(settings.getModoLabel());
         chipTipo.setText(settings.getTipoLabel());
         chipColor.setText(settings.getColorLabel());

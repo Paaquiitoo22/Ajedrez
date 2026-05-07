@@ -114,24 +114,14 @@
     -fx-cursor: hand;
 }
 
-.icon-settings {
-    -fx-background-color: white;
-    -fx-shape: "M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.35 19.43,11.03L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,6.05C16.04,5.66 15.47,5.34 14.86,5.12L14.47,2.5C14.43,2.25 14.22,2.07 13.97,2.07H9.97C9.72,2.07 9.51,2.25 9.47,2.5L9.08,5.12C8.47,5.34 7.9,5.66 7.38,6.05L4.89,5.05C4.67,4.97 4.4,5.05 4.28,5.27L2.28,8.73C2.16,8.95 2.21,9.22 2.4,9.37L4.51,11.03C4.47,11.35 4.44,11.67 4.44,12C4.44,12.33 4.47,12.65 4.51,12.97L2.4,14.63C2.21,14.78 2.16,15.05 2.28,15.27L4.28,18.73C4.4,18.95 4.67,19.03 4.89,18.95L7.38,17.95C7.9,18.34 8.47,18.66 9.08,18.88L9.47,21.5C9.51,21.75 9.72,21.93 9.97,21.93H13.97C14.22,21.93 14.43,21.75 14.47,21.5L14.86,18.88C15.47,18.66 16.04,18.34 16.56,17.95L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z";
+.icon-tema {
+    -fx-background-color: #fbbf24;
+    -fx-shape: "M9,21c0,0.55 0.45,1 1,1h4c0.55,0 1-0.45 1-1v-1H9V21z M12,2C8.14,2 5,5.14 5,9c0,2.38 1.19,4.47 3,5.74V17c0,0.55 0.45,1 1,1h6c0.55,0 1-0.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74C19,5.14 15.86,2 12,2z";
     -fx-min-width: 15px;
     -fx-max-width: 15px;
     -fx-min-height: 15px;
     -fx-max-height: 15px;
 }
-
-.icon-info {
-    -fx-background-color: white;
-    -fx-shape: "M11,9H13V7H11V9M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z";
-    -fx-min-width: 15px;
-    -fx-max-width: 15px;
-    -fx-min-height: 15px;
-    -fx-max-height: 15px;
-}
-
 .icon-exit {
     -fx-background-color: #c61515;
     -fx-shape: "M16,17V14H9V10H16V7L21,12L16,17M14,2A2,2 0 0,1 16,4V6H14V4H5V20H14V18H16V20A2,2 0 0,1 14,22H5A2,2 0 0,1 3,20V4A2,2 0 0,1 5,2H14Z";
@@ -189,15 +179,6 @@
     -fx-font-size: 13px;
     -fx-font-family: "Inter";
 }
-
-/* ══════════════════════════════════════════════════════════════
-   Menú Principal — Botones Historial / Perfil
-   ══════════════════════════════════════════════════════════════ */
-
-.boton-acceso {
-    -fx-cursor: hand;
-}
-
 .label-nav {
     -fx-text-fill: white;
     -fx-font-size: 13px;
@@ -212,16 +193,6 @@
     -fx-min-height: 28px;
     -fx-max-height: 28px;
 }
-
-.icon-nav-perfil {
-    -fx-background-color: white;
-    -fx-shape: "M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z";
-    -fx-min-width: 28px;
-    -fx-max-width: 28px;
-    -fx-min-height: 28px;
-    -fx-max-height: 28px;
-}
-
 .icon-nav-cargar {
     -fx-background-color: white;
     -fx-shape: "M19,20H5A2,2 0 0,1 3,18V6A2,2 0 0,1 5,4H11L13,6H19A2,2 0 0,1 21,8V18A2,2 0 0,1 19,20M12,18L17,13H14V9H10V13H7L12,18Z";
@@ -476,94 +447,7 @@
 
 .boton-card.seleccionado .titulo-opcion {
     -fx-text-fill: #D4AF37;
-}
-
-.boton-card.seleccionado .icon-card {
-    -fx-background-color: #D4AF37;
-}
-
-/* ── Botón grande de tiempo de partida ──────────────────────── */
-
-.boton-tiempo {
-    -fx-background-color: #2a2a2a;
-    -fx-background-radius: 12;
-    -fx-border-radius: 12;
-    -fx-border-color: #3a3a3a;
-    -fx-border-width: 1;
-    -fx-cursor: hand;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 14 18 14 18;
-    -fx-content-display: graphic-only;
-}
-
-.boton-tiempo:pressed {
-    -fx-background-color: #1f1f1f;
-}
-
-.boton-tiempo .titulo-opcion {
-    -fx-text-fill: #f0f0f0;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-}
-
-.boton-tiempo .sub-opcion {
-    -fx-text-fill: #888888;
-    -fx-font-size: 12px;
-}
-
-/* ── Iconos para Nueva Partida ──────────────────────────────── */
-
-.icon-card {
-    -fx-background-color: white;
-    -fx-min-width: 28px;
-    -fx-max-width: 28px;
-    -fx-min-height: 28px;
-    -fx-max-height: 28px;
-}
-
-.icon-bot {
-    -fx-shape: "M12,2A2,2 0 0,1 14,4C14,4.74 13.6,5.39 13,5.73V7H14A7,7 0 0,1 21,14H22A1,1 0 0,1 23,15V18A1,1 0 0,1 22,19H21V20A2,2 0 0,1 19,22H5A2,2 0 0,1 3,20V19H2A1,1 0 0,1 1,18V15A1,1 0 0,1 2,14H3A7,7 0 0,1 10,7H11V5.73C10.4,5.39 10,4.74 10,4A2,2 0 0,1 12,2M7.5,13A2.5,2.5 0 0,0 5,15.5A2.5,2.5 0 0,0 7.5,18A2.5,2.5 0 0,0 10,15.5A2.5,2.5 0 0,0 7.5,13M16.5,13A2.5,2.5 0 0,0 14,15.5A2.5,2.5 0 0,0 16.5,18A2.5,2.5 0 0,0 19,15.5A2.5,2.5 0 0,0 16.5,13Z";
-}
-
-.icon-multiplayer {
-    -fx-shape: "M16,17V19H2V17S2,13 9,13 16,17 16,17M12.5,7.5A3.5,3.5 0 0,0 9,4A3.5,3.5 0 0,0 5.5,7.5A3.5,3.5 0 0,0 9,11A3.5,3.5 0 0,0 12.5,7.5M15.94,13A5.32,5.32 0 0,1 18,17V19H22V17S22,13.37 15.94,13M15,4A3.39,3.39 0 0,0 13.07,4.59A5,5 0 0,1 13.07,10.41A3.39,3.39 0 0,0 15,11A3.5,3.5 0 0,0 18.5,7.5A3.5,3.5 0 0,0 15,4Z";
-}
-
-.icon-rey {
-    -fx-shape: "M19,22H5V20H19V22M17,10C15.58,10 14.26,10.77 13.55,12H13V7H16V5H13V2H11V5H8V7H11V12H10.45C9.74,10.77 8.42,10 7,10A4,4 0 0,0 3,14A4,4 0 0,0 7,18H17A4,4 0 0,0 21,14A4,4 0 0,0 17,10Z";
-    -fx-min-width: 26px;
-    -fx-max-width: 26px;
-    -fx-min-height: 26px;
-    -fx-max-height: 26px;
-}
-
-.icon-rey-blanco {
-    -fx-background-color: #f0f0f0;
-}
-
-.icon-rey-negro {
-    -fx-background-color: #888888;
-}
-
-.icon-aleatorio {
-    -fx-background-color: #888888;
-    -fx-shape: "M15.07,11.25L14.17,12.17C13.45,12.89 13,13.5 13,15H11V14.5C11,13.39 11.45,12.39 12.17,11.67L13.41,10.41C13.78,10.05 14,9.55 14,9C14,7.89 13.1,7 12,7A2,2 0 0,0 10,9H8A4,4 0 0,1 12,5A4,4 0 0,1 16,9C16,9.88 15.64,10.67 15.07,11.25M13,19H11V17H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z";
-    -fx-min-width: 26px;
-    -fx-max-width: 26px;
-    -fx-min-height: 26px;
-    -fx-max-height: 26px;
-}
-
-.icon-flecha-derecha {
-    -fx-background-color: #888888;
-    -fx-shape: "M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z";
-    -fx-min-width: 14px;
-    -fx-max-width: 14px;
-    -fx-min-height: 14px;
-    -fx-max-height: 14px;
-}
-
-.icon-flecha-atras {
+}.icon-flecha-atras {
     -fx-background-color: #cccccc;
     -fx-shape: "M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z";
     -fx-min-width: 16px;
@@ -708,49 +592,6 @@
     -fx-font-weight: bold;
     -fx-padding: 5 12 5 12;
 }
-
-/* ── Botón Iniciar partida (outlined dorado) ────────────────── */
-
-.boton-iniciar {
-    -fx-background-color: transparent;
-    -fx-background-radius: 12;
-    -fx-border-radius: 12;
-    -fx-border-color: #D4AF37;
-    -fx-border-width: 1.5;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-font-size: 14px;
-    -fx-font-family: "Inter";
-    -fx-cursor: hand;
-}
-
-.boton-iniciar:pressed {
-    -fx-background-color: rgba(212, 175, 55, 0.18);
-}
-
-/* ── Badge circular para icono de reloj en Tiempo de partida ─ */
-
-.icon-badge-tiempo {
-    -fx-background-color: rgba(212, 175, 55, 0.15);
-    -fx-background-radius: 100;
-    -fx-min-width: 36;
-    -fx-pref-width: 36;
-    -fx-max-width: 36;
-    -fx-min-height: 36;
-    -fx-pref-height: 36;
-    -fx-max-height: 36;
-    -fx-alignment: CENTER;
-}
-
-.icon-reloj {
-    -fx-background-color: #D4AF37;
-    -fx-shape: "M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z";
-    -fx-min-width: 18;
-    -fx-max-width: 18;
-    -fx-min-height: 18;
-    -fx-max-height: 18;
-}
-
 .cabecera-historial {
     -fx-border-color: #383838;
     -fx-border-width: 0 0 1 0;
@@ -814,7 +655,6 @@
 .theme-light .menu-desplegable,
 .theme-light .boton-opcion,
 .theme-light .boton-card,
-.theme-light .boton-tiempo,
 .theme-light .card-opciones,
 .theme-light .profile-card,
 .theme-light .panel-revision {
@@ -843,11 +683,14 @@
 }
 
 .theme-light .menu-hamburguesa .icon,
-.theme-light .icon-settings,
 .theme-light .icon-info,
 .theme-light .icon-nav-historial,
 .theme-light .icon-nav-cargar,
 .theme-light .icon-card {
+    -fx-background-color: #2f3640;
+}
+
+.theme-light .icon-tema {
     -fx-background-color: #2f3640;
 }
 
@@ -863,7 +706,6 @@
 .theme-light .titulo-opcion,
 .theme-light .boton-opcion .titulo-opcion,
 .theme-light .boton-card .titulo-opcion,
-.theme-light .boton-tiempo .titulo-opcion,
 .theme-light .opcion-titulo,
 .theme-light .profile-name,
 .theme-light .titulo-revision {
@@ -877,7 +719,6 @@
 .theme-light .etiqueta-tablero,
 .theme-light .sub-opcion,
 .theme-light .boton-opcion .sub-opcion,
-.theme-light .boton-tiempo .sub-opcion,
 .theme-light .card-opciones-header,
 .theme-light .opcion-sub,
 .theme-light .profile-email,
@@ -892,7 +733,6 @@
 
 .theme-light .boton-opcion:pressed,
 .theme-light .boton-card:pressed,
-.theme-light .boton-tiempo:pressed,
 .theme-light .boton-volver-circular:pressed {
     -fx-background-color: #f0eadf;
 }
@@ -907,12 +747,6 @@
 .theme-light .boton-card.seleccionado .titulo-opcion {
     -fx-text-fill: #9f7a13;
 }
-
-.theme-light .boton-card.seleccionado .icon-card,
-.theme-light .icon-reloj {
-    -fx-background-color: #D4AF37;
-}
-
 .theme-light .slider-sonido .track,
 .theme-light .toggle-switch {
     -fx-background-color: #ded6c8;
