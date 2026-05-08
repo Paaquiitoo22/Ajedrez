@@ -65,6 +65,18 @@ public class ChessClock {
         }
     }
 
+    public void addSeconds(boolean white, int seconds) {
+        if (seconds <= 0 || finished) {
+            return;
+        }
+
+        if (white) {
+            whiteSeconds += seconds;
+        } else {
+            blackSeconds += seconds;
+        }
+    }
+
     public String getWhiteTime() {
         return format(whiteSeconds);
     }

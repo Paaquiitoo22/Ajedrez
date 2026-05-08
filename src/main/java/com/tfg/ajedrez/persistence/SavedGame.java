@@ -24,6 +24,7 @@ public class SavedGame {
     public List<String> historialMovimientos = new ArrayList<>();
     public boolean deshacerUsado;
     public GameSnapshot snapshotDeshacer;
+    public List<GameSnapshot> snapshotsDeshacer = new ArrayList<>();
     public List<GameSnapshot> snapshotsRevision = new ArrayList<>();
 
     public SavedGame() {

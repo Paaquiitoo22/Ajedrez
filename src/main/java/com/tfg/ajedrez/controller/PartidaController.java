@@ -26,6 +26,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -79,6 +80,7 @@ public class PartidaController implements Initializable {
 
     private static final int TIEMPO_INICIAL_SEG = 600;
     private static final Random RANDOM = new Random();
+    private static final int INCREMENTO_BLITZ_SEG = 3;
 
     private Tablero modelo;
     private ColorPieza turnoActual = ColorPieza.BLANCA;
@@ -101,9 +103,8 @@ public class PartidaController implements Initializable {
     private ColorPieza colorUsuario = ColorPieza.BLANCA;
     private List<String> historialTexto = new ArrayList<>();
     private List<GameSnapshot> snapshotsRevision = new ArrayList<>();
-    private GameSnapshot snapshotDeshacer;
+    private List<GameSnapshot> snapshotsDeshacer = new ArrayList<>();
     private PauseTransition turnoIAPendiente;
-    private boolean deshacerUsado = false;
     private boolean pausaActiva = false;
     private boolean modoRevision = false;
     private boolean resultadoRegistrado = false;
@@ -195,8 +196,14 @@ public class PartidaController implements Initializable {
                 ? new ArrayList<>()
                 : new ArrayList<>(partidaCargada.historialMovimientos);
 
-        deshacerUsado = partidaCargada.deshacerUsado;
-        snapshotDeshacer = partidaCargada.snapshotDeshacer;
+        snapshotsDeshacer = partidaCargada.snapshotsDeshacer == null
+                ? new ArrayList<>()
+                : new ArrayList<>(partidaCargada.snapshotsDeshacer);
+
+        if (snapshotsDeshacer.isEmpty() && partidaCargada.snapshotDeshacer != null) {
+            snapshotsDeshacer.add(partidaCargada.snapshotDeshacer);
+        }
+
         relojIniciado = partidaCargada.relojIniciado || partidaCargada.contadorMovimientos > 0;
 
         snapshotsRevision = partidaCargada.snapshotsRevision == null
@@ -496,7 +503,7 @@ public class PartidaController implements Initializable {
             limpiarSeleccion();
 
             if (!partidaTerminada && snapshotAntesMovimiento != null) {
-                snapshotDeshacer = snapshotAntesMovimiento;
+                snapshotsDeshacer.add(snapshotAntesMovimiento);
                 actualizarEstadoPausa();
             }
 
@@ -566,15 +573,27 @@ public class PartidaController implements Initializable {
     }
 
     private void cambiarTurno() {
+        ColorPieza colorQueMovio = turnoActual;
         turnoActual = turnoActual == ColorPieza.BLANCA ? ColorPieza.NEGRA : ColorPieza.BLANCA;
 
         if (reloj != null) {
+            aplicarIncrementoBlitz(colorQueMovio);
             reloj.switchTurn();
             iniciarRelojTrasPrimerMovimiento();
         }
 
         actualizarEstilosTimer();
         actualizarAvisoJaque();
+    }
+
+    private void aplicarIncrementoBlitz(ColorPieza colorQueMovio) {
+        if (settings == null || !NuevaPartidaSettings.MODO_BLITZ.equals(settings.getModoJuego())) {
+            return;
+        }
+
+        reloj.addSeconds(colorQueMovio == ColorPieza.BLANCA, INCREMENTO_BLITZ_SEG);
+        timerBlancas.setText(reloj.getWhiteTime());
+        timerNegras.setText(reloj.getBlackTime());
     }
 
     private void iniciarRelojTrasPrimerMovimiento() {
@@ -592,14 +611,13 @@ public class PartidaController implements Initializable {
 
     private boolean puedePrepararDeshacer() {
         return NuevaPartidaSettings.TIPO_CONTRA_IA.equals(settings.getTipoPartida())
-                && !deshacerUsado
                 && !partidaTerminada;
     }
 
     private boolean puedeDeshacer() {
         return NuevaPartidaSettings.TIPO_CONTRA_IA.equals(settings.getTipoPartida())
-                && !deshacerUsado
-                && snapshotDeshacer != null
+                && snapshotsDeshacer != null
+                && !snapshotsDeshacer.isEmpty()
                 && !partidaTerminada;
     }
 
@@ -795,7 +813,7 @@ public class PartidaController implements Initializable {
 
         cancelarTurnoIAPendiente();
 
-        GameSnapshot snapshot = snapshotDeshacer;
+        GameSnapshot snapshot = snapshotsDeshacer.remove(snapshotsDeshacer.size() - 1);
 
         modelo.importarEstado(snapshot.boardState);
         turnoActual = snapshot.whiteTurn ? ColorPieza.BLANCA : ColorPieza.NEGRA;
@@ -807,8 +825,6 @@ public class PartidaController implements Initializable {
                 ? new ArrayList<>()
                 : new ArrayList<>(snapshot.historialMovimientos);
 
-        deshacerUsado = true;
-        snapshotDeshacer = null;
         partidaTerminada = false;
         modoRevision = false;
 
@@ -1376,8 +1392,11 @@ public class PartidaController implements Initializable {
         savedGame.puntosBlancas = puntosCapturasBlancas;
         savedGame.puntosNegras = puntosCapturasNegras;
         savedGame.historialMovimientos = new ArrayList<>(historialTexto);
-        savedGame.deshacerUsado = deshacerUsado;
-        savedGame.snapshotDeshacer = snapshotDeshacer;
+        savedGame.deshacerUsado = false;
+        savedGame.snapshotDeshacer = snapshotsDeshacer.isEmpty()
+                ? null
+                : snapshotsDeshacer.get(snapshotsDeshacer.size() - 1);
+        savedGame.snapshotsDeshacer = new ArrayList<>(snapshotsDeshacer);
         savedGame.snapshotsRevision = new ArrayList<>(snapshotsRevision);
 
         GamePersistenceService.guardarPartidaEnCurso(userId, savedGame);
@@ -1491,23 +1510,44 @@ public class PartidaController implements Initializable {
         ButtonType btnDeshacer = new ButtonType("Deshacer movimiento", ButtonBar.ButtonData.OTHER);
         ButtonType btnSalir = new ButtonType("Salir", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                "La partida esta pausada.",
-                btnReanudar,
-                btnReiniciar,
-                btnDeshacer,
-                btnSalir);
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Pausa");
+        dialog.setHeaderText("Partida pausada");
 
-        alert.setTitle("Pausa");
-        alert.setHeaderText("Partida pausada");
+        DialogPane pane = dialog.getDialogPane();
+        prepararDialogoPartida(pane);
+        pane.getButtonTypes().addAll(btnReanudar, btnReiniciar, btnDeshacer, btnSalir);
 
-        Button botonDeshacer = (Button) alert.getDialogPane().lookupButton(btnDeshacer);
+        Label resumen = new Label("Turno actual: " + (turnoActual == ColorPieza.BLANCA ? "blancas" : "negras"));
+        resumen.getStyleClass().add("dialog-subtitle");
+
+        HBox relojes = new HBox(10,
+                crearDatoPausa("Blancas", timerBlancas.getText(), puntosCapturasBlancas + " pts"),
+                crearDatoPausa("Negras", timerNegras.getText(), puntosCapturasNegras + " pts")
+        );
+
+        Label movimientos = new Label("Movimientos: " + contadorMovimientos);
+        movimientos.getStyleClass().add("pause-menu-note");
+
+        Label deshacer = new Label(puedeDeshacer()
+                ? "Deshacer disponible: " + snapshotsDeshacer.size() + " movimiento(s)."
+                : "Deshacer disponible cuando hayas realizado un movimiento contra la IA.");
+        deshacer.getStyleClass().add(puedeDeshacer() ? "pause-menu-ok" : "pause-menu-muted");
+
+        VBox content = new VBox(12, resumen, relojes, movimientos, deshacer);
+        content.getStyleClass().add("dialog-content");
+        content.setPrefWidth(390);
+        pane.setContent(content);
+
+        Node botonDeshacer = pane.lookupButton(btnDeshacer);
 
         if (botonDeshacer != null) {
             botonDeshacer.setDisable(!puedeDeshacer());
         }
 
-        Optional<ButtonType> respuesta = alert.showAndWait();
+        dialog.setResultConverter(button -> button);
+
+        Optional<ButtonType> respuesta = dialog.showAndWait();
 
         if (respuesta.isEmpty() || respuesta.get() == btnReanudar) {
             reanudarPartida();
@@ -1519,6 +1559,33 @@ public class PartidaController implements Initializable {
         } else if (respuesta.get() == btnSalir) {
             salirDesdePausa();
         }
+    }
+
+    private VBox crearDatoPausa(String titulo, String tiempo, String puntos) {
+        Label tituloLabel = new Label(titulo);
+        tituloLabel.getStyleClass().add("pause-menu-label");
+
+        Label tiempoLabel = new Label(tiempo);
+        tiempoLabel.getStyleClass().add("pause-menu-time");
+
+        Label puntosLabel = new Label(puntos);
+        puntosLabel.getStyleClass().add("pause-menu-points");
+
+        VBox box = new VBox(3, tituloLabel, tiempoLabel, puntosLabel);
+        box.getStyleClass().add("pause-menu-stat");
+        box.setAlignment(Pos.CENTER);
+        HBox.setHgrow(box, Priority.ALWAYS);
+        return box;
+    }
+
+    private void prepararDialogoPartida(DialogPane pane) {
+        URL css = getClass().getResource("/com/tfg/ajedrez/css/styles.css");
+        if (css != null && !pane.getStylesheets().contains(css.toExternalForm())) {
+            pane.getStylesheets().add(css.toExternalForm());
+        }
+
+        pane.getStyleClass().add("app-dialog");
+        ThemeManager.applyTheme(pane);
     }
 
     private void salirDesdePausa() {

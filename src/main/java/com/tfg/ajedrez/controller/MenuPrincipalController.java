@@ -10,21 +10,19 @@ import com.tfg.ajedrez.util.AvatarUtil;
 import com.tfg.ajedrez.util.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MenuPrincipalController {
 
@@ -59,8 +57,6 @@ public class MenuPrincipalController {
     @FXML private Label oponente3;
     @FXML private Label fecha3;
 
-    private List<GameRecord> historialActual;
-
     @FXML
     private void initialize() {
         aplicarAvatarUsuario();
@@ -69,12 +65,12 @@ public class MenuPrincipalController {
     }
 
     @FXML
-    public void onVolver(ActionEvent event) {
+    public void onVolver(ActionEvent event) throws Exception {
         SceneManager.navegarA("/com/tfg/ajedrez/vista/login.fxml");
     }
 
     @FXML
-    public void onDesplegable(ActionEvent event) {
+    public void onDesplegable(ActionEvent event) throws Exception {
         boolean visible = !menuDesplegable.isVisible();
         menuDesplegable.setVisible(visible);
         RegionMenu.setVisible(visible);
@@ -103,11 +99,46 @@ public class MenuPrincipalController {
         List<GameRecord> historial = GamePersistenceService.cargarHistorial(AppSession.getCurrentUserId());
 
         if (historial.isEmpty()) {
-            mostrarAviso("Historial", "Sin partidas anteriores", "Aún no hay partidas guardadas para este usuario.");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Historial");
+            alert.setHeaderText("Sin partidas anteriores");
+            alert.setContentText("Aun no hay partidas guardadas para este usuario.");
+            alert.showAndWait();
             return;
         }
 
-        mostrarHistorialBonito(historial);
+        List<String> opciones = new ArrayList<>();
+        for (int i = 0; i < historial.size(); i++) {
+            opciones.add((i + 1) + ". " + formatearPartida(historial.get(i)));
+        }
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(opciones.get(0), opciones);
+        dialog.setTitle("Historial");
+        dialog.setHeaderText("Elige una partida para revisar");
+        dialog.setContentText("Partida:");
+
+        Optional<String> seleccion = dialog.showAndWait();
+        if (seleccion.isEmpty()) {
+            return;
+        }
+
+        int indice = opciones.indexOf(seleccion.get());
+        if (indice < 0) {
+            return;
+        }
+
+        GameRecord record = historial.get(indice);
+        if (!tieneDatosRevision(record)) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Historial");
+            alert.setHeaderText("Revision no disponible");
+            alert.setContentText("Esta partida no tiene posiciones guardadas para revision.");
+            alert.showAndWait();
+            return;
+        }
+
+        AppSession.requestReviewGame(record);
+        SceneManager.navegarA("/com/tfg/ajedrez/vista/partida.fxml");
     }
 
     @FXML
@@ -138,8 +169,7 @@ public class MenuPrincipalController {
         lblDerrotas.setText(String.valueOf(stats.derrotas()));
         lblTablas.setText(String.valueOf(stats.tablas()));
 
-        historialActual = GamePersistenceService.cargarHistorial(userId);
-        mostrarPartidasRecientes(historialActual);
+        mostrarPartidasRecientes(GamePersistenceService.cargarHistorial(userId));
         configurarBotonCargar(GamePersistenceService.existePartidaEnCurso(userId));
     }
 
@@ -162,21 +192,16 @@ public class MenuPrincipalController {
 
         if (!historial.isEmpty()) {
             mostrarCard(cardPartida1, resultado1, oponente1, fecha1, historial.get(0));
-            cardPartida1.setOnMouseClicked(e -> revisarPartida(historial.get(0)));
         }
-
         if (historial.size() > 1) {
             sep1.setVisible(true);
             sep1.setManaged(true);
             mostrarCard(cardPartida2, resultado2, oponente2, fecha2, historial.get(1));
-            cardPartida2.setOnMouseClicked(e -> revisarPartida(historial.get(1)));
         }
-
         if (historial.size() > 2) {
             sep2.setVisible(true);
             sep2.setManaged(true);
             mostrarCard(cardPartida3, resultado3, oponente3, fecha3, historial.get(2));
-            cardPartida3.setOnMouseClicked(e -> revisarPartida(historial.get(2)));
         }
     }
 
@@ -191,7 +216,7 @@ public class MenuPrincipalController {
         ocultar(sep2);
     }
 
-    private void ocultar(Node node) {
+    private void ocultar(javafx.scene.Node node) {
         node.setVisible(false);
         node.setManaged(false);
     }
@@ -199,7 +224,6 @@ public class MenuPrincipalController {
     private void mostrarCard(HBox card, Label resultado, Label oponente, Label fecha, GameRecord record) {
         card.setVisible(true);
         card.setManaged(true);
-        card.setStyle("-fx-cursor: hand;");
 
         resultado.getStyleClass().removeAll("resultado-victoria", "resultado-derrota", "resultado-tablas");
         resultado.getStyleClass().add(resultadoClass(record.resultado));
@@ -207,105 +231,6 @@ public class MenuPrincipalController {
 
         oponente.setText(record.oponente == null || record.oponente.isBlank() ? "Oponente" : record.oponente);
         fecha.setText(GamePersistenceService.fechaTexto(record.fechaIso));
-    }
-
-    private void mostrarHistorialBonito(List<GameRecord> historial) {
-        Alert alert = new Alert(Alert.AlertType.NONE);
-        alert.setTitle("Historial");
-        alert.setHeaderText(null);
-
-        VBox root = new VBox(16);
-        root.setPadding(new Insets(22));
-        root.setPrefWidth(520);
-        root.getStyleClass().add("panel-historial-bonito");
-
-        Label titulo = new Label("Historial de partidas");
-        titulo.getStyleClass().add("historial-bonito-titulo");
-
-        Label subtitulo = new Label("Selecciona una partida para revisar sus movimientos.");
-        subtitulo.getStyleClass().add("historial-bonito-subtitulo");
-
-        VBox lista = new VBox(10);
-
-        for (GameRecord record : historial) {
-            lista.getChildren().add(crearCardHistorial(record, alert));
-        }
-
-        ScrollPane scroll = new ScrollPane(lista);
-        scroll.setFitToWidth(true);
-        scroll.setPrefHeight(360);
-        scroll.setStyle("-fx-background: transparent; -fx-background-color: transparent; -fx-border-color: transparent;");
-
-        Button cerrar = new Button("Cerrar");
-        cerrar.getStyleClass().add("boton-fin-secundario");
-        cerrar.setOnAction(e -> alert.close());
-
-        HBox botones = new HBox(cerrar);
-        botones.setAlignment(Pos.CENTER_RIGHT);
-
-        root.getChildren().addAll(titulo, subtitulo, scroll, botones);
-
-        alert.getDialogPane().setContent(root);
-        alert.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
-        alert.getDialogPane().lookupButton(ButtonType.CLOSE).setVisible(false);
-
-        alert.getDialogPane().getStylesheets().add(
-                getClass().getResource("/com/tfg/ajedrez/css/styles.css").toExternalForm()
-        );
-
-        alert.showAndWait();
-    }
-
-    private HBox crearCardHistorial(GameRecord record, Alert alert) {
-        HBox card = new HBox(14);
-        card.setAlignment(Pos.CENTER_LEFT);
-        card.setPadding(new Insets(12));
-        card.getStyleClass().add("historial-card");
-
-        Label badge = new Label(resultadoCorto(record.resultado));
-        badge.setAlignment(Pos.CENTER);
-        badge.setMinWidth(34);
-        badge.setMinHeight(34);
-        badge.getStyleClass().addAll("badge-resultado", resultadoClass(record.resultado));
-
-        VBox textos = new VBox(4);
-        textos.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(textos, javafx.scene.layout.Priority.ALWAYS);
-
-        Label linea1 = new Label(resultadoTexto(record.resultado) + " contra " + textoSeguro(record.oponente, "Oponente"));
-        linea1.getStyleClass().add("historial-card-titulo");
-
-        Label linea2 = new Label(GamePersistenceService.fechaTexto(record.fechaIso)
-                + " · " + textoSeguro(record.modoJuego, "Modo")
-                + " · " + textoSeguro(record.colorJugador, "Color"));
-        linea2.getStyleClass().add("historial-card-subtitulo");
-
-        Label linea3 = new Label(textoSeguro(record.resumen, "Sin resumen"));
-        linea3.getStyleClass().add("historial-card-resumen");
-        linea3.setWrapText(true);
-
-        textos.getChildren().addAll(linea1, linea2, linea3);
-
-        Button revisar = new Button("Revisar");
-        revisar.getStyleClass().add("boton-fin-principal");
-        revisar.setDisable(!tieneDatosRevision(record));
-        revisar.setOnAction(e -> {
-            alert.close();
-            revisarPartida(record);
-        });
-
-        card.getChildren().addAll(badge, textos, revisar);
-        return card;
-    }
-
-    private void revisarPartida(GameRecord record) {
-        if (!tieneDatosRevision(record)) {
-            mostrarAviso("Historial", "Revisión no disponible", "Esta partida no tiene posiciones guardadas para revisión.");
-            return;
-        }
-
-        AppSession.requestReviewGame(record);
-        SceneManager.navegarA("/com/tfg/ajedrez/vista/partida.fxml");
     }
 
     private void configurarBotonCargar(boolean hayPartida) {
@@ -330,16 +255,11 @@ public class MenuPrincipalController {
         return record.boardState != null && !record.boardState.isBlank();
     }
 
-    private void mostrarAviso(String titulo, String header, String texto) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titulo);
-        alert.setHeaderText(header);
-        alert.setContentText(texto);
-        alert.showAndWait();
-    }
-
-    private String textoSeguro(String texto, String defecto) {
-        return texto == null || texto.isBlank() ? defecto : texto;
+    private String formatearPartida(GameRecord record) {
+        return GamePersistenceService.fechaTexto(record.fechaIso)
+                + " - " + resultadoTexto(record.resultado)
+                + " - " + (record.oponente == null ? "Oponente" : record.oponente)
+                + " - " + (record.modoJuego == null ? "" : record.modoJuego);
     }
 
     private String resultadoTexto(String resultado) {
