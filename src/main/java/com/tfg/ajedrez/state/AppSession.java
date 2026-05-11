@@ -5,6 +5,29 @@ import com.tfg.ajedrez.persistence.GameRecord;
 
 import java.util.Locale;
 
+/**
+ * Estado global de la aplicación en memoria durante una ejecución.
+ *
+ * Centraliza tres responsabilidades que necesitan ser accesibles desde
+ * cualquier controlador sin tener que propagarlas como parámetros:
+ * 
+ * 1.La sesión del usuario autenticado o invitado.
+ * 
+ * 2.La configuración elegida en la pantalla "Nueva partida", para que
+ * PartidaController pueda leerla al cargar el tablero.
+ * 
+ * 3."Cargar partida" en curso y "revisar partida del historial"
+ * son peticiones que se activan desde un controlador y se
+ * consumen una sola vez en el siguiente, evitando tener que pasar
+ * datos por constructor entre escenas FXML.
+ * 
+ *
+ * El estado se mantiene en variables estáticas porque JavaFX instancia los
+ * controladores de cada FXML de forma independiente y no hay un contenedor
+ * de inyección de dependencias disponible. La clase es final y tiene
+ * constructor privado para impedir instanciación.
+ */
+
 public final class AppSession {
 
     private static final String GUEST_USER_ID = "guest";
@@ -17,12 +40,21 @@ public final class AppSession {
     private AppSession() {
     }
 
+    /** Restablece la sesión al modo invitado y limpia las peticiones diferidas. */
     public static void setGuestUser() {
         currentUser = UserSession.guest();
         loadSavedGameRequested = false;
         reviewGameRequested = null;
     }
 
+    /**
+     * Inicializa la sesión a partir de la respuesta JSON devuelta por Firebase
+     * Identity Toolkit tras un login federado correcto.
+     *
+     * Si Firebase devuelve un {@code localId} válido se usa como identificador
+     * del usuario; en caso contrario se cae a un identificador derivado del
+     * email para no perder la asociación de partidas guardadas en disco.
+     */
     public static void setFirebaseUser(JsonObject firebaseResponse) {
         if (firebaseResponse == null) {
             setGuestUser();
@@ -36,8 +68,7 @@ public final class AppSession {
         currentUser = new UserSession(
                 blankToDefault(localId, safeUserId(email)),
                 blankToNull(email),
-                blankToNull(displayName)
-        );
+                blankToNull(displayName));
         loadSavedGameRequested = false;
         reviewGameRequested = null;
     }
@@ -69,6 +100,14 @@ public final class AppSession {
     public static void setNuevaPartidaSettings(NuevaPartidaSettings settings) {
         nuevaPartidaSettings = settings == null ? NuevaPartidaSettings.defaults() : settings;
     }
+
+    // --- Peticiones diferidas entre escenas -------------------------------
+    // Las dos parejas request/consume implementan un patrón de "bandera de
+    // un solo uso": un controlador marca la intención (cargar partida en
+    // curso o revisar una partida del historial) antes de navegar, y el
+    // siguiente controlador la consume al inicializarse. Tras leerse, la
+    // bandera vuelve a su estado neutro para que la siguiente navegación
+    // no la reinterprete por error.
 
     public static void requestLoadSavedGame() {
         loadSavedGameRequested = true;

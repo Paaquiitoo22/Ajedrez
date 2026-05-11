@@ -26,6 +26,17 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+/**
+ * Clase controladora para la vista del Menú Principal.
+ * 
+ * ARQUITECTURA UI/UX:
+ * - Integración Interfaz-Lógica: Actúa como puente entre la sesión del usuario (AppSession) 
+ *   y la presentación de los datos (estadísticas, historial, avatar).
+ * - Gestión de Navegación: Centraliza las transiciones hacia las distintas funcionalidades 
+ *   del juego (Nueva Partida, Cargar Partida, Perfil) utilizando el SceneManager.
+ * - Coherencia Visual: Controla el menú lateral desplegable y la tematización dinámica (CSS),
+ *   asegurando una experiencia de usuario (UX) fluida e intuitiva sin pérdida de contexto.
+ */
 public class MenuPrincipalController {
 
     @FXML private VBox menuDesplegable;
@@ -68,11 +79,24 @@ public class MenuPrincipalController {
         cargarResumenUsuario();
     }
 
+    /**
+     * Cierra la sesión actual y redirige al usuario a la pantalla de autenticación.
+     * 
+     * Enrutamiento Seguro: Delega la transición en el SceneManager, asegurando 
+     * que el estado de la vista previa se limpie correctamente.
+     */
     @FXML
     public void onVolver(ActionEvent event) {
         SceneManager.navegarA("/com/tfg/ajedrez/vista/login.fxml");
     }
 
+    /**
+     * Gestiona la micro-interacción del menú lateral desplegable.
+     * 
+     * Diseño UX: En lugar de cargar una nueva escena para el menú, se superpone 
+     * un panel interactivo (overlay) sobre la vista actual, manteniendo el contexto visual 
+     * del usuario para una experiencia más fluida.
+     */
     @FXML
     public void onDesplegable(ActionEvent event) {
         boolean visible = !menuDesplegable.isVisible();
@@ -120,6 +144,13 @@ public class MenuPrincipalController {
         SceneManager.navegarA("/com/tfg/ajedrez/vista/partida.fxml");
     }
 
+    /**
+     * Alterna el tema visual de la aplicación (e.g., Modo Claro / Modo Oscuro).
+     * 
+     * Sistema de Tematización CSS: Propaga el cambio de tema a la raíz de la escena 
+     * a través del ThemeManager. Esto actualiza dinámicamente las variables CSS 
+     * globales sin necesidad de recargar los componentes FXML, garantizando coherencia visual.
+     */
     @FXML
     public void onCambiarTema(ActionEvent event) {
         ThemeManager.toggleTheme();
@@ -143,6 +174,12 @@ public class MenuPrincipalController {
         configurarBotonCargar(GamePersistenceService.existePartidaEnCurso(userId));
     }
 
+    /**
+     * Integra la información de la sesión actual con los componentes visuales.
+     * 
+     * Personalización UI: Extrae la imagen o las iniciales del perfil del usuario logueado 
+     * y las inyecta en el componente gráfico del avatar, mejorando la inmersión del jugador.
+     */
     private void aplicarAvatarUsuario() {
         UserProfile profile = GamePersistenceService.cargarPerfil(AppSession.getCurrentUserId());
         AvatarUtil.aplicarAvatar(btnAvatar, AppSession.getCurrentInitials(), profile.photoPath, 36);
