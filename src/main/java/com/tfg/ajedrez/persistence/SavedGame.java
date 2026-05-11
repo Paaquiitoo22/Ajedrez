@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SavedGame {
-
+/**Esta clase se usa para guardar las partidas y poder cargarlas posteriormente*/
     public String id;
     public String fechaIso;
     public String boardState;

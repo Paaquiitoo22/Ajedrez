@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameSnapshot {
-
+/**Un snapshot para luego revisar las partidas movimiento a movimiento*/
     public String boardState;
     public boolean whiteTurn;
     public int whiteSeconds;

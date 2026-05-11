@@ -19,7 +19,7 @@ public class ChessClock {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> tick()));
         timeline.setCycleCount(Timeline.INDEFINITE);
     }
-
+/**Aqui controlamos el turno y el avanze del cronometro correspondiente. */
     private void tick() {
         if (paused || finished) return;
 
