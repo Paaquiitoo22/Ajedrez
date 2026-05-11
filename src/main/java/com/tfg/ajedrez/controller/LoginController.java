@@ -14,11 +14,19 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 /**
- * Clase controladora vinculada a la capa de vista del módulo de inicio de sesión (Login).
+ * Controller de la vista del login.
  * 
- * Implementa el patrón Modelo-Vista-Controlador (MVC) para la gestión del flujo 
- * de autenticación federada. Actúa como el nexo entre los eventos de la interfaz 
- * de usuario en JavaFX y los servicios de infraestructura de Google y Firebase.
+ * Uso del patrón Modelo-Vista-Controlador (MVC).
+ * La interfaz está separada de la presentación visual (FXML) de la lógica de
+ * esta (el controlador).
+ * Las transiciones entre pantallas se realizan a través de SceneManager,
+ * garantizando un ciclo de vida óptimo de las escenas JavaFX.
+ * 
+ * SISTEMA DE AUTENTICACIÓN:
+ * Actúa como nexo para el flujo de autenticación federada, delegando la
+ * identidad
+ * mediante Google OAuth 2.0 e integrando estas credenciales con Firebase
+ * Identity Toolkit.
  */
 public class LoginController {
 
@@ -37,11 +45,7 @@ public class LoginController {
     }
 
     /**
-     * Gestiona la interrupción de eventos para el acceso directo a la aplicación 
-     * en modo invitado o bypass de seguridad.
-     * 
-     * @param event Instancia del evento de acción capturado por el agente de usuario.
-     * @throws Exception Si ocurre una anomalía en la transición hacia la escena de destino.
+     * Te permite entrar directamente a la app como invitado
      */
     @FXML
     public void onEntrar(ActionEvent event) throws Exception {
@@ -50,30 +54,38 @@ public class LoginController {
     }
 
     /**
-     * Ejecuta el flujo completo de autenticación de terceros.
-     * 1. Solicita autorización a Google.
-     * 2. Intercambia el ID Token de Google por una sesión en Firebase.
-     * 3. Navega al menú principal tras el éxito.
+     * Ejecuta el flujo completo de autenticación segura.
+     * 
+     * 1. Delegación mediante Google OAuth 2.0: Obtiene un Token de Identidad
+     * garantizando un estándar de seguridad de la industria sin manejar contraseñas
+     * locales.
+     * 
+     * 2. Integración con Firebase: Intercambia el ID Token de Google en la API de
+     * Firebase Identity Toolkit para obtener una sesión válida en la base de datos
+     * del juego.
+     * 
+     * 3. Sincronización con la Interfaz: Navega al menú principal tras el éxito del
+     * inicio de sesión.
      */
     @FXML
     public void onAutenticar() {
         try {
             System.out.println("[AUTH] Iniciando flujo de autenticación con Google...");
-            
-            // Paso 1: Obtención del ID Token desde Google
+
+            // Primero se obtiene el ID Token desde Google
             String identifierToken = GoogleAuthService.authenticate();
-            
+
             if (identifierToken != null) {
                 System.out.println("[AUTH] Autenticación con Google exitosa. Sincronizando con Firebase...");
-                
-                // Paso 2: Validación e intercambio en Firebase
+
+                // Validación e intercambio en Firebase
                 JsonObject firebaseResponse = FirebaseAuthService.authenticateWithGoogle(identifierToken);
                 AppSession.setFirebaseUser(firebaseResponse);
 
                 String userDisplayName = AppSession.getCurrentDisplayName();
                 System.out.println("[AUTH] Bienvenida/o: " + userDisplayName);
 
-                // Paso 3: Navegación al entorno principal
+                // Navegación al menú principal
                 SceneManager.navegarA("/com/tfg/ajedrez/vista/menu-principal.fxml");
             }
 
@@ -85,7 +97,7 @@ public class LoginController {
     }
 
     /**
-     * Presenta un diálogo de error al usuario en la interfaz gráfica.
+     * Menú desplegable
      */
     @FXML
     public void onDesplegable(ActionEvent event) {
@@ -99,11 +111,18 @@ public class LoginController {
         RegionMenu.setVisible(false);
     }
 
+    /**
+     * Alterna el tema visual (oscuro/claro)de la aplicación.
+     * 
+     * Sistema de Estilos y tematización: los estilos de la app están gobernados
+     * por una hoja de estilos CSS controlada por el ThemeManager.
+     * 
+     */
     @FXML
     public void onCambiarTema(ActionEvent event) {
         ThemeManager.toggleTheme();
         ThemeManager.applyTheme(menuDesplegable.getScene().getRoot());
-        actualizarTextoTema();
+        actualizarTextoTema(); // pone el tema contrario
         onCerrarMenu();
     }
 
@@ -115,6 +134,9 @@ public class LoginController {
         alerta.showAndWait();
     }
 
+    /**
+     * Actualiza el texto del botón de ajustes (tema)
+     */
     private void actualizarTextoTema() {
         if (btnAjustes != null) {
             btnAjustes.setText(ThemeManager.getMenuLabel());

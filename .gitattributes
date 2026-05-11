@@ -1,0 +1,37 @@
+# Normalizar finales de línea: el repo guarda LF, en Windows se chequean
+# como CRLF gracias a core.autocrlf=true. Asi git status no marca archivos
+# como modificados solo por culpa del CRLF/LF.
+
+* text=auto eol=lf
+
+# Codigo y configuracion: siempre LF en el repo
+*.java       text eol=lf
+*.fxml       text eol=lf
+*.css        text eol=lf
+*.xml        text eol=lf
+*.json       text eol=lf
+*.md         text eol=lf
+*.yml        text eol=lf
+*.yaml       text eol=lf
+*.properties text eol=lf
+*.gitignore  text eol=lf
+*.gitattributes text eol=lf
+
+# Scripts especificos de Windows: deben mantener CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Binarios: git no debe normalizarlos nunca
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.svg  binary
+*.ico  binary
+*.jar  binary
+*.zip  binary
+*.exe  binary
+*.dll  binary
+*.db   binary

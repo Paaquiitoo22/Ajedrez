@@ -183,7 +183,7 @@
                     </children>
                     <padding><Insets left="10.0" /></padding>
                 </HBox>
-                <Separator opacity="0.08" prefHeight="0.0" prefWidth="148.0" />
+                <Separator prefHeight="0.0" prefWidth="148.0" styleClass="separador-menu" />
                 <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="148.0" spacing="10.0">
                     <children>
                         <Button mnemonicParsing="false" onAction="#onCerrarSesion" prefHeight="40.0" prefWidth="132.0"
