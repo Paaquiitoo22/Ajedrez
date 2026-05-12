@@ -17,13 +17,13 @@ import java.util.Optional;
 
 public final class GamePersistenceService {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);/**Constante para transformar objetos Java en JSON y viceversa*/
     private static final DateTimeFormatter DISPLAY_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-    private static final Path DATA_DIR = Path.of(System.getProperty("user.home"), ".tfg-ajedrez");
+    private static final Path DATA_DIR = Path.of(System.getProperty("user.home"), ".tfg-ajedrez");/**Ruta donde guardaremos las aprtidas */
 
     private GamePersistenceService() {
     }
-
+    /**Actualización del historial */
     public static GameStats calcularEstadisticas(String userId) {
         int victorias = 0;
         int derrotas = 0;
@@ -41,22 +41,22 @@ public final class GamePersistenceService {
 
         return new GameStats(victorias, derrotas, tablas);
     }
-
+/** En este método accedemos a las partidas por id de usuario y las ordenamos de la más reciente a la más antigua. */
     public static List<GameRecord> cargarHistorial(String userId) {
         UserGameData data = cargarDatosUsuario(userId);
         List<GameRecord> partidas = new ArrayList<>(data.partidas);
         partidas.sort(Comparator.comparing((GameRecord record) -> record.fechaIso == null ? "" : record.fechaIso).reversed());
         return partidas;
     }
-
+/** Si hay partida en curso, la carga.PT1 */
     public static Optional<SavedGame> cargarPartidaEnCurso(String userId) {
         return Optional.ofNullable(cargarDatosUsuario(userId).partidaEnCurso);
     }
-
+    /** Si hay partida en curso, la carga.PT2 */
     public static boolean existePartidaEnCurso(String userId) {
         return cargarPartidaEnCurso(userId).isPresent();
     }
-
+    /** Guarda la partida en curso. */
     public static void guardarPartidaEnCurso(String userId, SavedGame savedGame) {
         if (savedGame == null) {
             return;
@@ -72,7 +72,7 @@ public final class GamePersistenceService {
         data.partidaEnCurso = null;
         guardarDatosUsuario(userId, data);
     }
-
+/**Aquí cargamos el JSON del usuario mediante el ID para guardar la partida en el historial. */
     public static void registrarPartidaFinalizada(String userId, GameRecord record) {
         if (record == null) {
             return;
@@ -83,7 +83,7 @@ public final class GamePersistenceService {
         data.partidas.add(record);
         guardarDatosUsuario(userId, data);
     }
-
+/** Si hay registro del usuario lo carga. */
     public static UserProfile cargarPerfil(String userId) {
         UserGameData data = cargarDatosUsuario(userId);
         if (data.perfil == null) {
@@ -91,7 +91,7 @@ public final class GamePersistenceService {
         }
         return data.perfil;
     }
-
+/** Guarda la foto del usuario en la misma ruta que guarda el historial en JSON */
     public static void guardarFotoPerfil(String userId, Path origen) {
         if (origen == null || !Files.exists(origen)) {
             return;
@@ -112,7 +112,7 @@ public final class GamePersistenceService {
             System.err.println("[PERSISTENCIA] No se pudo guardar la foto de perfil: " + e.getMessage());
         }
     }
-
+/**Si hay foto, se borra. */
     public static void eliminarFotoPerfil(String userId) {
         UserGameData data = cargarDatosUsuario(userId);
         if (data.perfil == null) {
@@ -121,7 +121,7 @@ public final class GamePersistenceService {
         data.perfil.photoPath = null;
         guardarDatosUsuario(userId, data);
     }
-
+/** Transforma el formato de la fecha en que se completo la partida. */
     public static String fechaTexto(String fechaIso) {
         if (fechaIso == null || fechaIso.isBlank()) {
             return "";
@@ -137,7 +137,7 @@ public final class GamePersistenceService {
     public static String nowIso() {
         return LocalDateTime.now().toString();
     }
-
+/**Busca y carga los datos del usuario por ID si es que hay.*/
     private static UserGameData cargarDatosUsuario(String userId) {
         Path file = userFile(userId);
         if (!Files.exists(file)) {
@@ -158,7 +158,7 @@ public final class GamePersistenceService {
             return new UserGameData();
         }
     }
-
+/** Te acuerdas el object_mapper para transformar objetos Java a JSON y viceversa? Pues aqui es donde brilla*/
     private static void guardarDatosUsuario(String userId, UserGameData data) {
         try {
             Files.createDirectories(DATA_DIR);
@@ -167,16 +167,16 @@ public final class GamePersistenceService {
             System.err.println("[PERSISTENCIA] No se pudieron guardar los datos: " + e.getMessage());
         }
     }
-
+/**La ruta de los archivos del usuario. */
     private static Path userFile(String userId) {
         return DATA_DIR.resolve(safeFileName(userId) + ".json");
     }
-
+    /**El nombre de los archivos en la ruta del usuario, asegurandose que no se rompa el sistgema de archivos, reemplazando lo del regex por "_". */
     private static String safeFileName(String userId) {
         String base = userId == null || userId.isBlank() ? "guest" : userId;
         return base.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9._-]", "_");
     }
-
+/**Validador de un archivo .png */
     private static String extension(Path path) {
         String fileName = path.getFileName().toString();
         int dotIndex = fileName.lastIndexOf('.');

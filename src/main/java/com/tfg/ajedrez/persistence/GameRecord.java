@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameRecord {
-
+/**Esta clase se usa para guardar las partidas finalizadas en el historial */
     public static final String RESULTADO_VICTORIA = "VICTORIA";
     public static final String RESULTADO_DERROTA = "DERROTA";
     public static final String RESULTADO_TABLAS = "TABLAS";

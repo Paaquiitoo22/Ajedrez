@@ -273,6 +273,137 @@
     -fx-font-family: "Inter";
 }
 
+.app-dialog {
+    -fx-background-color: #232323;
+    -fx-border-color: #3a3a3a;
+    -fx-border-width: 1;
+}
+
+.app-dialog > *.header-panel {
+    -fx-background-color: #232323;
+}
+
+.app-dialog > *.header-panel *.label {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 16px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}
+
+.app-dialog .content.label,
+.dialog-subtitle {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter";
+}
+
+.dialog-content {
+    -fx-background-color: transparent;
+}
+
+.app-dialog .button {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}
+
+.historial-dialog-list {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.historial-dialog-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 4 0 4 0;
+}
+
+.historial-dialog-list .list-cell:selected .historial-dialog-item {
+    -fx-background-color: rgba(212, 175, 55, 0.16);
+    -fx-border-color: #D4AF37;
+}
+
+.historial-dialog-item {
+    -fx-background-color: #2a2a2a;
+    -fx-background-radius: 8;
+    -fx-border-color: #3a3a3a;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+.historial-dialog-title {
+    -fx-text-fill: #f0f0f0;
+    -fx-font-size: 13px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}
+
+.historial-dialog-meta {
+    -fx-text-fill: #888888;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+}
+
+.historial-dialog-ok,
+.historial-dialog-warning {
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}
+
+.historial-dialog-ok {
+    -fx-text-fill: #D4AF37;
+}
+
+.historial-dialog-warning {
+    -fx-text-fill: #ff7a7a;
+}
+
+.pause-menu-stat {
+    -fx-background-color: #2a2a2a;
+    -fx-background-radius: 8;
+    -fx-border-color: #3a3a3a;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 12 16 12 16;
+}
+
+.pause-menu-label {
+    -fx-text-fill: #888888;
+    -fx-font-size: 11px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}
+
+.pause-menu-time {
+    -fx-text-fill: #D4AF37;
+    -fx-font-size: 24px;
+    -fx-font-family: "Courier New";
+    -fx-font-weight: bold;
+}
+
+.pause-menu-points,
+.pause-menu-note {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter";
+}
+
+.pause-menu-ok,
+.pause-menu-muted {
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter";
+    -fx-font-weight: bold;
+}
+
+.pause-menu-ok {
+    -fx-text-fill: #D4AF37;
+}
+
+.pause-menu-muted {
+    -fx-text-fill: #777777;
+}
+
 /* ══════════════════════════════════════════════════════════════
    Pantalla de Partida
    ══════════════════════════════════════════════════════════════ */
@@ -780,6 +911,45 @@
 
 .theme-light .cuenta-atras-carga {
     -fx-background-color: rgba(255, 255, 255, 0.88);
+    -fx-text-fill: #9f7a13;
+}
+
+.app-dialog.theme-light {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ded6c8;
+}
+
+.app-dialog.theme-light > *.header-panel {
+    -fx-background-color: #ffffff;
+}
+
+.app-dialog.theme-light > *.header-panel *.label,
+.app-dialog.theme-light .historial-dialog-title {
+    -fx-text-fill: #1f2933;
+}
+
+.app-dialog.theme-light .content.label,
+.app-dialog.theme-light .dialog-subtitle,
+.app-dialog.theme-light .historial-dialog-meta,
+.app-dialog.theme-light .pause-menu-points,
+.app-dialog.theme-light .pause-menu-note {
+    -fx-text-fill: #6b7280;
+}
+
+.app-dialog.theme-light .historial-dialog-item,
+.app-dialog.theme-light .pause-menu-stat {
+    -fx-background-color: #f8f5ee;
+    -fx-border-color: #ded6c8;
+}
+
+.app-dialog.theme-light .pause-menu-label,
+.app-dialog.theme-light .pause-menu-muted {
+    -fx-text-fill: #6b7280;
+}
+
+.app-dialog.theme-light .historial-dialog-ok,
+.app-dialog.theme-light .pause-menu-time,
+.app-dialog.theme-light .pause-menu-ok {
     -fx-text-fill: #9f7a13;
 }
 

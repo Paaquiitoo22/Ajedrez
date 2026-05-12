@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SavedGame {
-
+/**Esta clase se usa para guardar las partidas y poder cargarlas posteriormente*/
     public String id;
     public String fechaIso;
     public String boardState;
@@ -24,6 +24,7 @@ public class SavedGame {
     public List<String> historialMovimientos = new ArrayList<>();
     public boolean deshacerUsado;
     public GameSnapshot snapshotDeshacer;
+    public List<GameSnapshot> snapshotsDeshacer = new ArrayList<>();
     public List<GameSnapshot> snapshotsRevision = new ArrayList<>();
 
     public SavedGame() {
