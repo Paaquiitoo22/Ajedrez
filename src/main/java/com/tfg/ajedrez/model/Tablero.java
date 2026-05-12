@@ -3,16 +3,32 @@ package com.tfg.ajedrez.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase principal que representa el tablero de ajedrez.
+ * Guarda las piezas en una matriz 8x8 y contiene la lógica
+ * para validar movimientos, jaques, enroques, promociones,
+ * captura al paso y guardado/carga del estado del tablero.
+ */
 public class Tablero {
 
+    // Matriz que representa las casillas del tablero
     private final Pieza[][] casillas;
+
+    // Guarda el peón que puede ser capturado al paso
     private Posicion peonVulnerableAlPaso = null;
 
+    /**
+     * Constructor del tablero.
+     * Crea la matriz e inicializa las piezas en su posición inicial.
+     */
     public Tablero() {
         casillas = new Pieza[8][8];
         inicializarPiezas();
     }
 
+    /**
+     * Devuelve la pieza que hay en una posición concreta.
+     */
     public Pieza getPieza(int fila, int columna) {
         return casillas[fila][columna];
     }
@@ -21,6 +37,10 @@ public class Tablero {
         return casillas;
     }
 
+    /**
+     * Elimina todas las piezas del tablero.
+     * Se usa antes de importar una partida guardada.
+     */
     public void limpiarTablero() {
         for (int fila = 0; fila < 8; fila++) {
             for (int col = 0; col < 8; col++) {
@@ -29,31 +49,47 @@ public class Tablero {
         }
     }
 
+    /**
+     * Mueve una pieza usando la dama como promoción por defecto.
+     */
     public MovimientoInfo moverPieza(int filaOrigen, int colOrigen, int filaDestino, int colDestino) {
         return moverPieza(filaOrigen, colOrigen, filaDestino, colDestino, TipoPieza.DAMA);
     }
 
+    /**
+     * Mueve una pieza si el movimiento es válido.
+     * También controla movimientos especiales como enroque,
+     * promoción y captura al paso.
+     *
+     * @return información del movimiento realizado o null si no es válido
+     */
     public MovimientoInfo moverPieza(int filaOrigen, int colOrigen, int filaDestino, int colDestino, TipoPieza tipoPromocion) {
+
+        // Comprueba que origen y destino estén dentro del tablero
         if (!dentroTablero(filaOrigen, colOrigen) || !dentroTablero(filaDestino, colDestino)) {
             return null;
         }
 
         Pieza piezaOrigen = casillas[filaOrigen][colOrigen];
 
+        // No se puede mover si no hay pieza en el origen
         if (piezaOrigen == null) {
             return null;
         }
 
+        // Evita mover una pieza a la misma casilla
         if (filaOrigen == filaDestino && colOrigen == colDestino) {
             return null;
         }
 
         Pieza piezaDestino = casillas[filaDestino][colDestino];
 
+        // No se puede capturar una pieza del mismo color
         if (piezaDestino != null && piezaDestino.getColor() == piezaOrigen.getColor()) {
             return null;
         }
 
+        // Valida el movimiento y comprueba que no deje al rey en jaque
         if (!movimientoValidoSinDejarJaque(piezaOrigen, filaOrigen, colOrigen, filaDestino, colDestino)) {
             return null;
         }
@@ -62,9 +98,12 @@ public class Tablero {
         boolean captura = piezaDestino != null || capturaAlPaso;
         boolean enroque = piezaOrigen.getTipo() == TipoPieza.REY && Math.abs(colDestino - colOrigen) == 2;
         boolean promocion = false;
+
         TipoPieza tipoPiezaCapturada = null;
         ColorPieza colorPiezaCapturada = null;
+
         Pieza piezaCapturada = capturaAlPaso ? casillas[filaOrigen][colDestino] : piezaDestino;
+
         if (piezaCapturada != null) {
             tipoPiezaCapturada = piezaCapturada.getTipo();
             colorPiezaCapturada = piezaCapturada.getColor();
@@ -72,20 +111,24 @@ public class Tablero {
 
         TipoPieza tipoAntesDeMover = piezaOrigen.getTipo();
 
+        // En la captura al paso, el peón capturado no está en la casilla destino
         if (capturaAlPaso) {
             casillas[filaOrigen][colDestino] = null;
         }
 
+        // Realiza el movimiento en la matriz
         casillas[filaDestino][colDestino] = piezaOrigen;
         casillas[filaOrigen][colOrigen] = null;
 
         piezaOrigen.setPosicion(new Posicion(filaDestino, colDestino));
         piezaOrigen.setMovida(true);
 
+        // Si el movimiento es enroque, también mueve la torre
         if (enroque) {
             moverTorreEnEnroque(filaOrigen, colOrigen, filaDestino, colDestino);
         }
 
+        // Promoción de peón al llegar a la última fila
         if (piezaOrigen.getTipo() == TipoPieza.PEON) {
             if ((piezaOrigen.getColor() == ColorPieza.BLANCA && filaDestino == 0)
                     || (piezaOrigen.getColor() == ColorPieza.NEGRA && filaDestino == 7)) {
@@ -94,6 +137,7 @@ public class Tablero {
             }
         }
 
+        // Actualiza si existe un peón vulnerable a captura al paso
         actualizarPeonVulnerableAlPaso(piezaOrigen, filaOrigen, filaDestino, colDestino);
 
         return new MovimientoInfo(
@@ -112,6 +156,10 @@ public class Tablero {
         );
     }
 
+    /**
+     * Comprueba que la pieza elegida para promoción sea válida.
+     * Si no lo es, se promociona automáticamente a dama.
+     */
     private TipoPieza tipoPromocionValido(TipoPieza tipoPromocion) {
         if (tipoPromocion == TipoPieza.TORRE
                 || tipoPromocion == TipoPieza.CABALLO
@@ -119,12 +167,19 @@ public class Tablero {
                 || tipoPromocion == TipoPieza.DAMA) {
             return tipoPromocion;
         }
+
         return TipoPieza.DAMA;
     }
 
+    /**
+     * Mueve la torre cuando se realiza un enroque.
+     */
     private void moverTorreEnEnroque(int filaOrigen, int colOrigen, int filaDestino, int colDestino) {
+
+        // Enroque corto
         if (colDestino == 6) {
             Pieza torre = casillas[filaOrigen][7];
+
             casillas[filaOrigen][5] = torre;
             casillas[filaOrigen][7] = null;
 
@@ -132,8 +187,11 @@ public class Tablero {
                 torre.setPosicion(new Posicion(filaOrigen, 5));
                 torre.setMovida(true);
             }
+
+            // Enroque largo
         } else if (colDestino == 2) {
             Pieza torre = casillas[filaOrigen][0];
+
             casillas[filaOrigen][3] = torre;
             casillas[filaOrigen][0] = null;
 
@@ -144,6 +202,10 @@ public class Tablero {
         }
     }
 
+    /**
+     * Obtiene todos los movimientos legales de una pieza.
+     * No incluye movimientos que dejen al rey propio en jaque.
+     */
     public List<Posicion> obtenerMovimientosValidos(int fila, int col) {
         List<Posicion> movimientos = new ArrayList<>();
 
@@ -153,8 +215,10 @@ public class Tablero {
             return movimientos;
         }
 
+        // Recorre todas las casillas del tablero buscando destinos válidos
         for (int f = 0; f < 8; f++) {
             for (int c = 0; c < 8; c++) {
+
                 if (fila == f && col == c) {
                     continue;
                 }
@@ -174,6 +238,9 @@ public class Tablero {
         return movimientos;
     }
 
+    /**
+     * Comprueba si el rey del color indicado está en jaque.
+     */
     public boolean estaEnJaque(ColorPieza color) {
         Posicion rey = buscarRey(color);
 
@@ -183,6 +250,7 @@ public class Tablero {
 
         ColorPieza rival = color == ColorPieza.BLANCA ? ColorPieza.NEGRA : ColorPieza.BLANCA;
 
+        // Recorre las piezas rivales para comprobar si alguna ataca al rey
         for (int fila = 0; fila < 8; fila++) {
             for (int col = 0; col < 8; col++) {
                 Pieza pieza = casillas[fila][col];
@@ -198,6 +266,10 @@ public class Tablero {
         return false;
     }
 
+    /**
+     * Comprueba si un jugador tiene al menos un movimiento legal.
+     * Sirve para detectar situaciones de jaque mate o tablas.
+     */
     public boolean tieneMovimientosLegales(ColorPieza color) {
         for (int fila = 0; fila < 8; fila++) {
             for (int col = 0; col < 8; col++) {
@@ -214,6 +286,10 @@ public class Tablero {
         return false;
     }
 
+    /**
+     * Exporta el estado actual del tablero a texto.
+     * Se utiliza para guardar partidas en fichero.
+     */
     public String exportarEstado() {
         StringBuilder sb = new StringBuilder();
 
@@ -235,7 +311,9 @@ public class Tablero {
             sb.append("\n");
         }
 
+        // Guarda también el peón vulnerable a captura al paso
         sb.append("EP ");
+
         if (peonVulnerableAlPaso == null) {
             sb.append("-");
         } else {
@@ -245,6 +323,9 @@ public class Tablero {
         return sb.toString();
     }
 
+    /**
+     * Importa un tablero previamente guardado en texto.
+     */
     public void importarEstado(String estado) {
         limpiarTablero();
         peonVulnerableAlPaso = null;
@@ -263,8 +344,10 @@ public class Tablero {
             }
         }
 
+        // Recupera la información de captura al paso si existe
         if (filas.length > 8) {
             String[] ep = filas[8].trim().split("\\s+");
+
             if (ep.length == 3 && "EP".equals(ep[0])) {
                 try {
                     peonVulnerableAlPaso = new Posicion(Integer.parseInt(ep[1]), Integer.parseInt(ep[2]));
@@ -275,6 +358,9 @@ public class Tablero {
         }
     }
 
+    /**
+     * Valida un movimiento y comprueba que no deje al rey propio en jaque.
+     */
     private boolean movimientoValidoSinDejarJaque(Pieza pieza, int fo, int co, int fd, int cd) {
         if (!movimientoBasicoValido(pieza, fo, co, fd, cd)) {
             return false;
@@ -283,6 +369,10 @@ public class Tablero {
         return !dejaEnJaque(pieza.getColor(), fo, co, fd, cd);
     }
 
+    /**
+     * Simula un movimiento temporalmente para comprobar
+     * si el rey queda en jaque después de mover.
+     */
     private boolean dejaEnJaque(ColorPieza color, int fo, int co, int fd, int cd) {
         Pieza origen = casillas[fo][co];
         Pieza destino = casillas[fd][cd];
@@ -295,6 +385,7 @@ public class Tablero {
             casillas[fo][cd] = null;
         }
 
+        // Simula el movimiento
         casillas[fd][cd] = origen;
         casillas[fo][co] = null;
 
@@ -303,6 +394,7 @@ public class Tablero {
 
         boolean enJaque = estaEnJaque(color);
 
+        // Deshace el movimiento simulado
         casillas[fo][co] = origen;
         casillas[fd][cd] = destino;
         origen.setPosicion(posicionOriginal);
@@ -314,6 +406,9 @@ public class Tablero {
         return enJaque;
     }
 
+    /**
+     * Busca la posición del rey de un color.
+     */
     private Posicion buscarRey(ColorPieza color) {
         for (int fila = 0; fila < 8; fila++) {
             for (int col = 0; col < 8; col++) {
@@ -327,10 +422,15 @@ public class Tablero {
 
         return null;
     }
+
     public Posicion getPosicionRey(ColorPieza color) {
         return buscarRey(color);
     }
 
+    /**
+     * Valida si una pieza puede atacar una casilla.
+     * En los peones se diferencia ataque de movimiento normal.
+     */
     private boolean movimientoAtaqueValido(Pieza pieza, int fo, int co, int fd, int cd) {
         return switch (pieza.getTipo()) {
             case PEON -> validarAtaquePeon(pieza, fo, co, fd, cd);
@@ -342,6 +442,9 @@ public class Tablero {
         };
     }
 
+    /**
+     * Valida el movimiento básico según el tipo de pieza.
+     */
     private boolean movimientoBasicoValido(Pieza pieza, int fo, int co, int fd, int cd) {
         return switch (pieza.getTipo()) {
             case PEON -> validarPeon(pieza, fo, co, fd, cd);
@@ -353,6 +456,11 @@ public class Tablero {
         };
     }
 
+    /**
+     * Valida el movimiento del peón:
+     * avance simple, avance doble inicial, captura diagonal
+     * y captura al paso.
+     */
     private boolean validarPeon(Pieza pieza, int fo, int co, int fd, int cd) {
         int direccion = pieza.getColor() == ColorPieza.BLANCA ? -1 : 1;
         int filaInicial = pieza.getColor() == ColorPieza.BLANCA ? 6 : 1;
@@ -381,12 +489,18 @@ public class Tablero {
         return esCapturaAlPaso(pieza, fo, co, fd, cd);
     }
 
+    /**
+     * Valida las casillas que ataca un peón.
+     */
     private boolean validarAtaquePeon(Pieza pieza, int fo, int co, int fd, int cd) {
         int direccion = pieza.getColor() == ColorPieza.BLANCA ? -1 : 1;
 
         return Math.abs(cd - co) == 1 && fd == fo + direccion;
     }
 
+    /**
+     * Comprueba si un movimiento corresponde a una captura al paso.
+     */
     private boolean esCapturaAlPaso(Pieza pieza, int fo, int co, int fd, int cd) {
         if (pieza == null || pieza.getTipo() != TipoPieza.PEON) {
             return false;
@@ -407,6 +521,10 @@ public class Tablero {
                 && casillas[fo][cd].getColor() != pieza.getColor();
     }
 
+    /**
+     * Actualiza el peón vulnerable a captura al paso.
+     * Solo se marca cuando un peón avanza dos casillas.
+     */
     private void actualizarPeonVulnerableAlPaso(Pieza pieza, int filaOrigen, int filaDestino, int colDestino) {
         if (pieza.getTipo() == TipoPieza.PEON && Math.abs(filaDestino - filaOrigen) == 2) {
             peonVulnerableAlPaso = new Posicion(filaDestino, colDestino);
@@ -415,6 +533,10 @@ public class Tablero {
         }
     }
 
+    /**
+     * Valida el movimiento de la torre.
+     * La torre se mueve en línea recta y no puede saltar piezas.
+     */
     private boolean validarTorre(int fo, int co, int fd, int cd) {
         if (fo != fd && co != cd) {
             return false;
@@ -445,6 +567,9 @@ public class Tablero {
         return true;
     }
 
+    /**
+     * Valida el movimiento en L del caballo.
+     */
     private boolean validarCaballo(int fo, int co, int fd, int cd) {
         int filaDiff = Math.abs(fd - fo);
         int colDiff = Math.abs(cd - co);
@@ -452,6 +577,9 @@ public class Tablero {
         return (filaDiff == 2 && colDiff == 1) || (filaDiff == 1 && colDiff == 2);
     }
 
+    /**
+     * Valida el movimiento diagonal del alfil.
+     */
     private boolean validarAlfil(int fo, int co, int fd, int cd) {
         if (Math.abs(fd - fo) != Math.abs(cd - co)) {
             return false;
@@ -475,10 +603,17 @@ public class Tablero {
         return true;
     }
 
+    /**
+     * Valida la dama combinando los movimientos de torre y alfil.
+     */
     private boolean validarDama(int fo, int co, int fd, int cd) {
         return validarTorre(fo, co, fd, cd) || validarAlfil(fo, co, fd, cd);
     }
 
+    /**
+     * Valida el movimiento del rey.
+     * Puede moverse una casilla o realizar enroque.
+     */
     private boolean validarRey(Pieza rey, int fo, int co, int fd, int cd) {
         int filaDiff = Math.abs(fd - fo);
         int colDiff = Math.abs(cd - co);
@@ -490,6 +625,10 @@ public class Tablero {
         return validarEnroque(rey, fo, co, fd, cd);
     }
 
+    /**
+     * Valida solo el ataque básico del rey.
+     * Se usa al comprobar jaques para evitar recursividad con el enroque.
+     */
     private boolean validarReySimple(int fo, int co, int fd, int cd) {
         int filaDiff = Math.abs(fd - fo);
         int colDiff = Math.abs(cd - co);
@@ -497,6 +636,11 @@ public class Tablero {
         return filaDiff <= 1 && colDiff <= 1;
     }
 
+    /**
+     * Valida el enroque.
+     * Comprueba que el rey y la torre no se hayan movido,
+     * que no haya piezas entre medias y que el rey no pase por jaque.
+     */
     private boolean validarEnroque(Pieza rey, int fo, int co, int fd, int cd) {
         if (rey.isMovida()) {
             return false;
@@ -514,6 +658,7 @@ public class Tablero {
             return false;
         }
 
+        // Enroque corto
         if (cd == 6) {
             Pieza torre = casillas[fo][7];
 
@@ -536,6 +681,7 @@ public class Tablero {
             return true;
         }
 
+        // Enroque largo
         if (cd == 2) {
             Pieza torre = casillas[fo][0];
 
@@ -561,6 +707,10 @@ public class Tablero {
         return false;
     }
 
+    /**
+     * Crea una pieza a partir de un código de texto.
+     * Se usa al importar partidas guardadas.
+     */
     private Pieza crearPiezaDesdeCodigo(String codigo, int fila, int col) {
         ColorPieza color = codigo.charAt(0) == 'B' ? ColorPieza.BLANCA : ColorPieza.NEGRA;
         char tipoChar = codigo.charAt(1);
@@ -580,12 +730,19 @@ public class Tablero {
         }
 
         Pieza pieza = new Pieza(tipo, color, new Posicion(fila, col));
+
+        // El tercer carácter indica si la pieza ya se había movido
         if (codigo.length() >= 3) {
             pieza.setMovida(codigo.charAt(2) == '1');
         }
+
         return pieza;
     }
 
+    /**
+     * Convierte una pieza en un código de texto.
+     * Ejemplo: BR0 significa rey blanco no movido.
+     */
     private String codigoPieza(Pieza pieza) {
         String color = pieza.getColor() == ColorPieza.BLANCA ? "B" : "N";
 
@@ -601,10 +758,17 @@ public class Tablero {
         return color + tipo + (pieza.isMovida() ? "1" : "0");
     }
 
+    /**
+     * Comprueba si una posición está dentro del tablero.
+     */
     private boolean dentroTablero(int fila, int col) {
         return fila >= 0 && fila < 8 && col >= 0 && col < 8;
     }
 
+    /**
+     * Coloca todas las piezas en la posición inicial
+     * de una partida de ajedrez.
+     */
     private void inicializarPiezas() {
         for (int col = 0; col < 8; col++) {
             casillas[1][col] = new Pieza(TipoPieza.PEON, ColorPieza.NEGRA, new Posicion(1, col));

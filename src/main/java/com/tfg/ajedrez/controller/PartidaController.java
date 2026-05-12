@@ -282,7 +282,11 @@ public class PartidaController implements Initializable {
             settings.setTiempoSegundos(record.tiempoInicialSegundos);
         }
     }
-
+    /**
+     * Dibuja de nuevo todo el tablero en pantalla.
+     * Se recorre la matriz 8x8 y se crea una casilla visual
+     * por cada posición del tablero.
+     */
     private void dibujarTablero() {
         tablero.getChildren().clear();
 
@@ -292,7 +296,10 @@ public class PartidaController implements Initializable {
             }
         }
     }
-
+    /**
+     * Crea una casilla del tablero con su color, pieza,
+     * resaltados y eventos de clic.
+     */
     private StackPane crearCasilla(int fila, int col) {
         StackPane casilla = new StackPane();
         casilla.setAlignment(Pos.CENTER);
@@ -300,29 +307,34 @@ public class PartidaController implements Initializable {
         casilla.setMinSize(CELDA, CELDA);
         casilla.setMaxSize(CELDA, CELDA);
 
+        // Alterna el color de las casillas según su posición
         boolean esClara = (fila + col) % 2 == 0;
 
         Rectangle fondo = new Rectangle(CELDA, CELDA);
         fondo.setFill(Color.web(esClara ? COLOR_CLARA : COLOR_OSCURA));
-        //  Marcar rey en jaque
+
+        // Comprueba la posición de ambos reyes para poder marcar el jaque
         Posicion reyBlanco = modelo.getPosicionRey(ColorPieza.BLANCA);
         Posicion reyNegro = modelo.getPosicionRey(ColorPieza.NEGRA);
 
         boolean jaqueBlanco = modelo.estaEnJaque(ColorPieza.BLANCA);
         boolean jaqueNegro = modelo.estaEnJaque(ColorPieza.NEGRA);
 
+        // Si el rey blanco está en jaque, su casilla se pinta en rojo oscuro
         if (reyBlanco != null && jaqueBlanco &&
                 fila == reyBlanco.getFila() && col == reyBlanco.getColumna()) {
 
             fondo.setFill(Color.web("#7f1d1d")); // rojo oscuro
         }
 
+        // Si el rey negro está en jaque, su casilla se pinta en rojo oscuro
         if (reyNegro != null && jaqueNegro &&
                 fila == reyNegro.getFila() && col == reyNegro.getColumna()) {
 
             fondo.setFill(Color.web("#7f1d1d")); // rojo oscuro
         }
 
+        // Resalta con borde la pieza seleccionada por el jugador
         if (filaSeleccionada != null && colSeleccionada != null
                 && fila == filaSeleccionada && col == colSeleccionada) {
             fondo.setStroke(Color.web(COLOR_SELEC));
@@ -331,6 +343,7 @@ public class PartidaController implements Initializable {
 
         casilla.getChildren().add(fondo);
 
+        // Marca las casillas del último movimiento realizado
         if (settings != null
                 && settings.isResaltarUltimoMovimiento()
                 && esCasillaUltimoMovimiento(fila, col)) {
@@ -339,16 +352,19 @@ public class PartidaController implements Initializable {
             casilla.getChildren().add(marcaUltimoMovimiento);
         }
 
+        // Muestra los movimientos disponibles de la pieza seleccionada
         if (esMovimientoPosible(fila, col)) {
             Pieza piezaDestino = modelo.getPieza(fila, col);
             Circle indicador;
 
             if (piezaDestino != null) {
+                // Si hay pieza rival, se marca como posible captura
                 indicador = new Circle(CELDA / 2.0 - 4);
                 indicador.setFill(Color.TRANSPARENT);
                 indicador.setStroke(Color.rgb(220, 38, 38, 0.65));
                 indicador.setStrokeWidth(3);
             } else {
+                // Si la casilla está vacía, se marca como movimiento posible
                 indicador = new Circle(8);
                 indicador.setFill(Color.rgb(34, 197, 94, 0.55));
             }
@@ -356,6 +372,7 @@ public class PartidaController implements Initializable {
             casilla.getChildren().add(indicador);
         }
 
+        // Carga y muestra la imagen de la pieza si existe en esa casilla
         Pieza pieza = modelo.getPieza(fila, col);
 
         if (pieza != null) {
@@ -369,6 +386,7 @@ public class PartidaController implements Initializable {
         final int f = fila;
         final int c = col;
 
+        // Asocia el clic de la casilla con la lógica de movimiento
         casilla.setOnMouseClicked(e -> manejarClick(f, c));
 
         return casilla;
@@ -441,21 +459,31 @@ public class PartidaController implements Initializable {
         return false;
     }
 
+    /**
+     * Gestiona el clic del usuario sobre una casilla del tablero.
+     * Permite seleccionar piezas, moverlas, registrar la jugada
+     * y controlar el turno de la IA si corresponde.
+     */
     private void manejarClick(int fila, int col) {
+        // Si la partida ya terminó, no permite más movimientos
         if (partidaTerminada) {
             return;
         }
 
+        // Bloquea el tablero durante pausa, revisión o cuenta atrás
         if (pausaActiva || modoRevision || cuentaAtrasActiva) {
             return;
         }
 
+        // Evita que el jugador mueva piezas cuando es turno de la IA
         if (esTurnoIA()) {
             return;
         }
 
+        // Obtiene la pieza de la casilla pulsada
         Pieza piezaClicada = modelo.getPieza(fila, col);
 
+        // Si no hay ninguna pieza seleccionada, intenta seleccionar una del turno actual
         if (filaSeleccionada == null) {
             if (piezaClicada != null && piezaClicada.getColor() == turnoActual) {
                 seleccionar(fila, col);
@@ -464,42 +492,59 @@ public class PartidaController implements Initializable {
             return;
         }
 
+        // Si se pulsa otra vez la misma casilla, se cancela la selección
         if (filaSeleccionada == fila && colSeleccionada == col) {
             limpiarSeleccion();
             return;
         }
 
+        // Si se pulsa otra pieza del mismo color, cambia la selección
         if (piezaClicada != null && piezaClicada.getColor() == turnoActual) {
             seleccionar(fila, col);
             return;
         }
 
+        // Comprueba si el movimiento implica una promoción de peón
         TipoPieza tipoPromocion = resolverPromocionUsuario(filaSeleccionada, colSeleccionada, fila, col);
 
+        // Si el usuario cancela la promoción, se limpia la selección
         if (tipoPromocion == null) {
             limpiarSeleccion();
             return;
         }
 
+        // Guarda el estado anterior para permitir deshacer el movimiento
         GameSnapshot snapshotAntesMovimiento = puedePrepararDeshacer() ? crearSnapshot() : null;
 
+        // Intenta realizar el movimiento en el modelo del tablero
         MovimientoInfo mov = modelo.moverPieza(filaSeleccionada, colSeleccionada, fila, col, tipoPromocion);
 
         if (mov != null) {
+            // Guarda el último movimiento para resaltarlo visualmente
             registrarUltimoMovimiento(filaSeleccionada, colSeleccionada, fila, col);
+
+            // Actualiza efectos, historial, puntos y turno
             reproducirSonidoMovimiento(mov);
             registrarMovimientoEnHistorial(mov);
             sumarPuntosCaptura(mov);
             cambiarTurno();
+
+            // Guarda un estado de la partida para poder revisarla después
             agregarSnapshotRevision();
+
+            // Comprueba si el movimiento ha terminado la partida
             comprobarFinDePartida();
+
+            // Limpia la selección visual del tablero
             limpiarSeleccion();
 
+            // Guarda el snapshot para poder deshacer si la opción está disponible
             if (!partidaTerminada && snapshotAntesMovimiento != null) {
                 snapshotDeshacer = snapshotAntesMovimiento;
                 actualizarEstadoPausa();
             }
 
+            // Si ahora juega la IA, programa su turno; si no, guarda la partida
             if (!partidaTerminada && esTurnoIA()) {
                 programarTurnoIA();
             } else if (!partidaTerminada) {
@@ -509,27 +554,36 @@ public class PartidaController implements Initializable {
             return;
         }
 
+        // Si el movimiento no es válido, se limpia la selección
         limpiarSeleccion();
     }
-
+    /**
+     * Comprueba si un peón debe promocionar y permite al usuario
+     * elegir la pieza en la que se va a convertir.
+     */
     private TipoPieza resolverPromocionUsuario(int filaOrigen, int colOrigen, int filaDestino, int colDestino) {
         Pieza pieza = modelo.getPieza(filaOrigen, colOrigen);
 
+        // Si la pieza no existe o no es un peón, no hay promoción
         if (pieza == null || pieza.getTipo() != TipoPieza.PEON) {
             return TipoPieza.DAMA;
         }
 
+        // Comprueba si el peón llega a la última fila
         boolean coronaBlanca = pieza.getColor() == ColorPieza.BLANCA && filaDestino == 0;
         boolean coronaNegra = pieza.getColor() == ColorPieza.NEGRA && filaDestino == 7;
 
+        // Si no llega al final del tablero, no se muestra el diálogo
         if (!coronaBlanca && !coronaNegra) {
             return TipoPieza.DAMA;
         }
 
+        // Solo permite promocionar si el destino es un movimiento válido
         if (!esMovimientoPosible(filaDestino, colDestino)) {
             return TipoPieza.DAMA;
         }
 
+        // Opciones disponibles para la promoción
         List<String> opciones = List.of("Dama", "Torre", "Alfil", "Caballo");
 
         ChoiceDialog<String> dialog = new ChoiceDialog<>("Dama", opciones);
@@ -537,11 +591,17 @@ public class PartidaController implements Initializable {
         dialog.setHeaderText("Elige la pieza para coronar");
         dialog.setContentText("Convertir peon en:");
 
+        // Muestra el diálogo y espera la elección del usuario
         Optional<String> seleccion = dialog.showAndWait();
 
+        // Convierte el texto elegido al tipo de pieza correspondiente
         return seleccion.map(this::tipoPromocionDesdeTexto).orElse(null);
     }
 
+    /**
+     * Convierte el texto seleccionado en el diálogo
+     * al tipo de pieza correspondiente.
+     */
     private TipoPieza tipoPromocionDesdeTexto(String texto) {
         return switch (texto) {
             case "Torre" -> TipoPieza.TORRE;
@@ -551,51 +611,84 @@ public class PartidaController implements Initializable {
         };
     }
 
+    /**
+     * Selecciona una pieza del tablero y calcula sus movimientos válidos.
+     */
     private void seleccionar(int fila, int col) {
         filaSeleccionada = fila;
         colSeleccionada = col;
+
+        // Obtiene las casillas a las que puede moverse la pieza seleccionada
         movimientosPosibles = modelo.obtenerMovimientosValidos(fila, col);
+
+        // Redibuja el tablero para mostrar los movimientos disponibles
         dibujarTablero();
     }
 
+    /**
+     * Elimina la selección actual del tablero.
+     */
     private void limpiarSeleccion() {
         filaSeleccionada = null;
         colSeleccionada = null;
+
+        // Borra los movimientos marcados visualmente
         movimientosPosibles.clear();
+
+        // Redibuja el tablero sin resaltados de selección
         dibujarTablero();
     }
 
+    /**
+     * Cambia el turno entre blancas y negras.
+     * También sincroniza el reloj y actualiza la interfaz.
+     */
     private void cambiarTurno() {
         turnoActual = turnoActual == ColorPieza.BLANCA ? ColorPieza.NEGRA : ColorPieza.BLANCA;
 
+        // Cambia el turno interno del reloj
         if (reloj != null) {
             reloj.switchTurn();
             iniciarRelojTrasPrimerMovimiento();
         }
 
+        // Actualiza el cronómetro activo y los avisos de jaque
         actualizarEstilosTimer();
         actualizarAvisoJaque();
     }
 
+    /**
+     * Inicia el reloj después del primer movimiento.
+     */
     private void iniciarRelojTrasPrimerMovimiento() {
+        // Evita iniciar el reloj si ya estaba iniciado o si la partida no está activa
         if (!relojIniciado && !partidaTerminada && !modoRevision && !cuentaAtrasActiva) {
             relojIniciado = true;
             reloj.start();
         }
     }
 
+    /**
+     * Comprueba si el turno actual pertenece a la IA.
+     */
     private boolean esTurnoIA() {
         return NuevaPartidaSettings.TIPO_CONTRA_IA.equals(settings.getTipoPartida())
                 && turnoActual != colorUsuario
                 && !partidaTerminada;
     }
 
+    /**
+     * Comprueba si se puede guardar un estado previo para deshacer.
+     */
     private boolean puedePrepararDeshacer() {
         return NuevaPartidaSettings.TIPO_CONTRA_IA.equals(settings.getTipoPartida())
                 && !deshacerUsado
                 && !partidaTerminada;
     }
 
+    /**
+     * Comprueba si el jugador puede deshacer el último movimiento.
+     */
     private boolean puedeDeshacer() {
         return NuevaPartidaSettings.TIPO_CONTRA_IA.equals(settings.getTipoPartida())
                 && !deshacerUsado
@@ -603,13 +696,20 @@ public class PartidaController implements Initializable {
                 && !partidaTerminada;
     }
 
+    /**
+     * Programa el turno de la IA con un pequeño retraso.
+     * El tiempo de espera cambia según la dificultad.
+     */
     private void programarTurnoIA() {
+        // No programa la IA si no es su turno o si la partida está bloqueada
         if (!esTurnoIA() || pausaActiva || modoRevision || cuentaAtrasActiva) {
             return;
         }
 
+        // Guarda la partida antes de que juegue la IA
         guardarPartidaEnCurso();
 
+        // Calcula el tiempo de espera según la dificultad
         int segundos = switch (settings.getDificultadIA()) {
             case FACIL -> 1 + RANDOM.nextInt(4);
             case NORMAL -> 1 + RANDOM.nextInt(3);
@@ -621,14 +721,19 @@ public class PartidaController implements Initializable {
         turnoIAPendiente.setOnFinished(event -> {
             turnoIAPendiente = null;
 
+            // Cuando termina la espera, la IA realiza su movimiento si la partida sigue activa
             if (esTurnoIA() && !pausaActiva && !modoRevision && !cuentaAtrasActiva) {
                 jugarTurnoIA();
             }
         });
 
+        // Inicia la espera antes del movimiento de la IA
         turnoIAPendiente.play();
     }
 
+    /**
+     * Cancela un turno de IA que estaba pendiente de ejecutarse.
+     */
     private void cancelarTurnoIAPendiente() {
         if (turnoIAPendiente != null) {
             turnoIAPendiente.stop();
@@ -636,56 +741,84 @@ public class PartidaController implements Initializable {
         }
     }
 
+    /**
+     * Ejecuta el movimiento de la IA.
+     */
     private void jugarTurnoIA() {
+
+        // Si no es turno de la IA o la partida está bloqueada, no hace nada
         if (!esTurnoIA() || pausaActiva || modoRevision || cuentaAtrasActiva) {
             return;
         }
 
+        // Obtiene todos los movimientos legales que puede hacer la IA
         List<int[]> movimientos = obtenerMovimientosIA();
 
+        // Si no tiene movimientos, se comprueba si hay jaque mate o tablas
         if (movimientos.isEmpty()) {
             comprobarFinDePartida();
             return;
         }
 
+        // Elige un movimiento según la dificultad configurada
         int[] movimiento = elegirMovimientoIA(movimientos);
 
+        // Ejecuta el movimiento en el modelo del tablero
         MovimientoInfo mov = modelo.moverPieza(
-                movimiento[0],
-                movimiento[1],
-                movimiento[2],
-                movimiento[3]
+                movimiento[0], // fila origen
+                movimiento[1], // columna origen
+                movimiento[2], // fila destino
+                movimiento[3]  // columna destino
         );
 
+        // Si por algún motivo el movimiento no es válido, se cancela
         if (mov == null) {
             return;
         }
 
+        // Guarda el último movimiento para resaltarlo en el tablero
         registrarUltimoMovimiento(movimiento[0], movimiento[1], movimiento[2], movimiento[3]);
+
+        // Reproduce sonido, registra historial y suma puntos si hay captura
         reproducirSonidoMovimiento(mov);
         registrarMovimientoEnHistorial(mov);
         sumarPuntosCaptura(mov);
+
+        // Cambia el turno al jugador contrario
         cambiarTurno();
+
+        // Guarda una captura del estado para revisión posterior
         agregarSnapshotRevision();
+
+        // Comprueba si la partida ha terminado
         comprobarFinDePartida();
+
+        // Limpia cualquier selección visual del tablero
         limpiarSeleccion();
 
+        // Guarda la partida si continúa activa
         if (!partidaTerminada) {
             guardarPartidaEnCurso();
         }
     }
 
+    /**
+     * Obtiene todos los movimientos legales disponibles para la IA.
+     */
     private List<int[]> obtenerMovimientosIA() {
         List<int[]> movimientos = new ArrayList<>();
 
+        // Recorre todas las casillas del tablero
         for (int fila = 0; fila < 8; fila++) {
             for (int col = 0; col < 8; col++) {
                 Pieza pieza = modelo.getPieza(fila, col);
 
+                // Solo tiene en cuenta las piezas del turno actual, que en este caso son las de la IA
                 if (pieza == null || pieza.getColor() != turnoActual) {
                     continue;
                 }
 
+                // Obtiene los destinos válidos de esa pieza y los guarda como movimiento posible
                 for (Posicion destino : modelo.obtenerMovimientosValidos(fila, col)) {
                     movimientos.add(new int[]{
                             fila,
@@ -700,7 +833,12 @@ public class PartidaController implements Initializable {
         return movimientos;
     }
 
+    /**
+     * Elige el comportamiento de la IA según la dificultad configurada.
+     */
     private int[] elegirMovimientoIA(List<int[]> movimientos) {
+
+        // Si no hay configuración válida, se usa la dificultad normal por defecto
         if (settings == null || settings.getDificultadIA() == null) {
             return elegirMovimientoNormal(movimientos);
         }
@@ -712,13 +850,23 @@ public class PartidaController implements Initializable {
         };
     }
 
+    /**
+     * Dificultad fácil: selecciona un movimiento aleatorio.
+     */
     private int[] elegirMovimientoFacil(List<int[]> movimientos) {
+
+        // Escoge una posición aleatoria dentro de la lista de movimientos legales
         return movimientos.get(RANDOM.nextInt(movimientos.size()));
     }
 
+    /**
+     * Dificultad normal: prioriza las capturas.
+     * Si no hay capturas disponibles, realiza un movimiento aleatorio.
+     */
     private int[] elegirMovimientoNormal(List<int[]> movimientos) {
         List<int[]> capturas = new ArrayList<>();
 
+        // Recorre los movimientos para buscar aquellos que capturan una pieza rival
         for (int[] movimiento : movimientos) {
             Pieza piezaDestino = modelo.getPieza(movimiento[2], movimiento[3]);
 
@@ -727,26 +875,38 @@ public class PartidaController implements Initializable {
             }
         }
 
+        // Si existen capturas, elige una de ellas aleatoriamente
         if (!capturas.isEmpty()) {
             return capturas.get(RANDOM.nextInt(capturas.size()));
         }
 
+        // Si no hay capturas, se comporta como la dificultad fácil
         return elegirMovimientoFacil(movimientos);
     }
 
+    /**
+     * Dificultad difícil: evalúa todos los movimientos posibles
+     * y elige el que tenga mayor puntuación.
+     */
     private int[] elegirMovimientoDificil(List<int[]> movimientos) {
+
         int[] mejorMovimiento = null;
         int mejorPuntuacion = Integer.MIN_VALUE;
 
+        // Recorre todos los movimientos disponibles
         for (int[] movimiento : movimientos) {
+
+            // Calcula la puntuación del movimiento
             int puntuacion = valorarMovimientoIA(movimiento);
 
+            // Si este movimiento es mejor que el anterior, se guarda
             if (puntuacion > mejorPuntuacion) {
                 mejorPuntuacion = puntuacion;
                 mejorMovimiento = movimiento;
             }
         }
 
+        // Si no se ha encontrado ninguno, se usa un movimiento aleatorio
         if (mejorMovimiento == null) {
             return elegirMovimientoFacil(movimientos);
         }
@@ -754,7 +914,11 @@ public class PartidaController implements Initializable {
         return mejorMovimiento;
     }
 
+    /**
+     * Asigna una puntuación a un movimiento de la IA.
+     */
     private int valorarMovimientoIA(int[] movimiento) {
+
         int filaOrigen = movimiento[0];
         int colOrigen = movimiento[1];
         int filaDestino = movimiento[2];
@@ -765,10 +929,12 @@ public class PartidaController implements Initializable {
 
         int puntuacion = 0;
 
+        // Si el movimiento captura una pieza rival, se suma más puntuación
         if (piezaDestino != null && piezaDestino.getColor() != turnoActual) {
             puntuacion += valorPieza(piezaDestino.getTipo()) * 10;
         }
 
+        // Se añade una pequeña valoración según la pieza que se mueve
         if (piezaOrigen != null) {
             puntuacion += switch (piezaOrigen.getTipo()) {
                 case PEON -> 1;
@@ -779,135 +945,221 @@ public class PartidaController implements Initializable {
             };
         }
 
+        // Se premian movimientos hacia el centro del tablero
         if (filaDestino >= 2 && filaDestino <= 5 && colDestino >= 2 && colDestino <= 5) {
             puntuacion += 3;
         }
 
+        // Añade un pequeño factor aleatorio para que la IA no siempre juegue igual
         puntuacion += RANDOM.nextInt(3);
 
         return puntuacion;
     }
 
+    /**
+     * Restaura el estado anterior de la partida.
+     * Permite deshacer el último movimiento realizado.
+     */
     private void deshacerUltimoMovimiento() {
+
+        // Comprueba si el jugador puede usar la opción deshacer
         if (!puedeDeshacer()) {
             return;
         }
 
+        // Cancela cualquier movimiento pendiente de la IA
         cancelarTurnoIAPendiente();
 
+        // Obtiene el estado guardado antes del último movimiento
         GameSnapshot snapshot = snapshotDeshacer;
 
+        // Restaura el tablero desde el snapshot
         modelo.importarEstado(snapshot.boardState);
+
+        // Recupera el turno y estadísticas de la partida
         turnoActual = snapshot.whiteTurn ? ColorPieza.BLANCA : ColorPieza.NEGRA;
         contadorMovimientos = snapshot.contadorMovimientos;
         puntosCapturasBlancas = snapshot.puntosBlancas;
         puntosCapturasNegras = snapshot.puntosNegras;
 
+        // Recupera el historial de movimientos
         historialTexto = snapshot.historialMovimientos == null
                 ? new ArrayList<>()
                 : new ArrayList<>(snapshot.historialMovimientos);
 
+        // Marca que el deshacer ya fue utilizado
         deshacerUsado = true;
+
+        // Elimina el snapshot usado
         snapshotDeshacer = null;
+
+        // Restablece el estado general de la partida
         partidaTerminada = false;
         modoRevision = false;
 
+        // Limpia el resaltado visual del último movimiento
         ultimaFilaOrigen = null;
         ultimaColOrigen = null;
         ultimaFilaDestino = null;
         ultimaColDestino = null;
 
+        // Restaura el reloj usando la información del snapshot
         cargarRelojDesdeSnapshot(snapshot, true);
+
+        // Ajusta la lista de snapshots de revisión
         recortarSnapshotsRevision();
+
+        // Actualiza todos los elementos visuales
         restaurarHistorialMovimientos();
         limpiarSeleccion();
         actualizarEstilosTimer();
         actualizarPuntos();
         actualizarAvisoJaque();
         actualizarEstadoPausa();
+
+        // Guarda automáticamente la partida actualizada
         guardarPartidaEnCurso();
     }
 
+    /**
+     * Inicializa la lista de snapshots utilizada
+     * para revisar la partida movimiento a movimiento.
+     */
     private void inicializarSnapshotsRevision() {
+
+        // Crea la lista si todavía no existe
         if (snapshotsRevision == null) {
             snapshotsRevision = new ArrayList<>();
         }
 
+        // Guarda el estado inicial del tablero
         if (snapshotsRevision.isEmpty()) {
             snapshotsRevision.add(crearSnapshot());
         }
     }
 
+    /**
+     * Guarda un nuevo snapshot de la partida actual.
+     */
     private void agregarSnapshotRevision() {
+
         inicializarSnapshotsRevision();
+
+        // Añade el estado actual de la partida
         snapshotsRevision.add(crearSnapshot());
     }
 
+    /**
+     * Elimina snapshots sobrantes después de deshacer movimientos.
+     */
     private void recortarSnapshotsRevision() {
+
         inicializarSnapshotsRevision();
 
+        // Calcula cuántos snapshots debería haber
         int tamanoEsperado = Math.max(1, contadorMovimientos + 1);
 
+        // Elimina snapshots extra
         while (snapshotsRevision.size() > tamanoEsperado) {
             snapshotsRevision.remove(snapshotsRevision.size() - 1);
         }
 
+        // Garantiza que exista al menos un snapshot inicial
         if (snapshotsRevision.isEmpty()) {
             snapshotsRevision.add(crearSnapshot());
         }
     }
 
+    /**
+     * Crea una captura completa del estado actual de la partida.
+     * Se utiliza para revisión y deshacer movimientos.
+     */
     private GameSnapshot crearSnapshot() {
+
         GameSnapshot snapshot = new GameSnapshot();
+
+        // Obtiene el estado actual del reloj
         GameState state = reloj == null ? null : reloj.toGameState();
 
+        // Guarda el estado del tablero
         snapshot.boardState = modelo == null ? "" : modelo.exportarEstado();
+
+        // Guarda el turno actual
         snapshot.whiteTurn = turnoActual == ColorPieza.BLANCA;
+
+        // Guarda los tiempos restantes
         snapshot.whiteSeconds = state == null ? tiempoInicialConfigurado() : state.whiteSeconds;
         snapshot.blackSeconds = state == null ? tiempoInicialConfigurado() : state.blackSeconds;
+
+        // Guarda estadísticas y datos de la partida
         snapshot.contadorMovimientos = contadorMovimientos;
         snapshot.relojIniciado = relojIniciado;
         snapshot.puntosBlancas = puntosCapturasBlancas;
         snapshot.puntosNegras = puntosCapturasNegras;
+
+        // Guarda el historial de jugadas
         snapshot.historialMovimientos = new ArrayList<>(historialTexto);
 
         return snapshot;
     }
 
+    /**
+     * Restaura el reloj utilizando un snapshot guardado.
+     */
     private void cargarRelojDesdeSnapshot(GameSnapshot snapshot, boolean pausado) {
+
+        // Comprueba que exista reloj y snapshot
         if (reloj == null || snapshot == null) {
             return;
         }
 
         GameState state = new GameState();
+
+        // Recupera toda la información del reloj
         state.whiteSeconds = snapshot.whiteSeconds;
         state.blackSeconds = snapshot.blackSeconds;
         state.whiteTurn = snapshot.whiteTurn;
         state.paused = pausado;
         state.finished = false;
 
+        // Carga el estado en el reloj
         reloj.loadGameState(state);
+
         relojIniciado = snapshot.relojIniciado;
 
+        // Actualiza los tiempos visibles en pantalla
         timerBlancas.setText(reloj.getWhiteTime());
         timerNegras.setText(reloj.getBlackTime());
     }
 
+    /**
+     * Devuelve el tiempo inicial configurado para la partida.
+     */
     private int tiempoInicialConfigurado() {
+
         return settings != null && settings.getTiempoSegundos() > 0
                 ? settings.getTiempoSegundos()
                 : TIEMPO_INICIAL_SEG;
     }
 
+    /**
+     * Prepara el reloj de la partida y actualiza
+     * visualmente los tiempos de ambos jugadores.
+     */
     private void prepararReloj() {
+
         int tiempoInicial = tiempoInicialConfigurado();
 
+        // Crea el reloj con el tiempo configurado
         reloj = new ChessClock(tiempoInicial);
 
+        // Timeline que actualiza los labels cada segundo
         relojTick = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+
             timerBlancas.setText(reloj.getWhiteTime());
             timerNegras.setText(reloj.getBlackTime());
 
+            // Finaliza la partida cuando el tiempo termina
             if (reloj.isFinished() && !partidaTerminada) {
                 finalizar("Fin por tiempo", reloj.getWinnerText());
             }
@@ -916,8 +1168,11 @@ public class PartidaController implements Initializable {
         relojTick.setCycleCount(Timeline.INDEFINITE);
         relojTick.play();
 
+        // Restaura el estado del reloj si se carga una partida
         if (partidaCargada != null) {
+
             GameState state = new GameState();
+
             state.whiteSeconds = partidaCargada.whiteSeconds;
             state.blackSeconds = partidaCargada.blackSeconds;
             state.whiteTurn = partidaCargada.whiteTurn;
@@ -927,6 +1182,7 @@ public class PartidaController implements Initializable {
             reloj.loadGameState(state);
         }
 
+        // Actualiza los tiempos visibles en pantalla
         timerBlancas.setText(reloj.getWhiteTime());
         timerNegras.setText(reloj.getBlackTime());
     }
