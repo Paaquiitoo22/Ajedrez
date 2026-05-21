@@ -1,53 +1,22 @@
 package com.tfg.ajedrez.controller;
 
-import com.tfg.ajedrez.persistence.GamePersistenceService;
-import com.tfg.ajedrez.persistence.GameRecord;
-import com.tfg.ajedrez.persistence.GameStats;
-import com.tfg.ajedrez.persistence.UserProfile;
-import com.tfg.ajedrez.state.AppSession;
-import com.tfg.ajedrez.state.ThemeManager;
-import com.tfg.ajedrez.util.AvatarUtil;
 import com.tfg.ajedrez.util.SceneManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-/**
- * Clase controladora para la vista del Menú Principal.
- * 
- * ARQUITECTURA UI/UX:
- * - Integración Interfaz-Lógica: Actúa como puente entre la sesión del usuario (AppSession) 
- *   y la presentación de los datos (estadísticas, historial, avatar).
- * - Gestión de Navegación: Centraliza las transiciones hacia las distintas funcionalidades 
- *   del juego (Nueva Partida, Cargar Partida, Perfil) utilizando el SceneManager.
- * - Coherencia Visual: Controla el menú lateral desplegable y la tematización dinámica (CSS),
- *   asegurando una experiencia de usuario (UX) fluida e intuitiva sin pérdida de contexto.
- */
 public class MenuPrincipalController {
 
-    @FXML private VBox menuDesplegable;
-    @FXML private Region RegionMenu;
+    @FXML VBox menuDesplegable;
+    @FXML Region RegionMenu;
 
-    @FXML private Label lblVictorias;
-    @FXML private Label lblDerrotas;
-    @FXML private Label lblTablas;
-    @FXML private Button btnAvatar;
-    @FXML private Button btnAjustes;
-
-    @FXML private VBox botonHistorial;
-    @FXML private VBox botonCargarPartida;
+    // ── Partidas recientes ────────────────────────────────────────────────────
+    // TODO: llamar a cargarPartidasRecientes() desde initialize() cuando el
+    //       backend SQL esté disponible. Las tarjetas están ocultas (visible=false,
+    //       managed=false) hasta que lleguen datos; sinPartidas se oculta al mostrarlas.
 
     @FXML private Label sinPartidas;
 
@@ -55,25 +24,18 @@ public class MenuPrincipalController {
     @FXML private Label resultado1;
     @FXML private Label oponente1;
     @FXML private Label fecha1;
-    @FXML private Separator sep1;
 
     @FXML private HBox cardPartida2;
     @FXML private Label resultado2;
     @FXML private Label oponente2;
     @FXML private Label fecha2;
-    @FXML private Separator sep2;
 
     @FXML private HBox cardPartida3;
     @FXML private Label resultado3;
     @FXML private Label oponente3;
     @FXML private Label fecha3;
 
-    @FXML
-    private void initialize() {
-        aplicarAvatarUsuario();
-        actualizarTextoTema();
-        cargarResumenUsuario();
-    }
+    // ── Menú desplegable ─────────────────────────────────────────────────────
 
     /**
      * Cierra la sesión actual y redirige al usuario a la pantalla de autenticación.
@@ -86,69 +48,21 @@ public class MenuPrincipalController {
         SceneManager.navegarA("/com/tfg/ajedrez/vista/login.fxml");
     }
 
-    /**
-     * Gestiona la micro-interacción del menú lateral desplegable.
-     * 
-     * Diseño UX: En lugar de cargar una nueva escena para el menú, se superpone 
-     * un panel interactivo (overlay) sobre la vista actual, manteniendo el contexto visual 
-     * del usuario para una experiencia más fluida.
-     */
+    /** Abre/cierra el menú desplegable. */
     @FXML
     public void onDesplegable(ActionEvent event) throws Exception {
-        boolean visible = !menuDesplegable.isVisible();
-        menuDesplegable.setVisible(visible);
-        RegionMenu.setVisible(visible);
-    }
-
-    @FXML
-    public void onCerrarMenu() {
-        if (menuDesplegable.isVisible() && RegionMenu.isVisible()) {
+        if (menuDesplegable.isVisible()) {
             menuDesplegable.setVisible(false);
             RegionMenu.setVisible(false);
         }
     }
 
+    /** Cierra el menú al pulsar fuera de él. */
     @FXML
-    public void onNuevaPartida() {
-        SceneManager.navegarA("/com/tfg/ajedrez/vista/nueva-partida.fxml");
-    }
-
-    @FXML
-    public void onPerfil(ActionEvent event) {
-        SceneManager.navegarA("/com/tfg/ajedrez/vista/perfil.fxml");
-    }
-
-    @FXML
-    public void onHistorial(MouseEvent event) {
-        List<GameRecord> historial = GamePersistenceService.cargarHistorial(AppSession.getCurrentUserId());
-
-        if (historial.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Historial");
-            alert.setHeaderText("Sin partidas anteriores");
-            alert.setContentText("Aun no hay partidas guardadas para este usuario.");
-            alert.showAndWait();
-            return;
-        }
-
-        List<String> opciones = new ArrayList<>();
-        for (int i = 0; i < historial.size(); i++) {
-            opciones.add((i + 1) + ". " + formatearPartida(historial.get(i)));
-        }
-
-        ChoiceDialog<String> dialog = new ChoiceDialog<>(opciones.get(0), opciones);
-        dialog.setTitle("Historial");
-        dialog.setHeaderText("Elige una partida para revisar");
-        dialog.setContentText("Partida:");
-
-        Optional<String> seleccion = dialog.showAndWait();
-        if (seleccion.isEmpty()) {
-            return;
-        }
-
-        int indice = opciones.indexOf(seleccion.get());
-        if (indice < 0) {
-            return;
+    public void onCerrarMenu() {
+        if (menuDesplegable.isVisible() && RegionMenu.isVisible()) {
+            menuDesplegable.setVisible(false);
+            RegionMenu.setVisible(false);
         }
 
         GameRecord record = historial.get(indice);
@@ -175,13 +89,7 @@ public class MenuPrincipalController {
         SceneManager.navegarA("/com/tfg/ajedrez/vista/partida.fxml");
     }
 
-    /**
-     * Alterna el tema visual de la aplicación (e.g., Modo Claro / Modo Oscuro).
-     * 
-     * Sistema de Tematización CSS: Propaga el cambio de tema a la raíz de la escena 
-     * a través del ThemeManager. Esto actualiza dinámicamente las variables CSS 
-     * globales sin necesidad de recargar los componentes FXML, garantizando coherencia visual.
-     */
+    /** Navega a la pantalla de nueva partida. */
     @FXML
     public void onCambiarTema(ActionEvent event) {
         ThemeManager.toggleTheme();

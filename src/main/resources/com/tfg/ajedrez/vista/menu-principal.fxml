@@ -23,200 +23,230 @@
                 <VBox />
             </content>
         </ScrollPane>
+      <HBox alignment="CENTER" maxHeight="100.0" maxWidth="330.0" prefHeight="100.0" prefWidth="330.0" StackPane.alignment="TOP_CENTER">
+         <children>
+            <VBox alignment="BOTTOM_CENTER" maxWidth="139.0" prefHeight="100.0" prefWidth="100.0" styleClass="caja-menu">
+               <children>
+                  <Label styleClass="caja-stat-label" text="10" textFill="WHITE">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                     <font>
+                        <Font name="Inter" size="24.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" styleClass="caja-stat-resultado" text="Victorias" textFill="#2ac31c">
+                     <padding>
+                        <Insets bottom="15.0" />
+                     </padding>
+                     <font>
+                        <Font name="Inter" size="18.0" />
+                     </font></Label>
+               </children>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="100.0" styleClass="caja-menu">
+               <children>
+                  <Label styleClass="caja-stat-label" text="3" textFill="WHITE">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </Label>
+                  <Label styleClass="caja-stat-resultado" text="Derrotas" textFill="#e41616">
+                     <padding>
+                        <Insets bottom="15.0" />
+                     </padding></Label>
+               </children>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox alignment="BOTTOM_CENTER" prefWidth="100.0" styleClass="caja-menu">
+               <children>
+                  <Label styleClass="caja-stat-label" text="4" textFill="WHITE">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </Label>
+                  <Label styleClass="caja-stat-resultado" text="Tablas" textFill="WHITE">
+                     <padding>
+                        <Insets bottom="15.0" />
+                     </padding></Label>
+               </children>
+            </VBox>
+         </children>
+         <StackPane.margin>
+            <Insets top="90.0" />
+         </StackPane.margin>
+      </HBox>
+      <Separator maxWidth="330.0" prefWidth="200.0" styleClass="or-line">
+         <StackPane.margin>
+            <Insets top="200.0" />
+         </StackPane.margin>
+      </Separator>
+      <VBox alignment="BOTTOM_CENTER" maxWidth="330.0" prefHeight="475.0" prefWidth="330.0" spacing="10.0" StackPane.alignment="BOTTOM_CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" maxWidth="330.0">
+               <children>
+                  <Label opacity="0.68" styleClass="or-label" text="PARTIDAS RECIENTES" textFill="WHITE" />
+               </children>
+            </HBox>
+            <!-- Contenedor de partidas recientes.
+                 fx:id expuestos para poblarlos desde MenuPrincipalController
+                 cuando se integre el backend SQL. -->
+            <VBox fx:id="contenedorPartidas" maxWidth="330.0" prefWidth="330.0" styleClass="caja-menu">
+               <padding><Insets bottom="8.0" left="12.0" right="12.0" top="8.0" /></padding>
 
-        <HBox alignment="CENTER" maxHeight="100.0" maxWidth="330.0" prefHeight="100.0" prefWidth="330.0" StackPane.alignment="TOP_CENTER">
-            <children>
-                <VBox alignment="BOTTOM_CENTER" maxWidth="139.0" prefHeight="100.0" prefWidth="100.0" styleClass="caja-menu">
-                    <children>
-                        <Label fx:id="lblVictorias" styleClass="caja-stat-label" text="0">
-                            <padding><Insets bottom="10.0" /></padding>
-                            <font><Font name="Inter" size="24.0" /></font>
-                        </Label>
-                        <Label alignment="CENTER" text="Victorias">
-                            <styleClass>
-                                <String fx:value="caja-stat-resultado" />
-                                <String fx:value="resultado-texto-victoria" />
-                            </styleClass>
-                            <padding><Insets bottom="15.0" /></padding>
-                            <font><Font name="Inter" size="18.0" /></font>
-                        </Label>
-                    </children>
-                    <HBox.margin><Insets right="10.0" /></HBox.margin>
-                </VBox>
-                <VBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="100.0" styleClass="caja-menu">
-                    <children>
-                        <Label fx:id="lblDerrotas" styleClass="caja-stat-label" text="0">
-                            <padding><Insets bottom="10.0" /></padding>
-                        </Label>
-                        <Label text="Derrotas">
-                            <styleClass>
-                                <String fx:value="caja-stat-resultado" />
-                                <String fx:value="resultado-texto-derrota" />
-                            </styleClass>
-                            <padding><Insets bottom="15.0" /></padding>
-                        </Label>
-                    </children>
-                    <HBox.margin><Insets right="10.0" /></HBox.margin>
-                </VBox>
-                <VBox alignment="BOTTOM_CENTER" prefWidth="100.0" styleClass="caja-menu">
-                    <children>
-                        <Label fx:id="lblTablas" styleClass="caja-stat-label" text="0">
-                            <padding><Insets bottom="10.0" /></padding>
-                        </Label>
-                        <Label styleClass="caja-stat-resultado" text="Tablas">
-                            <padding><Insets bottom="15.0" /></padding>
-                        </Label>
-                    </children>
-                </VBox>
-            </children>
-            <StackPane.margin><Insets top="90.0" /></StackPane.margin>
-        </HBox>
+               <!-- Mensaje sin partidas (visible por defecto hasta que lleguen datos) -->
+               <Label fx:id="sinPartidas" alignment="CENTER" opacity="0.4" prefWidth="306.0"
+                      text="No hay partidas recientes" textFill="WHITE">
+                  <padding><Insets bottom="16.0" top="16.0" /></padding>
+               </Label>
 
-        <Separator maxWidth="330.0" prefWidth="200.0" styleClass="or-line">
-            <StackPane.margin><Insets top="200.0" /></StackPane.margin>
-        </Separator>
+               <!-- Tarjeta partida 1 -->
+               <HBox fx:id="cardPartida1" alignment="CENTER_LEFT" managed="false"
+                     prefHeight="52.0" spacing="12.0" styleClass="card-partida" visible="false">
+                  <Label fx:id="resultado1" alignment="CENTER" minHeight="28.0" minWidth="28.0"
+                         styleClass="badge-resultado resultado-victoria" text="V" />
+                  <VBox alignment="CENTER_LEFT" spacing="2.0" HBox.hgrow="ALWAYS">
+                     <Label fx:id="oponente1" styleClass="oponente-partida" text="—" textFill="WHITE" />
+                     <Label fx:id="fecha1" styleClass="fecha-partida" text="—" />
+                  </VBox>
+               </HBox>
 
-        <VBox alignment="BOTTOM_CENTER" maxWidth="330.0" prefHeight="475.0" prefWidth="330.0" spacing="10.0" StackPane.alignment="BOTTOM_CENTER">
-            <children>
-                <HBox alignment="CENTER_LEFT" maxWidth="330.0">
-                    <children>
-                        <Label opacity="0.68" styleClass="or-label" text="PARTIDAS RECIENTES" />
-                    </children>
-                </HBox>
+               <Separator fx:id="sep1" managed="false" opacity="0.1" visible="false" />
 
-                <VBox fx:id="contenedorPartidas" maxWidth="330.0" prefWidth="330.0" styleClass="caja-menu">
-                    <padding><Insets bottom="8.0" left="12.0" right="12.0" top="8.0" /></padding>
-                    <children>
-                        <Label fx:id="sinPartidas" alignment="CENTER" opacity="0.55" prefWidth="306.0"
-                               text="No hay partidas recientes">
-                            <padding><Insets bottom="16.0" top="16.0" /></padding>
-                        </Label>
+               <!-- Tarjeta partida 2 -->
+               <HBox fx:id="cardPartida2" alignment="CENTER_LEFT" managed="false"
+                     prefHeight="52.0" spacing="12.0" styleClass="card-partida" visible="false">
+                  <Label fx:id="resultado2" alignment="CENTER" minHeight="28.0" minWidth="28.0"
+                         styleClass="badge-resultado resultado-victoria" text="V" />
+                  <VBox alignment="CENTER_LEFT" spacing="2.0" HBox.hgrow="ALWAYS">
+                     <Label fx:id="oponente2" styleClass="oponente-partida" text="—" textFill="WHITE" />
+                     <Label fx:id="fecha2" styleClass="fecha-partida" text="—" />
+                  </VBox>
+               </HBox>
 
-                        <HBox fx:id="cardPartida1" alignment="CENTER_LEFT" managed="false"
-                              prefHeight="52.0" spacing="12.0" styleClass="card-partida" visible="false">
-                            <children>
-                                <Label fx:id="resultado1" alignment="CENTER" minHeight="28.0" minWidth="28.0"
-                                       styleClass="badge-resultado resultado-victoria" text="V" />
-                                <VBox alignment="CENTER_LEFT" spacing="2.0" HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label fx:id="oponente1" styleClass="oponente-partida" text="-" />
-                                        <Label fx:id="fecha1" styleClass="fecha-partida" text="-" />
-                                    </children>
-                                </VBox>
-                            </children>
-                        </HBox>
+               <Separator fx:id="sep2" managed="false" opacity="0.1" visible="false" />
 
-                        <Separator fx:id="sep1" managed="false" opacity="0.1" visible="false" />
+               <!-- Tarjeta partida 3 -->
+               <HBox fx:id="cardPartida3" alignment="CENTER_LEFT" managed="false"
+                     prefHeight="52.0" spacing="12.0" styleClass="card-partida" visible="false">
+                  <Label fx:id="resultado3" alignment="CENTER" minHeight="28.0" minWidth="28.0"
+                         styleClass="badge-resultado resultado-victoria" text="V" />
+                  <VBox alignment="CENTER_LEFT" spacing="2.0" HBox.hgrow="ALWAYS">
+                     <Label fx:id="oponente3" styleClass="oponente-partida" text="—" textFill="WHITE" />
+                     <Label fx:id="fecha3" styleClass="fecha-partida" text="—" />
+                  </VBox>
+               </HBox>
 
-                        <HBox fx:id="cardPartida2" alignment="CENTER_LEFT" managed="false"
-                              prefHeight="52.0" spacing="12.0" styleClass="card-partida" visible="false">
-                            <children>
-                                <Label fx:id="resultado2" alignment="CENTER" minHeight="28.0" minWidth="28.0"
-                                       styleClass="badge-resultado resultado-victoria" text="V" />
-                                <VBox alignment="CENTER_LEFT" spacing="2.0" HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label fx:id="oponente2" styleClass="oponente-partida" text="-" />
-                                        <Label fx:id="fecha2" styleClass="fecha-partida" text="-" />
-                                    </children>
-                                </VBox>
-                            </children>
-                        </HBox>
+            </VBox>
+         </children>
+         <StackPane.margin>
+            <Insets bottom="30.0" />
+         </StackPane.margin>
+      </VBox>
+      <Region fx:id="RegionMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onCerrarMenu" prefHeight="378.0" prefWidth="380.0" style="-fx-background-color: transparent;" visible="false" />
+      <Button mnemonicParsing="false" onAction="#onNuevaPartida" prefHeight="30.0" prefWidth="330.0" styleClass="boton-nueva-partida" text="Nueva partida" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets top="215.0" />
+         </StackPane.margin>
+      </Button>
+      <HBox alignment="CENTER" maxHeight="150.0" maxWidth="330.0" prefHeight="150.0" prefWidth="300.0" StackPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="10.0"
+                  style="-fx-cursor: hand;" styleClass="caja-menu">
+               <HBox.margin>
+                  <Insets right="29.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="16.0" top="16.0" />
+               </padding>
+               <children>
+                  <Region styleClass="icon-nav-historial" />
+                  <Label styleClass="label-nav" text="Historial" textFill="WHITE" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="150.0" spacing="10.0"
+                  style="-fx-cursor: hand;" styleClass="caja-menu">
+               <padding>
+                  <Insets bottom="16.0" top="16.0" />
+               </padding>
+               <children>
+                  <Region styleClass="icon-nav-perfil" />
+                  <Label alignment="CENTER" styleClass="label-nav" text="Perfil" textFill="WHITE" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#onDesplegable" styleClass="menu-hamburguesa" StackPane.alignment="TOP_RIGHT">
+         <graphic>
+            <Region opacity="0.57" styleClass="icon" />
+         </graphic>
+         <StackPane.margin>
+            <Insets right="20.0" top="20.0" />
+         </StackPane.margin>
+      </Button>
+      <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="45.0" styleClass="boton-perfil" text="DS" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="20.0" top="20.0" />
+         </StackPane.margin>
+      </Button>
 
-                        <Separator fx:id="sep2" managed="false" opacity="0.1" visible="false" />
-
-                        <HBox fx:id="cardPartida3" alignment="CENTER_LEFT" managed="false"
-                              prefHeight="52.0" spacing="12.0" styleClass="card-partida" visible="false">
-                            <children>
-                                <Label fx:id="resultado3" alignment="CENTER" minHeight="28.0" minWidth="28.0"
-                                       styleClass="badge-resultado resultado-victoria" text="V" />
-                                <VBox alignment="CENTER_LEFT" spacing="2.0" HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <Label fx:id="oponente3" styleClass="oponente-partida" text="-" />
-                                        <Label fx:id="fecha3" styleClass="fecha-partida" text="-" />
-                                    </children>
-                                </VBox>
-                            </children>
-                        </HBox>
-                    </children>
-                </VBox>
-            </children>
-            <StackPane.margin><Insets bottom="30.0" /></StackPane.margin>
-        </VBox>
-
-        <Region fx:id="RegionMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                onMouseClicked="#onCerrarMenu" prefHeight="378.0" prefWidth="380.0"
-                style="-fx-background-color: transparent;" visible="false" />
-
-        <Button mnemonicParsing="false" onAction="#onNuevaPartida" prefHeight="30.0" prefWidth="330.0"
-                styleClass="boton-nueva-partida" text="Nueva partida" StackPane.alignment="TOP_CENTER">
-            <StackPane.margin><Insets top="215.0" /></StackPane.margin>
-        </Button>
-
-        <HBox alignment="CENTER" maxHeight="150.0" maxWidth="330.0" prefHeight="150.0" prefWidth="300.0" StackPane.alignment="CENTER">
-            <children>
-                <VBox fx:id="botonHistorial" alignment="CENTER" onMouseClicked="#onHistorial"
-                      prefHeight="200.0" prefWidth="150.0" spacing="10.0"
-                      style="-fx-cursor: hand;" styleClass="caja-menu">
-                    <HBox.margin><Insets right="29.0" /></HBox.margin>
-                    <padding><Insets bottom="16.0" top="16.0" /></padding>
-                    <children>
-                        <Region styleClass="icon-nav-historial" />
-                        <Label styleClass="label-nav" text="Historial" />
-                    </children>
-                </VBox>
-                <VBox fx:id="botonCargarPartida" alignment="CENTER" onMouseClicked="#onCargarPartida"
-                      prefHeight="200.0" prefWidth="150.0" spacing="10.0"
-                      style="-fx-cursor: hand;" styleClass="caja-menu">
-                    <padding><Insets bottom="16.0" top="16.0" /></padding>
-                    <children>
-                        <Region styleClass="icon-nav-cargar" />
-                        <Label alignment="CENTER" styleClass="label-nav" text="Cargar" />
-                    </children>
-                </VBox>
-            </children>
-        </HBox>
-
-        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="40.0" maxWidth="40.0"
-                minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#onDesplegable"
-                styleClass="menu-hamburguesa" StackPane.alignment="TOP_RIGHT">
-            <graphic><Region opacity="0.57" styleClass="icon" /></graphic>
-            <StackPane.margin><Insets right="20.0" top="20.0" /></StackPane.margin>
-        </Button>
-
-        <Button fx:id="btnAvatar" mnemonicParsing="false" onAction="#onPerfil" prefHeight="45.0" prefWidth="45.0"
-                styleClass="boton-perfil" text="US" StackPane.alignment="TOP_LEFT">
-            <StackPane.margin><Insets left="20.0" top="20.0" /></StackPane.margin>
-        </Button>
-
-        <VBox fx:id="menuDesplegable" alignment="TOP_RIGHT" maxHeight="140.0" maxWidth="150.0"
-              prefHeight="134.0" prefWidth="100.0" styleClass="menu-desplegable" visible="false"
-              StackPane.alignment="TOP_RIGHT">
-            <StackPane.margin><Insets right="20.0" top="80.0" /></StackPane.margin>
-            <children>
-                <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="148.0" spacing="10.0">
-                    <children>
-                        <Button fx:id="btnAjustes" mnemonicParsing="false" onAction="#onCambiarTema"
-                                styleClass="boton-menu-lateral" text="Tema claro">
-                            <graphic><Region styleClass="icon-tema" /></graphic>
-                        </Button>
-                    </children>
-                    <padding><Insets left="10.0" /></padding>
-                </HBox>
-                <Separator prefHeight="0.0" prefWidth="148.0" styleClass="separador-menu" />
-                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="148.0" spacing="10.0">
-                    <children>
-                        <Button mnemonicParsing="false" onAction="#onVolver" prefHeight="40.0" prefWidth="132.0"
-                                text="Cerrar sesi&#243;n">
-                            <graphic><Region styleClass="icon-exit" /></graphic>
-                            <styleClass>
-                                <String fx:value="boton-menu-lateral" />
-                                <String fx:value="salir" />
-                            </styleClass>
-                        </Button>
-                    </children>
-                    <padding><Insets left="10.0" /></padding>
-                </HBox>
-            </children>
-        </VBox>
+      <VBox fx:id="menuDesplegable" alignment="TOP_RIGHT" maxHeight="150.0" maxWidth="150.0" prefHeight="200.0" prefWidth="100.0" styleClass="menu-desplegable" visible="false" StackPane.alignment="TOP_RIGHT">
+         <StackPane.margin>
+            <Insets right="20.0" top="80.0" />
+         </StackPane.margin>
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="148.0" spacing="10.0">
+               <children>
+                  <Button mnemonicParsing="false" styleClass="boton-menu-lateral" text="Ajustes">
+                     <graphic>
+                     
+                        <Region styleClass="icon-settings" />
+                     </graphic>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+            <Separator opacity="0.08" prefHeight="0.0" prefWidth="148.0" />
+            <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="148.0" spacing="10.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="94.0" styleClass="boton-menu-lateral" text="Acerca de">
+                     <graphic>
+                        <Region styleClass="icon-info" />
+                     </graphic>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+            <Separator opacity="0.08" prefHeight="0.0" prefWidth="148.0" />
+            <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="148.0" spacing="10.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onVolver" prefHeight="40.0" prefWidth="132.0" text="Cerrar sesión" textFill="WHITE">
+                     <graphic>
+                        <Region styleClass="icon-exit" />
+                     </graphic>
+                     <styleClass>
+                        <String fx:value="boton-menu-lateral" />
+                        <String fx:value="salir" />
+                     </styleClass>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
     </children>
 </StackPane>
