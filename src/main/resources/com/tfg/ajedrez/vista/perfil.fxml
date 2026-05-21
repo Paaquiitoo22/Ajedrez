@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="700.0" prefWidth="380.0" styleClass="screen-root"
+           stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.tfg.ajedrez.controller.PerfilController">
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="24.0" maxWidth="340.0" prefWidth="340.0">
+            <padding><Insets bottom="30.0" left="20.0" right="20.0" top="20.0" /></padding>
+            <children>
+                <HBox alignment="CENTER_LEFT" maxWidth="340.0" prefWidth="340.0" spacing="10.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#onVolver" styleClass="boton-volver-circular">
+                            <graphic><Region styleClass="icon-flecha-atras" /></graphic>
+                        </Button>
+                        <Label styleClass="titulo-pantalla" text="Perfil" />
+                    </children>
+                </HBox>
+
+                <VBox alignment="CENTER" maxWidth="340.0" prefWidth="340.0" spacing="14.0" styleClass="profile-card">
+                    <padding><Insets bottom="22.0" left="18.0" right="18.0" top="24.0" /></padding>
+                    <children>
+                        <Label fx:id="avatarPerfil" alignment="CENTER" minHeight="104.0" minWidth="104.0"
+                               prefHeight="104.0" prefWidth="104.0" styleClass="avatar-perfil" text="US" />
+                        <Label fx:id="lblNombre" alignment="CENTER" styleClass="profile-name" text="Usuario" />
+                        <Label fx:id="lblEmail" alignment="CENTER" styleClass="profile-email" text="email" />
+                        <HBox alignment="CENTER" spacing="10.0">
+                            <children>
+                                <Button mnemonicParsing="false" onAction="#onSubirFoto" styleClass="boton-nueva-partida" text="Subir foto" />
+                                <Button mnemonicParsing="false" onAction="#onQuitarFoto" styleClass="boton-secundario" text="Usar iniciales" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+
+        <Region fx:id="RegionMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                onMouseClicked="#onCerrarMenu" style="-fx-background-color: transparent;" visible="false" />
+
+        <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="40.0" maxWidth="40.0"
+                minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#onDesplegable"
+                styleClass="menu-hamburguesa" StackPane.alignment="TOP_RIGHT">
+            <graphic><Region opacity="0.57" styleClass="icon" /></graphic>
+            <StackPane.margin><Insets right="20.0" top="20.0" /></StackPane.margin>
+        </Button>
+
+        <VBox fx:id="menuDesplegable" alignment="TOP_RIGHT" maxHeight="140.0" maxWidth="150.0"
+              prefHeight="134.0" prefWidth="100.0" styleClass="menu-desplegable" visible="false"
+              StackPane.alignment="TOP_RIGHT">
+            <StackPane.margin><Insets right="20.0" top="80.0" /></StackPane.margin>
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="148.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="btnAjustes" mnemonicParsing="false" onAction="#onCambiarTema"
+                                styleClass="boton-menu-lateral" text="Tema claro">
+                            <graphic><Region styleClass="icon-tema" /></graphic>
+                        </Button>
+                    </children>
+                    <padding><Insets left="10.0" /></padding>
+                </HBox>
+                <Separator prefHeight="0.0" prefWidth="148.0" styleClass="separador-menu" />
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="148.0" spacing="10.0">
+                    <children>
+                        <Button mnemonicParsing="false" onAction="#onCerrarSesion" prefHeight="40.0" prefWidth="132.0"
+                                text="Cerrar sesi&#243;n">
+                            <graphic><Region styleClass="icon-exit" /></graphic>
+                            <styleClass>
+                                <String fx:value="boton-menu-lateral" />
+                                <String fx:value="salir" />
+                            </styleClass>
+                        </Button>
+                    </children>
+                    <padding><Insets left="10.0" /></padding>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>

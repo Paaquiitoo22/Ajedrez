@@ -12,7 +12,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="380.0" style="-fx-background-color: #1B1B1B;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tfg.ajedrez.controller.MenuPrincipalController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="700.0" prefWidth="380.0" styleClass="screen-root"
+           stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.tfg.ajedrez.controller.MenuPrincipalController">
     <children>
         <ScrollPane style="-fx-background-color: transparent; -fx-background: transparent;">
             <content>

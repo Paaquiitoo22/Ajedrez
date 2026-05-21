@@ -27,6 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 /**
  * Controlador de la pantalla de partida.
@@ -36,24 +37,33 @@ import java.util.ResourceBundle;
  */
 public class PartidaController implements Initializable {
 
-    // ── Inyecciones FXML ─────────────────────────────────────────────────────
-
     @FXML private GridPane tablero;
-
+    @FXML private Slider sliderSonidoPartida;
+    @FXML private Label lblSonidoPartidaValor;
     @FXML private Label avatarNegras;
     @FXML private Label nombreNegras;
+    @FXML private Label puntosNegras;
     @FXML private Label timerNegras;
 
     @FXML private Label avatarBlancas;
     @FXML private Label nombreBlancas;
+    @FXML private Label puntosBlancas;
     @FXML private Label timerBlancas;
+    @FXML private Label lblCuentaAtras;
 
     @FXML private GridPane historialMovimientos;
+    @FXML private VBox panelRevision;
+    @FXML private Label lblRevision;
+    @FXML private Button btnRevisionAnterior;
+    @FXML private Button btnRevisionSiguiente;
+    @FXML private Button btnRevisionFinal;
+    @FXML private VBox menuDesplegable;
+    @FXML private Region RegionMenu;
+    @FXML private Button btnAjustes;
+    @FXML private Button btnPausa;
 
-    // ── Constantes del tablero ────────────────────────────────────────────────
-
-    private static final int    CELDA        = 56;
-    private static final String COLOR_CLARA  = "#8ca2ad";
+    private static final int CELDA = 56;
+    private static final String COLOR_CLARA = "#8ca2ad";
     private static final String COLOR_OSCURA = "#4a6f8a";
     private static final String COLOR_SELEC  = "#facc15";
 
@@ -94,7 +104,38 @@ public class PartidaController implements Initializable {
         actualizarEstilosTimer();
     }
 
-    // ── Tablero ───────────────────────────────────────────────────────────────
+    private void aplicarSettingsDesdeRecord(GameRecord record) {
+        if (record == null) {
+            return;
+        }
+
+        if (record.tipoPartidaCodigo != null && !record.tipoPartidaCodigo.isBlank()) {
+            settings.setTipoPartida(record.tipoPartidaCodigo);
+        } else if ("Local".equalsIgnoreCase(record.tipoPartida)) {
+            settings.setTipoPartida(NuevaPartidaSettings.TIPO_LOCAL);
+        }
+
+        if (record.modoJuegoCodigo != null && !record.modoJuegoCodigo.isBlank()) {
+            settings.setModoJuego(record.modoJuegoCodigo);
+        }
+
+        if (record.colorJugadorCodigo != null && !record.colorJugadorCodigo.isBlank()) {
+            settings.setColorJugador(record.colorJugadorCodigo);
+        } else if ("Negras".equalsIgnoreCase(record.colorJugador)) {
+            settings.setColorJugador(NuevaPartidaSettings.COLOR_NEGRAS);
+        }
+
+        if (record.tiempoInicialSegundos > 0) {
+            settings.setTiempoSegundos(record.tiempoInicialSegundos);
+        }
+    }
+    /**
+     * Dibuja de nuevo todo el tablero en pantalla.
+     * Se recorre la matriz 8x8 y se crea una casilla visual
+     * por cada posición del tablero.
+     */
+    private void dibujarTablero() {
+        tablero.getChildren().clear();
 
     /** Limpia y vuelve a pintar las 64 casillas según el estado actual del modelo. */
     private void dibujarTablero() {
@@ -106,7 +147,6 @@ public class PartidaController implements Initializable {
             }
         }
     }
-
     /**
      * Crea una casilla con su fondo, indicadores (selección, movimientos posibles)
      * y la pieza correspondiente del modelo.
@@ -168,11 +208,13 @@ public class PartidaController implements Initializable {
      */
     private ImageView crearImagenPieza(String nombreArchivo) {
         String ruta = "/com/tfg/ajedrez/img/piezas/" + nombreArchivo + ".png";
+
         try (InputStream stream = getClass().getResourceAsStream(ruta)) {
             if (stream == null) {
                 System.err.println("[PIEZA] Archivo no encontrado: " + ruta);
                 return null;
             }
+
             Image imagen = new Image(stream);
             ImageView iv = new ImageView(imagen);
             iv.setFitWidth(CELDA - 6);
@@ -180,6 +222,7 @@ public class PartidaController implements Initializable {
             iv.setPreserveRatio(true);
             iv.setSmooth(true);
             StackPane.setAlignment(iv, Pos.CENTER);
+
             return iv;
         } catch (Exception e) {
             System.err.println("[PIEZA] Error cargando: " + ruta + " — " + e.getMessage());
@@ -411,6 +454,12 @@ public class PartidaController implements Initializable {
         nombreBlancas.setText("Jugador Blancas");
         avatarBlancas.setText("JB");
     }
+    /**
+     * Comprueba si un peón debe promocionar y permite al usuario
+     * elegir la pieza en la que se va a convertir.
+     */
+    private TipoPieza resolverPromocionUsuario(int filaOrigen, int colOrigen, int filaDestino, int colDestino) {
+        Pieza pieza = modelo.getPieza(filaOrigen, colOrigen);
 
     // ── Movimiento de la IA ─────────────────────────────────────────────────────────────
 

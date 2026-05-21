@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="380.0" style="-fx-background-color: #1B1B1B;" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tfg.ajedrez.controller.LoginController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="380.0" styleClass="screen-root" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tfg.ajedrez.controller.LoginController">
    <children>
       <ImageView fitHeight="219.0" fitWidth="291.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
          <StackPane.margin>
@@ -69,5 +69,26 @@
             </VBox>
          </content>
       </ScrollPane>
+
+      <Region fx:id="RegionMenu" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onCerrarMenu" prefHeight="700.0" prefWidth="380.0" style="-fx-background-color: transparent;" visible="false" />
+
+      <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false" onAction="#onDesplegable" styleClass="menu-hamburguesa" StackPane.alignment="TOP_RIGHT">
+         <graphic><Region opacity="0.57" styleClass="icon" /></graphic>
+         <StackPane.margin><Insets right="20.0" top="20.0" /></StackPane.margin>
+      </Button>
+
+      <VBox fx:id="menuDesplegable" alignment="TOP_RIGHT" maxHeight="74.0" maxWidth="150.0" prefHeight="67.0" prefWidth="100.0" styleClass="menu-desplegable" visible="false" StackPane.alignment="TOP_RIGHT">
+         <StackPane.margin><Insets right="20.0" top="80.0" /></StackPane.margin>
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="148.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btnAjustes" mnemonicParsing="false" onAction="#onCambiarTema" styleClass="boton-menu-lateral" text="Tema claro">
+                     <graphic><Region styleClass="icon-tema" /></graphic>
+                  </Button>
+               </children>
+               <padding><Insets left="10.0" /></padding>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </StackPane>

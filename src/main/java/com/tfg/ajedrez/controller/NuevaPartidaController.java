@@ -2,6 +2,7 @@ package com.tfg.ajedrez.controller;
 
 import com.tfg.ajedrez.service.ConfiguracionPartidaService;
 import com.tfg.ajedrez.util.SceneManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -47,7 +48,7 @@ public class NuevaPartidaController {
     }
 
     @FXML
-    public void onVolver(){
+    public void onVolver() {
         SceneManager.navegarA("/com/tfg/ajedrez/vista/menu-principal.fxml");
     }
 

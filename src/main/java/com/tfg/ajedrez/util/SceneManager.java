@@ -1,6 +1,7 @@
 package com.tfg.ajedrez.util;
 
 import com.tfg.ajedrez.AjedrezApplication;
+import com.tfg.ajedrez.state.ThemeManager;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -43,6 +44,7 @@ public class SceneManager {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(AjedrezApplication.class.getResource(ventana));
             Parent root = fxmlLoader.load();
+            ThemeManager.applyTheme(root);
             
             // La escena se crea sin dimensiones fijas para respetar el tamaño definido en el FXML.
             Scene scene = new Scene(root);
